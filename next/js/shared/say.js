@@ -9,7 +9,7 @@
  *   say.line(meaning, { register?, voice?, elder?, row? }) -> Line
  *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning }
  *       guess: the word's form is a guess (a defaulted gender), so no recording of a longer stretch may say it
- *       row: true gives the line as a card's row: lower case, no final mark
+ *       row: true gives the line as a card's row: lower case, no final mark, its English without notes in brackets
  *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status } | null
  *   say.speak(line, { queue?, ifIdle?, onPiece?, onHeard? }) -> Promise<{ done }>     never holds up a tap
  *       onPiece: a piece is next; onHeard: a piece is really heard (its clip started, or the device voice began)
@@ -25,11 +25,23 @@ import { voicePath } from "../core/voice-clips.js";
 export { norm } from "../core/voice-clips.js";
 import { webAudioPlayer } from "../core/voice-player.js";
 
-/** A word's English for a card: the gloss without its note in brackets. */
-const englishOf = (entry) => String(entry.gloss || "").replace(/\s*\(.*?\)/g, "").trim();
+/**
+ * A card's English: as a card's words are written, with no final mark and lower case ("No milk." is "no milk"), but a name or
+ * "I" keeps its capital (capitals: the lexicon's proper nouns' English), and without its grown-ups' notes in brackets
+ * ("whole, full (aako cup: a whole cup)" is "whole, full").
+ */
+const plain = (en) => String(en || "").replace(/\s*\(.*?\)/g, "").trim();
+const shortWith = (capitals) => (en) => {
+  const t = plain(en).replace(/[.!?]+$/, "").trim();
+  const first = (t.match(/^[A-Za-z]+/) || [""])[0];
+  return capitals.has(first) ? t : t.charAt(0).toLowerCase() + t.slice(1);
+};
 
 export async function createSay({ voice: settings = null, player = null, path = null, child = {}, load = null, wait = undefined } = {}) {
   const engine = await loadEngine({ path, load });
+  const capitals = new Set(["I", ...((engine.data && engine.data.lexicon && engine.data.lexicon.entries) || []).filter((e) => e.pos === "PN").map((e) => plain(e.gloss))]);
+  const short = shortWith(capitals);
+  const englishOf = (entry) => short(entry.gloss);
   const thePath = path || voicePath();
   const sound = typeof globalThis.AudioContext !== "undefined" || typeof globalThis.webkitAudioContext !== "undefined";
   const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, { ...o, times: settings.device }) }) : null);
@@ -73,7 +85,8 @@ export async function createSay({ voice: settings = null, player = null, path = 
     note(result.gaps);
     // every clip of a line is fetched and decoded as soon as the line is built, long before it is said
     if (P && P.load) plan.forEach((c) => c.file && (c.source === "family-ok" || thePath === "test") && P.load(c.file));
-    return { ok: result.ok, text, en: result.en, pieces, plan, gaps: result.gaps, key: result.key || null, meaning };
+    // (a line as a card's row is a card's English, as a word on its own is)
+    return { ok: result.ok, text, en: row ? short(result.en) : result.en, pieces, plan, gaps: result.gaps, key: result.key || null, meaning };
   }
 
   return {

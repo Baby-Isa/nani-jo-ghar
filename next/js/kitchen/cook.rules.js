@@ -5,23 +5,22 @@
  * what is the next right move, is this dish right, reset this dish. It ends itself when every dish holds what was asked.
  *
  *   cookRules({ game, settings, kitchen, kit }) -> { start, move, leave, stepOf, ctxOf }
+ *   hiddenWord(step, hint) -> the thing whose word Nani's line shows as dots while her hint is shut, or null
  *   rowMayHold(settings, kit, level) -> every thing the row may hold (its pictures are named before the row is drawn)
- *   moves while cooking: item {id} | knob {vessel} | vessel {vessel} | face {vessel} | count {item} | time {ms}
- *   then: reviewed (the dishes have been looked at) and, for a wrong dish, understood (it is made again)
+ *   moves while cooking: item {id} | knob {vessel} | vessel {vessel} | face {vessel} | count {item} | time {ms} | hint
+ *   (Nani's hint opened or shut: her helper card and the step's word; counted as help; opened on a word she hides, it is a
+ *   peek at that word, so the word's ladder does not move this round)
+ *   then: reviewed and, for wrong dishes, understood; wrong-order {right, wrong: [{vessel, who, faults}]},
+ *   remake {vessels, away}: only those are made again, the rest leave the screen (state.away) until all-right
  *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's row)
- *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment: once what moves
- *   in the kitchen has ended and a breath has gone (step.wait), its first-time light (first) and its call (step.spoken)
- *
- * THE STEP'S MOMENT, as the old game has it (data/kitchen.json lights, from its rule table): the rules time every
- * movement they start (a pour, a spoonful, a serve), so they know when the kitchen is still, and work the moment out
- * again on every move (a movement started meanwhile pushes it back). At the moment a first-time
- * light is shown, and so spent (a step left before its moment keeps its light for the next time), and the stuck help's
- * wait starts again; the end of each movement restarts it too, as a tap does.
+ *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
  */
 import { machine } from "../shared/machine.js";
 import { atLevel } from "../shared/round.js";
 import { newFire, turn, pass, spend, zone, nearGreen } from "./heat.rules.js";
-import { newHelp, acted, stepped, rush, pass as helpPass } from "../shared/kit/help.rules.js";
+import { newHelp, acted, rush, pass as helpPass } from "../shared/kit/help.rules.js";
+import { stepMoment } from "./moment.rules.js";
+import { dishCheck } from "../shared/kit/wrong-order.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
 
@@ -29,11 +28,17 @@ const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
 const lookalikeAt = (settings, kit, level) => (atLevel(kit.levels.lookalike, level) ? [settings.row.lookalike] : []);
 export const rowMayHold = (settings, kit, level) => settings.row.groups.flat().concat(settings.row.pool, lookalikeAt(settings, kit, level));
 
+export const hiddenWord = (step, hint = false) => {
+  const st = step && step.kind === "choose" ? step.then : step;
+  return st && st.hides && !hint ? st.item : null;
+};
+
 export function cookRules({ game, settings, kitchen, kit }) {
   const G = game.rules;
   const heatAt = (level) => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
   const ctxOf = (s, v) => G.context(settings, { ask: s.vessels[v].ask, level: s.level });
-  const L = kitchen.lights;
+  /** Is this dish what was asked, row by row: the kit's one answer, from the game's count of it against its card. */
+  const checkOf = (s, v) => dishCheck(s.vessels[v].items, G.tally(s.vessels[v].dish, ctxOf(s, v)));
   // every movement the rules start, with when it ends; one that blocks holds the next step back while it is in the air
   const busyNow = (s) => s.moves.some((m) => m.blocks);
   const moving = (s, ms, blocks) => ({ ...s, moves: s.moves.concat({ until: s.clock + ms, blocks }) });
@@ -80,7 +85,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
     const cold = s.vessels.findIndex((x) => x.fire.fire === "cold");
     if (cold >= 0) {
       const nx = G.next(s.vessels[cold].dish, ctxOf(s, cold), "cold");
-      const then = nx && nx.use ? { kind: "use", vessel: cold, item: nx.use, line: "use" } : nx && nx.fire ? { kind: "knob", vessel: cold, line: "light" } : null;
+      const then = nx && nx.use ? useStep(s, cold, nx.use) : nx && nx.fire ? { kind: "knob", vessel: cold, line: "light" } : null;
       // picking the next vessel shows what comes then in it (as the old game, data/kitchen.json lines), so her box never
       // keeps a step already done; the pick is due (lit, helped) only once no other dish is on the heat or waiting
       if (cold !== s.chosen) return { kind: "choose", vessel: cold, due: pickDue(s), then };
@@ -88,68 +93,30 @@ export function cookRules({ game, settings, kitchen, kit }) {
     }
     return s.vessels.some((x) => x.fire.fire === "heating") ? { kind: "wait", line: null } : null;
   }
+  /**
+   * A thing to put in. Past support, a word someone asked for is never written in Nani's line, so no step is won by reading
+   * it (non-negotiable 3): it shows as dots until her hint opens (Zafar, 9 Nov: "where it says put the milk in, it should be
+   * put the ... in. But ... if you click the down arrow and expand the hint ... show you what the item is"). Only the
+   * child opens it: stuck help never comes for a word past support (helped, below), so waiting never names it, and
+   * opening it is a peek at the word. Water and leaves are the steps themselves and stay named; a dish being made again is
+   * study, so its words show (old js/shared/onboard.js:512-519 hintHides; old js/cook/station-lib.js:44 hideKnown).
+   */
+  const pastSupport = (s, v, item) => !settings.row.always.includes(item) && !s.vessels[v].redone && s.pastSupport.includes(item);
+  const useStep = (s, v, item) => ({ kind: "use", vessel: v, item, line: "use", ...(pastSupport(s, v, item) ? { hides: true } : {}) });
   const pickDue = (s) => !s.vessels.some((x, v) => x.fire.fire === "heating" || (x.fire.fire === "ready" && !G.served(x.dish, ctxOf(s, v))));
-  /** Is the step now one that stuck help may come for? Never a timed control; never a word the child already knows. */
-  function helped(s, round) {
+  /** Is the step now one that stuck help may come for? Never a timed control; never a word past support. */
+  function helped(s) {
     const st = s.step;
     if (!st || st.kind === "wait" || !st.line && st.kind !== "choose") return false;
     if (st.kind === "knob") return st.line === "light";
     if (st.kind === "choose") return st.due;
-    if (st.kind === "use") {
-      const always = settings.row.always.includes(st.item);
-      return always || s.vessels[st.vessel].redone || (round.ladder[st.item] || 0) < kit.help.noHelpFromStage;
-    }
+    if (st.kind === "use") return !pastSupport(s, st.vessel, st.item);
     return true;
   }
-  /** What a step would be lit as, the first time: each control once, each thing every dish needs once, and once the card of the first thing asked for. */
-  function firstKey(step) {
-    if (!step || step.kind === "wait" || !(step.line || step.kind === "choose")) return null;
-    // the next vessel's first light comes only once it is due: after the first dish is poured
-    if (step.kind === "choose") return step.due ? "choose" : null;
-    if (step.kind === "use") return settings.row.always.includes(step.item) ? `use:${step.item}` : "card";
-    return step.kind === "knob" ? `knob:${step.line}` : step.line;
-  }
-  const keyOf = (step) => (step ? [step.kind, step.vessel, step.item, step.line, step.due, step.then && keyOf(step.then)].join(":") : "");
-
-  /**
-   * The step's moment, by kind: which steps wait so (is), and when the moment comes (at), from the kitchen's stillness (the
-   * end of the last movement) and the step's opening, never later than the most after it opened. The first that fits.
-   */
-  const WAITS = [
-    // the card of the first thing asked for: once the kitchen has been still a moment, and never while the order list moves
-    { wait: "card", is: (st, first) => st.kind === "use" && first === "card", at: (still, from) => Math.max(still + L.cardStillMs, from + kit.panel.settleMs), most: L.cardMaxMs },
-    // a thing on the row, its first light, and a control's call: after a breath
-    { wait: "breath", is: (st, first) => (st.kind === "use" && !!first) || (st.kind === "knob" && st.line === "light"), at: (still) => still + L.breathMs, most: L.breathMaxMs },
-    // the next vessel's first light: a moment after the pour before it
-    { wait: "next", is: (st, first) => st.kind === "choose" && st.due && !!first, at: (still) => still + L.nextAfterMs, most: L.nextAfterMs + L.breathMaxMs },
-    // a pour, and the next vessel's help: the stillness
-    { wait: "still", is: (st) => st.kind === "take" || (st.kind === "choose" && st.due), at: (still) => still, most: L.breathMaxMs },
-    // anything else (the knob at the green, a thing on the row met before): at once
-    { wait: "none", is: () => true, at: (still, from) => from, most: 0 },
-  ];
-  /** How a step opens: what its moment waits for (step.wait) and whether Nani calls it then (step.spoken). */
-  const dressed = (step, first) => step && { ...step, wait: WAITS.find((w) => w.is(step, first)).wait, spoken: step.kind === "take" || (step.kind === "knob" && !!step.line) };
-  /** When the step's moment comes, worked out afresh on every move (a movement started during the wait pushes it back). */
-  function dueAt(s) {
-    const { wait, from } = s.moment;
-    const w = WAITS.find((x) => x.wait === wait);
-    return Math.min(w.at(Math.max(from, s.stillAt, ...s.moves.map((m) => m.until)), from), from + w.most);
-  }
-  /** A step opens: its line shows now; its light and call wait for its moment. */
-  function opening(s, step, events) {
-    const key = firstKey(step);
-    const first = key && !s.lit.includes(key) && !s.metLit.includes(key) ? key : null;
-    const st = dressed(step, first);
-    if (st) events.push({ type: "step", step: st });
-    return { ...s, step: st, help: stepped(s.help), moment: st && st.kind !== "wait" ? { wait: st.wait, from: s.clock, first } : null };
-  }
-  /** The moment has come: the light is shown (and so spent), the call said, and the stuck help's wait starts again. */
-  function opened(s, events) {
-    if (!s.moment || s.clock < dueAt(s)) return s;
-    const { first } = s.moment;
-    events.push({ type: "open", step: s.step, first });
-    return { ...s, moment: null, help: acted(s.help), lit: first && !s.lit.includes(first) ? s.lit.concat(first) : s.lit };
-  }
+  const moment = stepMoment({ settings, kit, kitchen });
+  const { opened, keyOf } = moment;
+  // every step opens with Nani's hint shut
+  const opening = (s, step, events) => ({ ...moment.opening(s, step, events), hint: false });
 
   /**
    * Each person's ticked rows in the order they were ticked, kept after every move (the order card's row shows its ticked
@@ -191,7 +158,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
       events.push(...r.events.map((e) => ({ ...e, step: next.step })));
     }
     if (!busyNow(next) && next.vessels.every((x, v) => G.served(x.dish, ctxOf(next, v)))) {
-      const checks = next.vessels.map((x, v) => G.right(x.dish, ctxOf(next, v)));
+      const checks = next.vessels.map((x, v) => checkOf(next, v));
       // a row that is wrong at any look stays "not right first time", however the dish ends
       const vessels = next.vessels.map((x, v) => ({ ...x, missed: [...new Set(x.missed.concat(Object.keys(checks[v].byRow).filter((r) => !checks[v].byRow[r])))] }));
       next = { ...next, vessels, name: "review", checks };
@@ -272,11 +239,20 @@ export function cookRules({ game, settings, kitchen, kit }) {
         face(s, mv) {
           const events = [];
           const next = choose(s, mv.vessel, events);
-          events.push({ type: "replay", vessel: mv.vessel, who: s.vessels[mv.vessel].who });
+          // at the levels the dish has its own card, it shows again as the order is said again (Zafar, 13 Nov)
+          events.push({ type: "replay", vessel: mv.vessel, who: s.vessels[mv.vessel].who, dishCard: !!atLevel(kit.levels.dishCard, s.level) });
           return settle({ ...next, replays: (next.replays || 0) + 1 }, events);
         },
         // a look at a hidden part of a card: free, counted as help, never a right pick nor a miss
         peek: (s, mv) => ({ state: { ...s, peeks: (s.peeks || []).concat(mv.word) }, events: [] }),
+        // her hint, opened on a word she hides, names it: a peek at it (counted there); opened on a named one, help alone
+        hint(s) {
+          if (!s.step || s.step.kind !== "use") return { state: s, events: [] };
+          const open = !s.hint;
+          const peeked = open && !!s.step.hides;
+          const next = { ...s, hint: open, peeks: peeked ? (s.peeks || []).concat(s.step.item) : s.peeks, hintsOpened: (s.hintsOpened || 0) + (open && !peeked ? 1 : 0) };
+          return { state: next, events: [{ type: "hint", open, step: s.step }] };
+        },
         count(s, mv) {
           const v = s.chosen;
           const out = G.takeBack(s.vessels[v].dish, mv.item, ctxOf(s, v));
@@ -284,7 +260,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const next = moving(setVessel(s, v, { dish: out.dish }), settings.motion.takeBackMs, true);
           return settle(next, out.events.map((e) => ({ ...e, vessel: v })), { rightMove: true });
         },
-        time(s, mv, { round }) {
+        time(s, mv) {
           const k = heatAt(s.level);
           const clock = s.clock + mv.ms;
           const events = [];
@@ -302,37 +278,39 @@ export function cookRules({ game, settings, kitchen, kit }) {
           let next = { ...s, clock, moves: s.moves.filter((m) => m.until > clock), vessels, stillAt: Math.max(s.stillAt, ...ended.map((m) => m.until)) };
           if (ended.length) next = { ...next, help: acted(next.help) };
           // no stuck-help time passes while the step's moment is still to come (the moment starts its wait again)
-          const h = helpPass(next.help, next.moment ? 0 : mv.ms, helped(next, round) ? atLevel(kit.levels.hintS, s.level) * 1000 : 0);
+          const h = helpPass(next.help, next.moment ? 0 : mv.ms, helped(next) ? atLevel(kit.levels.hintS, s.level) * 1000 : 0);
           next = { ...next, help: h.help };
           events.push(...h.events.map((e) => ({ ...e, step: next.step })));
           return settle(next, events);
         },
       },
-      // every dish is looked at against what its person asked for; a wrong one is made again, and only that one
+      // every dish is looked at against what its person asked for; the wrong ones are made again, and only they
       review: {
         reviewed(s) {
-          const wrong = s.checks.findIndex((c) => !c.right);
-          if (wrong < 0) return { state: { ...s, name: "done" }, events: [{ type: "all-right" }] };
-          const tries = s.vessels[wrong].tries + 1;
-          return { state: { ...setVessel(s, wrong, { tries }), name: "wrong-order", wrong }, events: [{ type: "wrong-order", vessel: wrong, who: s.vessels[wrong].who, check: s.checks[wrong], showTheWay: tries >= kit.help.showTheWayAt }] };
+          const wrong = s.checks.map((c, v) => (c.right ? null : v)).filter((v) => v != null);
+          if (!wrong.length) return { state: { ...s, name: "done", away: [] }, events: [{ type: "all-right" }] };
+          let next = s;
+          for (const v of wrong) next = setVessel(next, v, { tries: next.vessels[v].tries + 1 });
+          // each wrong card's rows, as the card shows them: right, missed, too few, too many or extra
+          const cards = wrong.map((v) => ({ vessel: v, who: s.vessels[v].who, faults: s.checks[v].faults }));
+          // the orders still on screen that are right go first; the ones already gone stay gone
+          const right = s.checks.map((c, v) => v).filter((v) => s.checks[v].right && !s.away.includes(v));
+          return { state: { ...next, name: "wrong-order", wrong }, events: [{ type: "wrong-order", right, wrong: cards }] };
         },
       },
       "wrong-order": {
         understood(s) {
-          const v = s.wrong;
-          // the third wrong try is shown the right way instead of being made again
-          const shown = s.vessels[v].tries >= kit.help.showTheWayAt;
-          let next = setVessel(s, v, shown ? { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true } : { dish: G.reset(), fire: newFire(), redone: true });
-          const checks = s.checks.map((c, i) => (i === v ? { ...c, right: true, redo: true } : c));
-          const more = checks.findIndex((c) => !c.right);
-          const events = [{ type: shown ? "shown-the-way" : "redo", vessel: v }];
-          if (more >= 0) {
-            const tries = next.vessels[more].tries + 1;
-            return { state: { ...setVessel(next, more, { tries }), checks, wrong: more }, events: events.concat({ type: "wrong-order", vessel: more, who: s.vessels[more].who, check: checks[more], showTheWay: tries >= kit.help.showTheWayAt }) };
-          }
-          const redo = next.vessels.findIndex((x) => x.redone && x.fire.fire === "cold");
-          if (redo < 0) return { state: { ...next, name: "done", checks }, events: events.concat({ type: "all-right" }) };
-          next = { ...next, name: "cooking", chosen: redo, checks: null, wrong: null };
+          let next = s;
+          // the third wrong try is shown the right way instead of being made again; otherwise the whole dish is remade
+          const redo = s.wrong.filter((v) => s.vessels[v].tries < kit.help.showTheWayAt);
+          for (const v of s.wrong) next = setVessel(next, v, redo.includes(v) ? { dish: G.reset(), fire: newFire(), redone: true } : { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true });
+          const events = s.wrong.map((v) => ({ type: redo.includes(v) ? "redo" : "shown-the-way", vessel: v }));
+          if (!redo.length) return { state: { ...next, name: "done", checks: null, wrong: null, away: [] }, events: events.concat({ type: "all-right" }) };
+          // only what is remade stays, its card at the top (Zafar, 11 Nov: "the correct tea glasses disappear, the correct order
+          // cards disappear, and the people disappear, and you're just left with the person that got it wrong")
+          const away = next.vessels.map((x, v) => v).filter((v) => !redo.includes(v));
+          events.push({ type: "remake", vessels: redo, away });
+          next = { ...next, name: "cooking", chosen: redo[0], checks: null, wrong: null, away };
           next = opening(next, stepOf(next), events);
           return { state: next, events };
         },
@@ -356,25 +334,31 @@ export function cookRules({ game, settings, kitchen, kit }) {
         row: rowFor(round, chance),
         lit: [],
         metLit: round.met.lit || [],
-        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [] })),
+        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, items: p.items, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [] })),
         help: newHelp(),
+        // the words asked for that the child's ladder has past support as the round starts
+        pastSupport: [...new Set(round.order.for.flatMap((p) => p.items.filter((i) => i.said && !i.no).map((i) => i.word)))].filter((w) => (round.ladder[w] || 0) >= kit.help.pastSupportFrom),
         step: null,
         moment: null,
+        away: [],
       };
-      // (its first step's line shows as the scene is drawn; its moment comes with the scene's clock)
+      // (its first step is told by first, as the scene is entered, so the step event opening makes here is not kept; its
+      // moment comes with the scene's clock)
       return opening(s, stepOf(s), []);
     },
+    // the scene opens with its first step, as every later step is told
+    first: (round, s) => (s.step ? [{ type: "step", step: s.step }] : []),
     move,
     stepOf,
     ctxOf,
     /** What the scene hands on: each dish as it was made, and whether it is right. */
     leave(round, s) {
       const dishes = s.vessels.map((x, v) => {
-        const check = G.right(x.dish, ctxOf(s, v));
-        const rowsRight = round.order.for[v].items.map((i) => !x.missed.includes(i.id) && !check.lostFirstTry.includes(i.id));
+        const check = checkOf(s, v);
+        const rowsRight = round.order.for[v].items.map((i) => !x.missed.includes(i.id) && !check.lost.includes(i.id));
         return { who: x.who, dish: x.dish, check, tries: x.tries, rowsRight, look: G.servedLook(x.dish) };
       });
-      return { ...round, dishes, cookMs: s.clock, peeks: (round.peeks || []).concat(s.peeks || []), hints: (round.hints || 0) + s.help.hints + (s.peeks || []).length + (s.replays || 0), met: { ...round.met, timed: round.met.timed || !s.hold, lit: [...new Set((round.met.lit || []).concat(s.lit))] } };
+      return { ...round, dishes, cookMs: s.clock, peeks: (round.peeks || []).concat(s.peeks || []), hints: (round.hints || 0) + s.help.hints + (s.peeks || []).length + (s.replays || 0) + (s.hintsOpened || 0), met: { ...round.met, timed: round.met.timed || !s.hold, lit: [...new Set((round.met.lit || []).concat(s.lit))] } };
     },
   };
 }

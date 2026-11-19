@@ -6,12 +6,13 @@
  * its word again. The old game's moment (old js/shared/word-moment.js, at its speed 0.75: old js/cook/ui.js:166) is
  * the reference for every size and time (data/kit.json wordMoment).
  *
- *   wordMomentView({ stage, say, kit, ui, send, words, wordCardArt, act })   words: every word the moment may show
+ *   wordMomentView({ stage, say, kit, sounds, send, words, wordCardArt, act })   words: every word the moment may show
  *   act: { pictures() -> refs, draw({ pane, area, words, wait, frames }) -> { slots, play() -> Promise, stop() } }
- *     slots: [{ word, cx, cy, w, h, cardW, hide() }]  w, h: the shown thing's own drawn box (not its picture's empty
- *     margin), which the frame pads evenly; cardW: the word card's width for it (the act's own rule)
+ *     slots: [{ word, cx, cy, w, h, cardW, hide(), picture?(well) }]  w, h: the shown thing's own drawn box (not its
+ *     picture's empty margin: stage.thingBox), which the frame pads evenly; cardW: the word card's width for it (the act's
+ *     own rule); picture: the act draws the thing into its card's picture as the scene showed it (else wordCardArt's)
  */
-import { wordCardHtml, wireSpeaker } from "../kit/word-card.js";
+import { wordCardHtml, wireSpeaker, spaceWords } from "../kit/word-card.js";
 
 const el = (tag, cls, parent) => {
   const e = document.createElement(tag);
@@ -20,7 +21,7 @@ const el = (tag, cls, parent) => {
   return e;
 };
 
-export function wordMomentView({ stage, say, kit, ui, send, words, wordCardArt, act }) {
+export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardArt, act }) {
   const K = kit.wordMoment;
   // (the stage's own clock: it stands still while the round is held behind the turn card)
   const wait = (ms) => stage.wait(ms);
@@ -70,19 +71,28 @@ export function wordMomentView({ stage, say, kit, ui, send, words, wordCardArt, 
        * The snap (old word-moment.js:465-554): four corners close in round the thing from further out, the shutter clicks
        * and its flash fades, and the thing grows into its word card where it stands; then the word is said.
        */
-      const snap = async (s) => {
-        // the frame round the thing's own drawn box, the same padding on all four sides (Zafar, 18 Nov: "even padding all the
-        // way around"); its corners a share of its shorter side
-        const frame = el("div", "wm-frame", pane);
+      // each thing's frame round its own drawn box, the same padding on all four sides (Zafar, 18 Nov: "even padding all the
+      // way around", the sides' padding above and below too); one corner for every frame in the moment, a share of the
+      // smallest frame's shorter side, and its curve the shutter's (the old frame's 16 px), never past a share of the corner
+      const frameOf = (s) => {
         const pad = K.framePad * s.h;
-        const [fw, fh] = [s.w + 2 * pad, s.h + 2 * pad];
+        return [s.w + 2 * pad, s.h + 2 * pad];
+      };
+      const cs = K.corner * Math.min(...shown.slots.map((s) => Math.min(...frameOf(s))));
+      const cr = Math.min(K.cornerCurve, K.cornerRound * cs);
+      // the cards stand on one line: centred on the things' middle height, each on its own thing's across
+      const lineY = shown.slots.reduce((t, s) => t + s.cy, 0) / shown.slots.length;
+      const snap = async (s) => {
+        const frame = el("div", "wm-frame", pane);
+        const [fw, fh] = frameOf(s);
         Object.assign(frame.style, { left: `${s.cx - fw / 2}px`, top: `${s.cy - fh / 2}px`, width: `${fw}px`, height: `${fh}px` });
-        frame.style.setProperty("--wm-cs", `${K.corner * Math.min(fw, fh)}px`);
+        frame.style.setProperty("--wm-cs", `${cs}px`);
+        frame.style.setProperty("--wm-cr", `${cr}px`);
         frame.innerHTML = "<i></i><i></i><i></i><i></i><b></b>";
         await wait(K.cornersInMs);
         frame.classList.add("in");
         await wait(K.cornersMs - K.cornersInMs);
-        ui.sounds.play("shutter");
+        sounds.play("shutter");
         frame.classList.add("flash");
         await wait(K.shutterMs);
         const line = say.word(s.word);
@@ -90,16 +100,17 @@ export function wordMomentView({ stage, say, kit, ui, send, words, wordCardArt, 
         card.innerHTML = wordCardHtml({ file, line, pic: wordCardArt(s.word), english: true, blurred: false, kit });
         // as tall as its insides, and shrunk until it fits the room's height (old word-moment.js:520-530)
         let cw = s.cardW;
-        const sized = () => (card.style.setProperty("--pw", `${cw}px`), (card.style.width = `${cw}px`), card.offsetHeight);
+        const sized = () => (card.style.setProperty("--pw", `${cw}px`), (card.style.width = `${cw}px`), spaceWords(card, kit), card.offsetHeight);
         let ch = sized();
         for (let k = 0; k < K.cardFits && ch > area.h - 2 * K.cardKeep; k++) (cw = Math.max(K.cardLeast, (cw * (area.h - 2 * K.cardKeep)) / ch)), (ch = sized());
+        if (s.picture) s.picture(card.querySelector(".well"));
         // centred on its thing and kept on the stage (old word-moment.js:531-532)
         const keep = (v, size, room) => Math.max(K.cardKeep, Math.min(room - size - K.cardKeep, v - size / 2));
-        Object.assign(card.style, { left: `${keep(s.cx, cw, area.w)}px`, top: `${keep(s.cy, ch, area.h)}px` });
+        Object.assign(card.style, { left: `${keep(s.cx, cw, area.w)}px`, top: `${keep(lineY, ch, area.h)}px` });
         card.animate([{ transform: `scale(${s.h / cw})`, opacity: K.cardGrowFrom }, { transform: "scale(1)", opacity: 1 }], { duration: K.cardGrowMs, easing: K.cardGrowEase });
         const sayIt = wireSpeaker(card, { say, line });
         s.hide();
-        ui.sounds.play("pop");
+        sounds.play("pop");
         await wait(K.sayAfterMs);
         frame.remove();
         await sayIt();

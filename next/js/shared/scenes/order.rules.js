@@ -66,8 +66,8 @@ export function orderRules({ settings, kit }) {
           return { state: { ...s, name: "done", skipped: true }, events: [{ type: "skipped" }, { type: "folded" }] };
         },
         // hearing a person again and a look at a hidden part are help: free, counted, never a verdict
-        repeat(s, mv) {
-          return { state: { ...s, repeats: s.repeats + 1 }, events: [{ type: "repeat", who: mv.who }] };
+        repeat(s, mv, { round }) {
+          return { state: { ...s, repeats: s.repeats + 1 }, events: [{ type: "repeat", who: mv.who, dishCard: !!atLevel(kit.levels.dishCard, round.level) }] };
         },
         peek: (s, mv) => ({ state: { ...s, peeks: s.peeks.concat(mv.word) }, events: [] }),
         lessoned: (s) => ({ state: { ...s, lessoned: true }, events: [] }),

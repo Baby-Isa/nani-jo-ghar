@@ -53,11 +53,14 @@ button { padding: 0; cursor: pointer; }
 /* Nani's box */
 /* the standard's box: always two lines' room, so it keeps one height as her line changes; her face at its top; one line sits
    level with her face, two fill the box (her line's size: --nani-font on a laptop, lifted towards --nani-font-lift as the panel shrinks) */
+.nani-box.hints { cursor: pointer; }
 .nani-box { --nf: max(var(--nani-font-min), calc(var(--nani-font) * var(--p) + var(--nani-font-lift) * (1 - var(--p)))); background: var(--nani-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--nani-shadow); padding: calc(var(--nani-pad) * var(--p)); }
 .nani-row { display: flex; align-items: flex-start; gap: calc(var(--nani-gap) * var(--p)); min-height: calc(var(--nani-lines) * var(--nani-lh) * var(--nf) + var(--nani-hair)); }
 .nani-line { flex: 1; min-width: 0; min-height: max(var(--face-min), calc(var(--face) * var(--p))); display: flex; flex-direction: column; justify-content: center; font: 500 var(--nf) / var(--nani-lh) var(--font-word); }
 .nani-line .t { text-wrap: wrap; }
 .nani-line .k { color: var(--kutchi); }
+.nani-line .hid { display: inline-flex; gap: .3em; vertical-align: middle; color: var(--kutchi); }
+.nani-line .hid i { flex: none; width: .36em; height: .36em; border-radius: 50%; background: currentColor; }
 .nani-line .gap, .gap { color: var(--grey); font-style: italic; }
 .nani-line.saying .t { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 5px; }
 .chevron { align-self: center; flex: none; width: max(30px, calc(48px * var(--p))); height: max(30px, calc(48px * var(--p))); border-radius: 50%; border: 0; background: rgba(255, 255, 255, .75); position: relative; transition: transform 350ms; }
@@ -103,8 +106,14 @@ button { padding: 0; cursor: pointer; }
 .tick::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
 /* the folded card's tick: the standard's own size, not the item card's */
 .ocard-top .tick { display: none; width: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); height: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); }
-.ocard.served .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
+.ocard.served .ocard-top .tick, .wo-line.ticked .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
 @keyframes tick-in { from { scale: 0; } }
+/* a served card wears the served stamp in its tick's place, taking no more room than the tick (Zafar, 13 Nov: "a served card's
+   stamp replaces its tick"); the stamp is old chai's own, drawn as it drew it (old css/shared/order-card.css:130-141) */
+:root { --served-stamp: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E"); }
+.ocard.served .ocard-top .tick { background: var(--served-stamp) center / contain no-repeat; box-shadow: none; scale: 1.5; rotate: -12deg; opacity: .9; animation: stamp-in 350ms cubic-bezier(.2, 1.4, .4, 1); }
+.ocard.served .ocard-top .tick::after { display: none; }
+@keyframes stamp-in { from { scale: 2.4; opacity: 0; } }
 /* a card opens to its row's own height and folds to nothing (grid rows 0fr to 1fr: no height to measure, none to go stale) */
 /* (its row's padding sits inside .ocard-in, which folds to nothing; the times are data/kit.json's, and the panel waits them out) */
 .ocard-body { display: grid; grid-template-rows: 1fr; overflow: hidden; transition: grid-template-rows var(--fold-ms) var(--fold-ease), opacity var(--fold-fade-ms); }
@@ -122,13 +131,16 @@ button { padding: 0; cursor: pointer; }
 /* while the panel's sizes step down (--fit under 1: Nani's helper open on a short phone) the pictures flatten first, so the card
    being cooked for still shows whole with its words and speakers; a narrower card would wrap its words and grow instead */
 :root.phone #side:not([data-fit="1"]) .icard > .well { aspect-ratio: auto; height: calc(100cqi / var(--item-pic-phone-k) * var(--fit) * var(--fit)); }
-/* the words spaced by their letters' ink (js/shared/kit/word-card.js inkGaps): until measured, by their boxes */
-.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--ku-ink, var(--item-ku-gap)); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
-.icard > .en { grid-row: 4; align-self: start; margin-top: var(--en-ink, var(--item-en-gap)); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
-.icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--rule-ink, var(--item-step)); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
+/* old chai's card (Zafar, 6 Nov; old css/shared/order-card.css:666-690): picture, spare, the Kutchi (on its foot, item-ku-top
+   under the spare), its English (item-en-top under it), spare, the divider, the speaker; the pair centred between the picture and
+   the divider. One gap, item-step (7% of the card), three times at the foot; the divider's gap measured to the English's ink, the
+   English's box giving back what runs below it (--en-ink: js/shared/kit/word-card.js, old js/shared/word-card.js fit14's row pass) */
+.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--item-ku-top); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
+.icard > .en { grid-row: 4; align-self: start; margin-top: var(--item-en-top); margin-bottom: calc(-1 * var(--en-ink, 0px)); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
+.icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--item-step); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
 /* the speaker drawn as the standard's (smaller on a phone), its own box a full tap: a clear border round the disc, taken back by
-   its margins so nothing moves */
-.icard > .speaker { --d: max(var(--speaker-min), calc(var(--tap) * var(--p))); --b: max(0px, (var(--tap) - var(--d)) / 2); grid-row: 7; align-self: end; box-sizing: content-box; width: var(--d); height: var(--d); border: var(--b) solid transparent; background-clip: padding-box; margin: calc(var(--item-step) - var(--b)) calc(-1 * var(--b)) calc(var(--item-step) - 1px - var(--b)); }
+   its margins so nothing moves; below, never past the row's own foot, so no part of it is clipped, not even 0.7 px */
+.icard > .speaker { --d: max(var(--speaker-min), calc(var(--tap) * var(--p))); --b: max(0px, (var(--tap) - var(--d)) / 2); grid-row: 7; align-self: end; box-sizing: content-box; width: var(--d); height: var(--d); border: var(--b) solid transparent; background-clip: padding-box; margin: calc(var(--item-step) - var(--b)) calc(-1 * var(--b)) max(calc(var(--item-step) - 1px - var(--b)), calc(-1 * var(--item-row-foot) * var(--p))); }
 :root.phone .icard > .speaker { --d: calc(max(var(--speaker-min), calc(var(--tap) * var(--p))) * var(--speaker-phone)); }
 .icard.waiting { background: transparent; box-shadow: none; border: 1px dashed var(--dash); opacity: .55; }
 .icard.waiting > * { visibility: hidden; }
@@ -145,15 +157,21 @@ button { padding: 0; cursor: pointer; }
 /* a card's support: dotted English, a blurred picture behind an eye; a tap opens either for a moment */
 .ku, .en { position: relative; }
 .kdots, .en .d { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; border: 0; background: none; color: inherit; font: inherit; }
-.kdots { gap: .3em; color: var(--kutchi); }
-/* a dot is always round: its own size, never squeezed by a word narrower than its dots */
-.kdots i { flex: none; width: .5em; height: .5em; border-radius: 50%; background: currentColor; }
-.en .d { gap: .38em; }
-.en .d i { flex: none; width: .36em; height: .36em; border-radius: 50%; background: var(--dots); }
+.kdots { gap: .3em; gap: round(.3em, var(--px)); color: var(--kutchi); }
+/* a dot is always a true circle: its own size, never squeezed by a word narrower than its dots; it and the gap between dots
+   a whole number of the screen's own pixels (--px: one of them, in the panel's zoomed px there), so every dot is drawn alike;
+   where round() is not known, the plain size */
+:root { --px: var(--dpx, 1px); }
+#side { --px: calc(var(--dpx, 1px) / var(--s, 1)); }
+.kdots i { flex: none; width: .5em; height: .5em; width: round(.5em, var(--px)); height: round(.5em, var(--px)); border-radius: 50%; background: currentColor; }
+.en .d { gap: .38em; gap: round(.38em, var(--px)); }
+.en .d i { flex: none; width: .36em; height: .36em; width: round(.36em, var(--px)); height: round(.36em, var(--px)); border-radius: 50%; background: var(--dots); }
 .en .d::before { content: ""; position: absolute; left: 50%; top: 50%; width: max(48px, 100%); height: 48px; translate: -50% -50%; }
 .en.dots .w { visibility: hidden; }
-/* a hidden English is never taller than one line, so a long one never lifts its word or grows its card (the standard's) */
-.en.dots:not(.peek) { max-width: 100%; }
+/* a word one line unless the fit wraps it (old word-card.css:117-118); a hidden English never taller than one line, so it never lifts
+   its word (Zafar, 2 Nov; old word-card.css:157) */
+.en .w { white-space: nowrap; }
+.en.wrap .w { white-space: normal; }
 .en.dots:not(.peek) .w { display: block; white-space: nowrap; overflow: hidden; }
 .en.dots .d { display: flex; }
 .en.dots.peek .w { visibility: visible; }
@@ -193,18 +211,19 @@ button { padding: 0; cursor: pointer; }
 .speaker { position: relative; flex: none; width: var(--speaker); height: var(--speaker); border-radius: 50%; border: 0; background: var(--speaker-bg); margin-top: auto; margin-bottom: 6px; }
 
 /* the big card that pops as a thing is said */
-.pop { position: absolute; box-sizing: border-box; background: var(--pop-bg); border-radius: var(--pop-radius); box-shadow: var(--pop-shadow); padding: var(--pop-pad); display: flex; flex-direction: column; align-items: center; gap: var(--pop-gap); pointer-events: none !important; transform-origin: top left; z-index: 45; }
+.pop { position: absolute; box-sizing: border-box; background: var(--pop-bg); border-radius: var(--pop-radius); box-shadow: var(--pop-shadow); padding: var(--pop-pad); display: flex; flex-direction: column; align-items: center; pointer-events: none !important; transform-origin: top left; z-index: 45; }
 .pop .well { flex: 1; min-height: 0; aspect-ratio: auto; }
-.pop .ku { font-size: calc(var(--pw) * var(--pop-ku-of-w)); line-height: 1.12; margin: 0; white-space: nowrap; }
-.pop .en { font-size: calc(var(--pw) * var(--pop-en-of-w)); margin: 0; }
+.pop .ku { font-size: calc(var(--pw) * var(--pop-ku-of-w)); line-height: 1.12; margin: calc(var(--pw) * var(--big-gap)) 0 0; white-space: nowrap; }
+.pop .en { font-size: calc(var(--pw) * var(--pop-en-of-w)); margin: calc(var(--pw) * var(--big-gap)) 0 0; }
 .pop .speaker { width: calc(var(--pw) * var(--pop-spk-of-w)); height: calc(var(--pw) * var(--pop-spk-of-w)); margin: var(--pop-spk-margin); box-shadow: var(--pop-spk-ring); }
 /* the order's big card: everything in it sized from its width, so a smaller card is the same card scaled; it grows from its
    own middle, flies with one even scale centre to centre, and the order's own card fades where it stands */
-.pop.big { transform-origin: 50% 50%; padding: calc(var(--pw) * var(--big-pad)); gap: calc(var(--pw) * var(--big-gap)); border-radius: calc(var(--pw) * var(--big-radius)); }
+.pop.big { transform-origin: 50% 50%; padding: calc(var(--pw) * var(--big-pad)); border-radius: calc(var(--pw) * var(--big-radius)); }
 .pop.big .well { border-radius: calc(var(--pw) * var(--big-pic-radius)); }
 .pop.big .ku { font-size: max(var(--item-font-min), calc(var(--pw) * var(--big-ku))); white-space: normal; text-wrap: balance; }
 .pop.big .en { font-size: max(var(--item-en), calc(var(--pw) * var(--big-en))); }
-.pop.big .speaker { width: calc(var(--pw) * var(--big-spk)); height: calc(var(--pw) * var(--big-spk)); margin: calc(var(--pw) * var(--big-spk-top)) 0 calc(var(--pw) * var(--big-spk-foot)); box-shadow: 0 0 0 calc(var(--pw) * var(--big-ring)) var(--ring), 0 0 0 calc(var(--pw) * var(--big-ring-edge)) var(--ring-edge), 0 calc(var(--pw) * var(--big-spk-drop)) calc(var(--pw) * var(--big-spk-blur)) var(--spk-shadow); }
+/* (never under a tap: old css/shared/word-card.css:176, clamp(tap, 25cqi, ...)) */
+.pop.big .speaker { width: max(var(--tap), calc(var(--pw) * var(--big-spk))); height: max(var(--tap), calc(var(--pw) * var(--big-spk))); margin: calc(var(--pw) * var(--big-spk-top)) 0 calc(var(--pw) * var(--big-spk-foot)); box-shadow: 0 0 0 calc(var(--pw) * var(--big-ring)) var(--ring), 0 0 0 calc(var(--pw) * var(--big-ring-edge)) var(--ring-edge), 0 calc(var(--pw) * var(--big-spk-drop)) calc(var(--pw) * var(--big-spk-blur)) var(--spk-shadow); }
 /* its eye, over a hidden picture, a third of the picture's width (the standard's), never past the picture */
 .pop.big .well .eye { width: var(--big-eye); min-width: var(--tap); height: auto; aspect-ratio: var(--big-eye-shape); max-height: calc(100% - 2 * var(--big-eye-room)); }
 .pop.big .well .eye svg { width: var(--big-eye-icon); max-width: var(--big-eye-icon-max); height: auto; opacity: .7; }
@@ -232,11 +251,14 @@ button { padding: 0; cursor: pointer; }
 @keyframes bump { 50% { scale: 1.2; } }
 .cog-rail { position: absolute; right: 12px; top: 12px; z-index: 960; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 :root.phone .cog-rail { right: 8px; top: 8px; }
-.cog, .cog-menu button { width: 48px; height: 48px; border: 0; border-radius: 12px; background: var(--cog-bg); box-shadow: 0 2px 8px rgba(40, 25, 10, .10); color: var(--ink); font: 700 24px "Nunito Sans"; display: grid; place-items: center; }
-.cog svg { width: 26.4px; height: 26.4px; }
+.cog, .cog-menu button { width: var(--tap); height: var(--tap); border: 0; border-radius: var(--cog-radius); background: var(--cog-bg); box-shadow: var(--cog-shadow); color: var(--ink); font: 700 var(--cog-glyph) var(--font-ui); display: grid; place-items: center; }
+.cog svg, .cog-menu button svg { width: var(--cog-icon); height: var(--cog-icon); }
 .cog { position: relative; } /* above the light's dim and never greyed: the grown-ups' menu stays usable */
-.cog-menu { display: none; flex-direction: column; gap: 8px; padding: 6px; border-radius: 14px; background: rgba(255, 250, 240, .9); }
+.cog-menu { position: relative; display: none; flex-direction: column; gap: var(--cog-gap); padding: var(--cog-pad); border-radius: var(--cog-menu-radius); background: var(--cog-menu-bg); }
 .cog-menu.open { display: flex; }
+/* who is playing, beside the open menu, for the grown-ups */
+.cog-who { position: absolute; right: calc(100% + var(--cog-gap)); top: 0; width: max-content; max-width: var(--cog-who-most); padding: var(--cog-who-pad); border-radius: var(--cog-radius); background: var(--cog-menu-bg); box-shadow: var(--cog-shadow); color: var(--grey); font: 600 var(--cog-who-font) / 1.2 var(--font-ui); overflow-wrap: anywhere; }
+.cog-who b { color: var(--ink); }
 
 /* the first-time light and the stuck light: everything dims but one gold-edged box */
 .light { position: fixed; inset: 0; z-index: 950; pointer-events: none; opacity: 0; transition: opacity 300ms ease-out; }
@@ -279,9 +301,43 @@ button { padding: 0; cursor: pointer; }
 .reply.shake { animation: shake 500ms; }
 @keyframes shake { 20%, 60% { translate: -10px 0; } 40%, 80% { translate: 10px 0; } }
 
-/* the wrong-order card */
-.veil { position: absolute; inset: 0; background: rgba(255, 250, 240, .55); display: flex; align-items: center; justify-content: center; }
-.veil .ocard { width: min(90%, 420px); box-shadow: 0 0 0 3px var(--wrong), var(--pop-shadow); }
+/* the wrong-order card (js/shared/kit/wrong-order.js): a light veil over the play area, the orders' top lines in the middle */
+.wo { position: fixed; z-index: 940; background: rgba(255, 250, 240, .55); }
+.wo-room { position: absolute; inset: var(--edge); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.wo-card { position: relative; box-shadow: 0 0 0 3px var(--card-border), var(--pop-shadow); transition: box-shadow var(--wo-glow); }
+.wo-line { max-width: 100%; }
+.wo-card.gold { box-shadow: 0 0 0 3px var(--gold), 0 0 22px 4px var(--gold), var(--pop-shadow); }
+/* what is wrong is shown plainly, in the Kutchi's maroon with a cross (Zafar, 19 Nov: "I don't see any maroon or crosses - I know
+   the rules don't like crosses or red but it's essential from user testing for clarity of understanding") */
+.wo-card.wrong { z-index: 1; box-shadow: 0 0 0 3px var(--kutchi), var(--pop-shadow); }
+.wo-open .ocard-top { margin-bottom: 8px; }
+/* its item cards side by side, each the row's own card; in two rows only past the least word (never scrolled) */
+.wo-row { display: flex; gap: 8px; padding: 2px; }
+.wo-row.two { flex-wrap: wrap; justify-content: center; width: calc(var(--wo-per) * var(--wo-iw) + (var(--wo-per) - 1) * 8px); }
+.wo-row .icard { flex: 0 0 var(--wo-iw); --pad: max(var(--item-pad-min), var(--wo-pad)); }
+.wo-row .icard.done { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold), var(--item-shadow); }
+.wo-row .icard.wrong { border-color: var(--kutchi); box-shadow: 0 0 0 2px var(--kutchi), var(--item-shadow); }
+.wo-row .icard.wrong > .tick { transform: scale(1); background: var(--kutchi); }
+.wo-row .icard.wrong > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+.wo-row .icard.hollow { background: transparent; box-shadow: none; border: 2px dashed var(--kutchi); }
+.wo-row .icard.hollow .well img { opacity: .5; }
+.wo-row .icard.pulse { animation: wo-pulse var(--wo-pulse) ease-in-out 3; }
+.wo-row .icard.shake { animation: shake var(--wo-shake); }
+@keyframes wo-pulse { 50% { scale: 1.06; box-shadow: 0 0 0 3px var(--kutchi), 0 0 16px var(--kutchi); } }
+/* a count inside its card: a dot for each asked or put in, gold when it came, a hollow when it did not, red past the asked */
+.wo-pips { position: absolute; left: 50%; top: var(--wo-dot-gap); translate: -50% 0; z-index: 2; display: flex; gap: var(--wo-dot-gap); }
+.wo-pips i { width: var(--wo-dot); height: var(--wo-dot); border-radius: 50%; box-sizing: border-box; border: var(--wo-dot-ring) solid var(--kutchi); background: #fff; position: relative; box-shadow: 0 1px 2px rgba(80, 50, 20, .25); }
+.wo-pips i.on { background: var(--gold); border-color: var(--gold); }
+/* a dot missing from a count, or one past it, takes the cross */
+.wo-pips i.missing, .wo-pips i.over { background: var(--kutchi); border-color: var(--kutchi); }
+.wo-pips i.missing::after, .wo-pips i.over::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--cross-mark) center / 100% 100% no-repeat; mask: var(--cross-mark) center / 100% 100% no-repeat; }
+.wo-pips i.pulse { animation: wo-pulse var(--wo-pulse) ease-in-out 3; }
+/* what was made, flying up from its pan; one nobody asked for takes the one small cross */
+.wo-fly { position: fixed; z-index: 945; pointer-events: none; }
+.wo-fly img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(80, 50, 20, .25)); }
+.wo-fly .x { display: none; position: absolute; right: -6%; top: -6%; width: 32%; aspect-ratio: 1; border-radius: 50%; background: var(--kutchi); box-shadow: 0 0 0 2px #fff; }
+.wo-fly .x::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--cross-mark) center / 100% 100% no-repeat; mask: var(--cross-mark) center / 100% 100% no-repeat; }
+.wo-fly.cross .x { display: block; }
 
 /* the word moment: its own scene over the play area */
 .wm { position: absolute; inset: 0; overflow: hidden; z-index: 30; background: var(--stone); animation: fade 350ms ease-out; transition: opacity 350ms; pointer-events: none !important; }
@@ -290,20 +346,21 @@ button { padding: 0; cursor: pointer; }
 .wm-in > * { position: absolute; }
 /* the frame: a phone camera's viewfinder, four thin white rounded corners closing in round the glass, then its flash fades */
 .wm-frame i { position: absolute; width: var(--wm-cs); height: var(--wm-cs); border: 0 solid #fff; filter: drop-shadow(0 0 var(--wm-corner-line) var(--wm-corner-shade)); transition: transform var(--wm-corner-ms) var(--wm-corner-ease); }
-.wm-frame i:nth-child(1) { left: 0; top: 0; border-width: var(--wm-corner-line) 0 0 var(--wm-corner-line); border-top-left-radius: var(--wm-corner-radius); transform: translate(calc(-1 * var(--wm-corner-from)), calc(-1 * var(--wm-corner-from))); }
-.wm-frame i:nth-child(2) { right: 0; top: 0; border-width: var(--wm-corner-line) var(--wm-corner-line) 0 0; border-top-right-radius: var(--wm-corner-radius); transform: translate(var(--wm-corner-from), calc(-1 * var(--wm-corner-from))); }
-.wm-frame i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 var(--wm-corner-line) var(--wm-corner-line); border-bottom-left-radius: var(--wm-corner-radius); transform: translate(calc(-1 * var(--wm-corner-from)), var(--wm-corner-from)); }
-.wm-frame i:nth-child(4) { right: 0; bottom: 0; border-width: 0 var(--wm-corner-line) var(--wm-corner-line) 0; border-bottom-right-radius: var(--wm-corner-radius); transform: translate(var(--wm-corner-from), var(--wm-corner-from)); }
+.wm-frame i:nth-child(1) { left: 0; top: 0; border-width: var(--wm-corner-line) 0 0 var(--wm-corner-line); border-top-left-radius: var(--wm-cr); transform: translate(calc(-1 * var(--wm-corner-from)), calc(-1 * var(--wm-corner-from))); }
+.wm-frame i:nth-child(2) { right: 0; top: 0; border-width: var(--wm-corner-line) var(--wm-corner-line) 0 0; border-top-right-radius: var(--wm-cr); transform: translate(var(--wm-corner-from), calc(-1 * var(--wm-corner-from))); }
+.wm-frame i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 var(--wm-corner-line) var(--wm-corner-line); border-bottom-left-radius: var(--wm-cr); transform: translate(calc(-1 * var(--wm-corner-from)), var(--wm-corner-from)); }
+.wm-frame i:nth-child(4) { right: 0; bottom: 0; border-width: 0 var(--wm-corner-line) var(--wm-corner-line) 0; border-bottom-right-radius: var(--wm-cr); transform: translate(var(--wm-corner-from), var(--wm-corner-from)); }
 .wm-frame.in i { transform: none; }
-.wm-frame b { position: absolute; inset: var(--wm-flash-inset); background: #fff; border-radius: var(--wm-corner-radius); opacity: 0; }
+.wm-frame b { position: absolute; inset: var(--wm-flash-inset); background: #fff; border-radius: var(--wm-cr); opacity: 0; }
 .wm-frame.flash b { animation: wm-flash var(--wm-flash-ms) ease-out forwards; }
 @keyframes wm-flash { 25% { opacity: .95; } to { opacity: 0; } }
 /* the word moment's card: everything a share of its width (--pw), as old chai's; its height is its insides' */
-.pop.wm-card { z-index: 2; padding: calc(var(--pw) * var(--wm-pad)) calc(var(--pw) * var(--wm-pad)) 0; gap: 0; transform-origin: var(--wm-grow-at); }
+.pop.wm-card { z-index: 2; padding: calc(var(--pw) * var(--wm-pad)) calc(var(--pw) * var(--wm-pad)) 0; transform-origin: var(--wm-grow-at); }
 .pop.wm-card .well { flex: none; width: 100%; height: calc(var(--pw) * var(--wm-pic-h)); }
 .pop.wm-card .well img { inset: var(--wm-pic-inset); width: calc(100% - 2 * var(--wm-pic-inset)); height: calc(100% - 2 * var(--wm-pic-inset)); }
-.pop.wm-card .ku { margin-top: calc(var(--pw) * var(--wm-ku-gap)); line-height: var(--wm-ku-line); }
-.pop.wm-card .en { margin-top: calc(var(--pw) * var(--wm-en-gap)); font-size: max(var(--item-en), calc(var(--pw) * var(--pop-en-of-w))); }
+.pop.wm-card .ku { line-height: var(--wm-ku-line); margin-top: calc(var(--pw) * var(--wm-ku-top)); }
+.pop.wm-card .en { margin-top: calc(var(--pw) * var(--wm-en-top)); }
+.pop.wm-card .en { font-size: max(var(--item-en), calc(var(--pw) * var(--pop-en-of-w))); }
 .pop.wm-card .rule { flex: none; width: calc(var(--pw) * var(--wm-rule-w)); height: var(--wm-rule-h); margin-top: calc(var(--pw) * var(--wm-gap)); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
 .pop.wm-card .speaker { width: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); height: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); margin: calc(var(--pw) * var(--wm-gap)) 0; box-shadow: none; cursor: pointer; }
 /* a speaker lit while its word is said */

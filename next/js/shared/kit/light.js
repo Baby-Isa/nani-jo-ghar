@@ -5,10 +5,42 @@
  * only shows the way.
  *
  *   const light = createLight({ kit, stage })
- *   light.show(box, { hard?, from?, ms? })  box: a rectangle on the page, the thing itself, or a function giving it now (so the
- *                                     light follows its thing to a new place when the screen changes size); the margin is added here
+ *   light.show(box, { hard?, margin?, avoid?, from?, ms? })  box: the thing's own box on the page (its ink: what is seen of it),
+ *       or several boxes lit as one (a thing and its word pill), or a function giving either now (so the light follows its thing
+ *       to a new place when the screen changes size); avoid: the boxes of the things near it that stay dark, or a function
+ *       giving them; the light's own box is litBox's, the one rule
  *   light.hide()      light.showing() -> boolean      light.box() -> the lit rectangle, margin included
+ *   litBox(box, { margin, least, avoid, clear, overlap }) -> the lit rectangle      every light's box, in the game's space and on a card alike
  */
+
+const union = (rs) => {
+  const x = Math.min(...rs.map((r) => r.x));
+  const y = Math.min(...rs.map((r) => r.y));
+  return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
+};
+/**
+ * The old game's one rule for a light's box (Zafar, 6 Nov: "a general rule that works in all cases that leaves some padding
+ * around the object+pill+face icon, or object+pill, or object"; old js/shared/onboard.js:278-331 litBox), with his newer word on
+ * its sides (Zafar, 19 Nov: "not evenly highlighted all around - not the same padding"). Carried: what belongs to the thing,
+ * given as several boxes, is lit as one; a neighbour that stays dark, on the side it lies (one off a corner, the side with the
+ * most room), keeps `clear` px off the light; a neighbour that overlaps the thing a little (under `overlap`: a share of its
+ * smaller side, at least so many px) takes the margin down to `least` (below); one that overlaps more cannot be kept out and is let be. His change: where old
+ * trimmed one side and then its opposite, here every side shrinks together, so the thing always sits in the middle of an even light.
+ * And never under `least` (Zafar, 6 Nov: "much too tight - the highlight box need some padding around the item"): where a
+ * neighbour is nearer than that, the light keeps `least` and may reach over the neighbour's edge, which then simply shows lit.
+ */
+export function litBox(u, { margin, least = 0, avoid = [], clear = 0, overlap }) {
+  const edge = Math.max(overlap.min, overlap.share * Math.min(u.w, u.h));
+  let m = margin;
+  for (const q of avoid) {
+    // its room from the thing on the side it lies (negative: it overlaps the thing)
+    const room = Math.max(u.x - (q.x + q.w), q.x - (u.x + u.w), u.y - (q.y + q.h), q.y - (u.y + u.h));
+    if (room >= 0) m = Math.min(m, room - clear);
+    else if (room >= -edge) m = 0;
+  }
+  m = Math.max(Math.min(least, margin), m);
+  return { x: u.x - m, y: u.y - m, w: u.w + 2 * m, h: u.h + 2 * m };
+}
 const followed = new WeakSet();
 let relight = null; // the light showing now, placed again at a new size
 let nudge = null; // the light showing now, told that something on the page moved
@@ -26,6 +58,7 @@ export function createLight({ kit, stage }) {
   const edge = el.querySelector(".edge");
   let lit = null;
   let again = null;
+  let marked = "";
   // one follower per page, for whichever light shows now (a frame later: the things it lights are placed again first)
   if (stage && !followed.has(stage)) {
     followed.add(stage);
@@ -55,17 +88,26 @@ export function createLight({ kit, stage }) {
      * function is followed for a moment whenever something on the page moves (a list scrolls, Nani's helper slides open),
      * so a thing pushed along stays lit; the light stands still while the round is held (the turn card).
      */
-    show(boxOf, { hard = false, margin = null, from = null, ms = 0 } = {}) {
+    show(boxOf, { hard = false, margin = null, avoid = null, from = null, ms = 0 } = {}) {
       const first = typeof boxOf === "function" ? boxOf() : boxOf;
       if (!first) return;
-      again = typeof boxOf === "function" ? () => this.show(boxOf, { hard, margin }) : null;
+      again = typeof boxOf === "function" ? () => this.show(boxOf, { hard, margin, avoid }) : null;
       relight = again;
       nudge = again ? () => follow(K.followMs) : null;
-      const aim = (box) => {
-        const m = margin != null ? margin : Math.max(K.marginMin, Math.min(K.marginMax, Math.min(box.w, box.h) * K.marginShare));
-        const x = Math.max(1, box.x - m);
-        const y = Math.max(1, box.y - m);
-        return { x, y, w: Math.min(innerWidth - 1, box.x + box.w + m) - x, h: Math.min(innerHeight - 1, box.y + box.h + m) - y };
+      const aim = (boxes) => {
+        const box = Array.isArray(boxes) ? union(boxes) : boxes;
+        const side = Math.min(box.w, box.h);
+        const m = margin != null ? margin : Math.max(K.marginMin, Math.min(K.marginMax, side * K.marginShare));
+        const least = Math.max(K.leastMin, Math.min(K.leastMax, side * K.leastShare));
+        const b = litBox(box, { margin: m, least, avoid: (typeof avoid === "function" ? avoid() : avoid) || [], clear: K.clear, overlap: K.overlap });
+        // (at the screen's edge the light stops at the edge)
+        const x = Math.max(K.edgeIn, b.x);
+        const y = Math.max(K.edgeIn, b.y);
+        const to = { x, y, w: Math.min(innerWidth - K.edgeIn, b.x + b.w) - x, h: Math.min(innerHeight - K.edgeIn, b.y + b.h) - y };
+        // (the thing and its light, for the checks: every light even round its thing; written only when they change)
+        const mark = [box.x, box.y, box.w, box.h].map((v) => v.toFixed(1)).join(",") + "|" + [to.x, to.y, to.w, to.h].map((v) => v.toFixed(1)).join(",");
+        if (mark !== marked) [marked, el.dataset.thing, el.dataset.lit] = [mark, ...mark.split("|")];
+        return to;
       };
       cancelAnimationFrame(moving);
       moving = 0;

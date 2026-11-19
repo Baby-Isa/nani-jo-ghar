@@ -9,9 +9,24 @@
  *   knowing(progress, settings, ladderK) -> progress     a player who already knows the game's words (settings.words)
  *   wordStage(ladder, wordId, ladderK) -> "new" | "learning" | "known"
  *   storeProgress(progress)            keeps it for the player's next round
+ *   newPlayer() -> id                  a fresh player; the last one made so is forgotten (one at a time), the child's never
+ *   isNewPlayer(id) -> boolean         a player made by newPlayer, not the child's own
+ *   playerName(id, words) -> who is playing, in the grown-ups' words (kit.cog.player: own, fresh)
  */
 export const OWN_PLAYER = "child";
 export const progressKey = (id) => `njg:${id}`;
+// the start of every new player's name (made by the cog's "New player" or the labs page), so the last one can be found and cleared
+const NEW_PLAYER = "new-";
+export const isNewPlayer = (id) => String(id).startsWith(NEW_PLAYER);
+export const playerName = (id, words) => (id === OWN_PLAYER ? words.own : isNewPlayer(id) ? words.fresh : String(id));
+export function newPlayer() {
+  try {
+    Object.keys(globalThis.localStorage).filter((k) => k.startsWith(progressKey(NEW_PLAYER))).forEach((k) => globalThis.localStorage.removeItem(k));
+  } catch (e) {
+    /* nothing kept to clear */
+  }
+  return `${NEW_PLAYER}${Date.now().toString(36)}`;
+}
 
 export function loadProgress(id) {
   let stored = null;

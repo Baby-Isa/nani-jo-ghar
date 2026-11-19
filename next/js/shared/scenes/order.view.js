@@ -117,7 +117,11 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
         if (e.type === "part") sayPart(e, round);
         else if (e.type === "landed") ui.cards.land(e.seat, e.items);
         else if (e.type === "person" && e.seat > 0) ui.cards.fold(e.seat - 1);
-        else if (e.type === "repeat") say.speak(ui.cards.headOf(round.order.for.findIndex((p) => p.who === e.who)));
+        else if (e.type === "repeat") {
+          const seat = round.order.for.findIndex((p) => p.who === e.who);
+          const p = round.order.for[seat];
+          ui.cards.replay(seat, e.dishCard ? { line: say.line(p.dishCard, { row: true }), pic: picOf("dish", p) } : null);
+        }
         else if (e.type === "skipped") {
           live = false;
           say.stop();

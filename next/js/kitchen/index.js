@@ -3,7 +3,8 @@
  * The runner has no list of its own; a caller such as story mode may pass a different one.
  *
  *   kitchenScenes({ game, settings, kitchen, kit, views? }) -> [{ id, rules, view? }]      the rules alone
- *   scenesWithViews({ ...the same, stage, say, people, send, tree, round }) -> the same list with its drawing
+ *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, player? }) -> the same list with its drawing
+ *       player: { name, renew() } who is playing, for the cog
  */
 import { orderRules } from "../shared/scenes/order.rules.js";
 import { greetingRules } from "../shared/scenes/greeting.rules.js";
@@ -48,16 +49,16 @@ export async function scenesWithViews(parts) {
   const sounds = createSounds({ kit, say, stage });
   document.querySelectorAll(".light").forEach((el) => el.remove());
   const ui = { round, sounds, room: null, serving: null, light: createLight({ kit, stage }) };
-  createCog({ stage, kit, sounds });
+  createCog({ stage, kit, sounds, player: parts.player });
   stage.el.side.style.backgroundImage = `url(${stage.art.file(kit.art.panel)})`;
   ui.nani = createNaniBox({ stage, say, kit, face: people.nani.face });
   ui.cards = createCards({ stage, say, kit, round, people, picOf, light: ui.light, sounds, onPeek: (word, what) => parts.send({ type: "peek", word, what }), onFace: (seat) => parts.send({ type: stage.showing() === "room" ? "repeat" : "face", who: round.order.for[seat].who, vessel: seat }) });
   ui.itemWords = new Set(round.order.for.flatMap((p) => p.items.map((i) => say.entry(i.word).id)));
-  ui.wrongOrder = (e) => showWrongOrder({ stage, say, kit, sounds, cards: ui.cards, seat: e.vessel, check: e.check });
+  ui.wrongOrder = (e, places) => showWrongOrder({ stage, say, kit, sounds, cards: ui.cards, right: e.right, wrong: e.wrong, ...places });
   // a view may look at the state only while its own scene is the one being played
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
   const make = {
-    "word-moment": (v) => wordMomentView({ ...v, words: settings.wordMoment.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, kitchen }) }),
+    "word-moment": (v) => wordMomentView({ ...v, sounds, words: settings.wordMoment.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, sounds, kitchen }) }),
     greeting: (v) => greetingView(v),
     order: (v) => orderView(v),
     cook: (v, rules) => cookView({ ...v, ctxOf: rules.ctxOf }),

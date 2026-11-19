@@ -8,7 +8,7 @@
  *   big.place(slotEl, heads?, bubble?, { again? }) -> { x, y, w, h }   in the play area's px (again: afresh, at a new size)
  *   big.pop(src, slotEl) -> { el, fly(), out(), lesson(), remove() }   src: { el?, line, pic, word }
  */
-import { revealLesson, wireSpeaker } from "./word-card.js";
+import { revealLesson, wireSpeaker, spaceWords } from "./word-card.js";
 
 export function createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds }) {
   const O = kit.order;
@@ -28,6 +28,8 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
     const body = card.closest(".ocard-body");
     const was = body ? body.style.cssText : "";
     if (body) Object.assign(body.style, { transition: "none", gridTemplateRows: "1fr" });
+    // (its row spaced as it stands now: a card just shown has not been spaced at its size yet)
+    spaceWords([...card.parentElement.children], kit);
     const r = card.getBoundingClientRect();
     if (body) {
       // back as it was with no move drawn: the fold is laid out again before its own transition returns
@@ -69,6 +71,7 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
     wireSpeaker(el, { say, line: src.line });
     setBig(el, place(slotEl));
     stage.el.over.appendChild(el);
+    spaceWords(el, kit);
     showing.add(el);
     const gone = () => (showing.delete(el), el.remove());
     return {

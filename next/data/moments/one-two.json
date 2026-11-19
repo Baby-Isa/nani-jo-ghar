@@ -1,0 +1,15 @@
+{
+  "_about": "A word moment shown by pictures alone (js/shared/scenes/word-moment.pictures.js): one sugar jar, then two. Its id is its file's name. sides: each word (a language engine id, said and spelt by the engine), its picture, and how many of it.",
+  "sides": [
+    {
+      "word": "num.1",
+      "art": "shelf.sugar-jar",
+      "count": 1
+    },
+    {
+      "word": "num.2",
+      "art": "shelf.sugar-jar",
+      "count": 2
+    }
+  ]
+}

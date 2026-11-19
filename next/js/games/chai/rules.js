@@ -12,13 +12,14 @@
  *   take(dish, ctx) -> { dish, events, left }                       the pan is ready and is tapped: it pours
  *   setAside(dish) -> dish                                          the child moves to another pan
  *   next(dish, ctx) -> { use: item } | { fire: true } | { take: true } | null     the next right move
- *   right(dish, ctx) -> { right, rows, unasked, miss }              is this glass right
  *   reset() -> dish                                                 this pan starts again
  *   asAsked(ctx) -> dish                                            the dish as asked, shown after three wrong tries
  *   look(dish, heat) -> what the pan looks like     glass(dish, art, rest), pourFrames, glassFrame -> the glass's pictures
  *   cardArt, wordMomentArt, spoonArt -> which of the game's pictures a card or a spoon shows
  *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
  *   served(dish, ctx), needs(dish, ctx), ticks(dish, ctx), counts(dish)
+ *   tally(dish, ctx) -> { rows: { [rowId]: { want, got } }, extra: [{ word, n, against }], lost: [rowId] }   the dish counted
+ *       against its card (whether it is right is the kit's, from this)
  */
 
 /** What the rules need from the game's settings for one person's dish. */
@@ -143,30 +144,31 @@ export function next(dish, ctx, fire) {
   return { fire: true };
 }
 
-/** The asked spice counts as known only when it was chosen: in the cup with nothing unasked beside it. */
-export function spiceCheck(asked, spices) {
-  const inCup = asked ? spices.includes(asked) : true;
-  const unasked = spices.filter((id) => id !== asked);
-  return { shown: inCup, right: inCup && !unasked.length, unasked, miss: unasked.length > 0 };
-}
-
-/** Is this glass what its person asked for? Row by row, for the card and for the word ladder. */
-export function right(dish, ctx) {
-  const ask = ctx.ask;
-  const sp = spiceCheck(ask.spice, dish.spices);
+/**
+ * The dish counted against the card, the game's one answer about it: for each of the card's rows how many were asked and
+ * how many went in (the amount in halves poured); what went in that no row asks for, with the row it costs (an unasked
+ * jar the spice, the lookalike the sugar: the asked spice is known only when it was chosen, with nothing unasked beside
+ * it); and the rows whose first try was lost (a wrong spoonful taken back still costs the counted rows theirs). Whether
+ * the dish is right, and each row's fault, are the kit's (js/shared/kit/wrong-order.rules.js dishCheck).
+ */
+export function tally(dish, ctx) {
+  const { ask, words: w } = ctx;
+  const spoonsOf = (id) => dish.spoons.filter((x) => x === id).length;
   const rows = {
-    made: !!(dish.water && dish.leaves && dish.poured > 0),
-    milk: !!dish.milk === !!ask.milk,
-    sugar: dish.sugar === ask.sugar && dish.lookalike === 0,
-    spice: sp.shown,
-    unasked: !sp.unasked.length,
-    amount: !ask.amount || dish.poured === poursAsked(ctx),
+    water: { want: 1, got: dish.water },
+    leaves: { want: 1, got: dish.leaves },
+    spice: { want: 1, got: ask.spice ? spoonsOf(ask.spice) : 0 },
+    milk: { want: 1, got: dish.milk },
+    sugar: { want: ask.sugar, got: dish.sugar },
+    amount: { want: poursAsked(ctx), got: dish.poured },
+    "no-milk": { want: 0, got: dish.milk },
+    "no-sugar": { want: 0, got: dish.sugar },
   };
-  // the same answer by the card's own rows, so the card can tick or cross each one
-  const byRow = { water: !!dish.water, leaves: !!dish.leaves, spice: sp.right, milk: rows.milk, "no-milk": rows.milk, sugar: rows.sugar, "no-sugar": rows.sugar, amount: rows.amount };
-  const firstTry = !dish.firstWrong.length && !dish.capped;
-  // a wrong spoonful taken back still costs the counted rows their first try
-  return { right: Object.values(rows).every(Boolean), rows, byRow, unasked: sp.unasked, spiceKnown: sp.right, miss: sp.miss, firstTry, lostFirstTry: firstTry ? [] : ["sugar", "spice"] };
+  const unasked = [...new Set(dish.spoons)].filter((id) => id !== ask.spice && id !== w.sugar && id !== w.lookalike);
+  const extra = unasked.map((id) => ({ word: id, n: spoonsOf(id), against: "spice" }));
+  if (dish.lookalike) extra.push({ word: w.lookalike, n: dish.lookalike, against: ask.sugar > 0 ? "sugar" : "no-sugar" });
+  const lost = dish.firstWrong.length || dish.capped ? ["sugar", "spice"] : [];
+  return { rows, extra, lost };
 }
 
 /** Which of the card's rows are done, for the ticks. A closed card ticks every row. */

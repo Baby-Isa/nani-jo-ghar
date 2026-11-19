@@ -4,7 +4,7 @@
  *
  *   const hob = createHob({ stage, kitchen, plan, people, onKnob, onFace })
  *   hob.fire(v, "off" | "high" | "low")      hob.ring(v, heat | null, k)      hob.wiggleKnob(v)
- *   hob.steam(v, on)      hob.puffs(v)      hob.chosen(v | null)      hob.stepBack()      hob.knobBox(v) / hob.vesselBox(v)
+ *   hob.steam(v, on)      hob.puffs(v)      hob.overflow(v, u | null)      hob.chosen(v | null)      hob.stepBack()      hob.knobBox(v) / hob.vesselBox(v)
  *   hobRefs({ kitchen, steamArt, people }) -> { draw, then }: the pictures it draws with, and the steam it shows later
  */
 const hex = (c) => parseInt(c.slice(1), 16);
@@ -73,6 +73,25 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
       const b = burners[i];
       for (const [dx, dy, w, rise] of ST.puffs) wisp(b.v.x + dx * plan.rimR, b.v.y + dy * plan.rimR, w * plan.rimR, rise, 0);
     },
+    /**
+     * Past the green, the boil-over coming: u, how far the heat has climbed from the green to the spill (null: not past it).
+     * Its puffs come oftener and bigger as u grows, from the same two places a boil-over's do.
+     */
+    overflow(i, u) {
+      const b = burners[i];
+      b.overU = u;
+      if (u == null || b.overT) return;
+      let n = 0;
+      const lerp = ([a, z]) => a + (z - a) * b.overU;
+      const next = () => {
+        b.overT = null;
+        if (b.overU == null) return;
+        const [dx, dy, w, rise] = ST.puffs[n++ % ST.puffs.length];
+        wisp(b.v.x + dx * plan.rimR, b.v.y + dy * plan.rimR, w * lerp(ST.overGrow) * plan.rimR, rise, 0);
+        b.overT = stage.wait(lerp(ST.overEveryMs)).then(next);
+      };
+      next();
+    },
     /** The knob turns and the flames follow; nothing flickers. */
     fire(i, how) {
       const b = burners[i];
@@ -100,17 +119,18 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
       g.fillStyle(0xffffff, 1).fillCircle(hx, hy, RING.dot);
       g.lineStyle(RING.dotLine[0], hex(RING.dotLine[1]), RING.dotLine[2]).strokeCircle(hx, hy, RING.dot);
     },
+    /** "Not yet": the knob shakes as one piece, both its pictures together (old kitchen-kit.js:390-393), so the shake shows lit or not. */
     async wiggleKnob(i) {
       const b = burners[i];
       if (b.wiggling) return;
       b.wiggling = true;
-      const o = b.knobOff.obj;
-      const rest = o.angle;
+      const both = [b.knobOff.obj, b.knobOn.obj].map((o) => [o, o.angle]);
+      const turn = (d) => Promise.all(both.map(([o, rest]) => stage.tween(o, { angle: rest + d }, H.wiggle.ms)));
       for (let n = 0; n < H.wiggle.times; n++) {
-        await stage.tween(o, { angle: rest - H.wiggle.deg }, H.wiggle.ms);
-        await stage.tween(o, { angle: rest + H.wiggle.deg }, H.wiggle.ms);
+        await turn(-H.wiggle.deg);
+        await turn(H.wiggle.deg);
       }
-      await stage.tween(o, { angle: rest }, H.wiggle.ms);
+      await turn(0);
       b.wiggling = false;
     },
     /** With two or three vessels, the chosen one sits in a warm pool of light with a gold ring round its person's face. */

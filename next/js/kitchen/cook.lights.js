@@ -7,6 +7,8 @@
  *   const lights = cookLights({ stage, kitchen, ui, drawn, itemRow })     drawn: () => { shelf, hob, serving, plan }
  *   lights.first(step, key)      the first-time light for this step, now (a card's moment comes once the order list has stopped)
  *   lights.help(step)            the stuck light: soft, with the thing's glow
+ * A thing on the worktop is lit with its neighbours of the same kind kept dark (the shelf's things and their pills, the knobs,
+ * the pans, the glasses), by the kit's one light rule.
  *   lights.clear()
  */
 export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
@@ -15,18 +17,26 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
   let glowing = null;
 
   const page = (box) => stage.pageRect("worktop", box);
-  function boxFor(step, where) {
+  /** A thing on the worktop by kind: its boxes (lit as one) and its neighbours of the same kind, which stay dark. */
+  function partsFor(step) {
     const D = drawn();
+    const others = (n, of) => [...Array(n).keys()].filter((i) => i !== step.vessel).map(of);
+    const n = D.plan.vessels.length;
+    if (step.kind === "use") return { parts: D.shelf.partsOf(step.item), near: D.shelf.ids().filter((id) => id !== step.item).flatMap((id) => D.shelf.partsOf(id)) };
+    if (step.kind === "knob") return { parts: [D.hob.knobBox(step.vessel)], near: others(n, D.hob.knobBox) };
+    if (step.kind === "take") return { parts: [D.serving.dishBox(step.vessel)], near: others(n, D.serving.dishBox) };
+    if (step.kind === "choose") return { parts: [D.hob.vesselBox(step.vessel)], near: others(n, D.hob.vesselBox) };
+    return null;
+  }
+  function boxFor(step, where) {
     if (where === "card") {
       const r = ui.cards.slot(step.vessel, itemRow(step.vessel, step.item));
       return { x: r.left, y: r.top, w: r.width, h: r.height, margin: L.cardMargin };
     }
-    if (step.kind === "use") return page(D.shelf.boxOf(step.item));
-    if (step.kind === "knob") return page(D.hob.knobBox(step.vessel));
-    if (step.kind === "take") return page(D.serving.dishBox(step.vessel));
-    if (step.kind === "choose") return page(D.hob.vesselBox(step.vessel));
-    return null;
+    const p = partsFor(step);
+    return p && p.parts.map(page);
   }
+  const nearFor = (step) => () => partsFor(step).near.map(page);
   const stopGlow = () => {
     if (glowing) drawn().shelf.glow(glowing, false);
     glowing = null;
@@ -39,7 +49,7 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
       const where = card ? "card" : "thing";
       const box = boxFor(step, where);
       if (!box) return;
-      ui.light.show(() => boxFor(step, where), { hard: step.kind === "use" && !card, margin: box.margin });
+      ui.light.show(() => boxFor(step, where), { hard: step.kind === "use" && !card, margin: box.margin, avoid: card ? null : nearFor(step) });
       if (step.kind === "use" && !card) {
         glowing = step.item;
         drawn().shelf.glow(step.item, true);
@@ -51,7 +61,7 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
     help(step) {
       token += 1;
       if (!boxFor(step, "thing")) return;
-      ui.light.show(() => boxFor(step, "thing"), { hard: false });
+      ui.light.show(() => boxFor(step, "thing"), { hard: false, avoid: nearFor(step) });
       if (step.kind === "use") {
         stopGlow();
         glowing = step.item;

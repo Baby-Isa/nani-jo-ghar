@@ -1,15 +1,13 @@
 /*
  * One order card's row of item cards on the page. Which card stands where and where the row rests are the row's rule
  * (./row.rules.js, no page), and which cards are ticked, in what order, is the scene's rules' (handed in by ticks());
- * this file only applies them: the cards slide to their new places (nothing jumps), the row glides to its rest, its
- * edges fade while there is more to swipe that way, and each card's words are spaced to their ink. The child may still
- * swipe the row; a new size puts it back at its rest.
+ * this file only applies them: the cards slide to their new places (nothing jumps), the row glides to its rest, and its
+ * edges fade while there is more to swipe that way. The child may still swipe the row; a new width puts it back at its rest.
  *
  *   const row = createRow({ stage, kit, el, items, panel })   items: Map id -> { el, id, no, atServe } in the order asked
  *   row.land(ids)  row.landAll()  row.lead(ids)  row.ticks(ids)  row.served()  row.reopen()
  */
 import { rowOrder, rowRest, rowLandRest } from "./row.rules.js";
-import { inkGaps } from "./word-card.js";
 
 export function createRow({ stage, kit, el, items, panel }) {
   const O = kit.order;
@@ -56,11 +54,14 @@ export function createRow({ stage, kit, el, items, panel }) {
     el.style.setProperty("--fade-l", `${Math.max(0, Math.min(1, el.scrollLeft / O.rowFadeRun))}`);
     el.style.setProperty("--fade-r", `${Math.max(0, Math.min(1, right / O.rowFadeRun))}`);
   };
-  const spaced = () => all().forEach((it) => inkGaps(it.el, kit.cards.inkGap));
   el.addEventListener("scroll", fade, { passive: true });
-  // a new size (a turn of the phone, a resize): the words spaced to their ink again, and the row back at its rest
-  panel.watchRow(el, () => (spaced(), fade(), rest()));
-  spaced();
+  // a new width (a turn of the phone, a resize) puts the row back at its rest; a card growing or shrinking (a word peeked
+  // open) moves nothing
+  let width = el.clientWidth;
+  panel.watchRow(el, () => {
+    fade();
+    if (el.clientWidth !== width) (width = el.clientWidth), rest();
+  });
   fade();
 
   return {

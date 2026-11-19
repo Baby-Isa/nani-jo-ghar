@@ -5,7 +5,9 @@
  * corner past its rounded one). Only the stage calls this; a game never does.
  *
  *   const o = createOutlines({ scene, art, kit })
- *   o.solid(ref) -> { bottom, top(from?, to?) }      shares of its height; the band of columns as shares of its width
+ *   o.solid(ref) -> { bottom, top(from?, to?), left, right }   bottom, top: shares of its height (top's band of columns
+ *       as shares of its width); left, right: its first and last solid columns' edges, shares of its width
+ *   o.thingBox(ref) -> { x, y, w, h }   the thing as drawn, without its picture's empty margin: shares of its picture
  *   o.shadowKey(ref) -> { key, pad }    o.shapeKey(ref, colour) -> key     textures the size of kit.look.textures.outline
  */
 export function createOutlines({ scene, art, kit }) {
@@ -26,6 +28,7 @@ export function createOutlines({ scene, art, kit }) {
     const [w, h] = sizeOf(src, L.textures.solid);
     const cols = new Float32Array(w).fill(0);
     let bottom = 1;
+    let [left, right] = [0, 1];
     try {
       const c = document.createElement("canvas");
       [c.width, c.height] = [w, h];
@@ -39,11 +42,15 @@ export function createOutlines({ scene, art, kit }) {
         for (let y = 0; y < h; y++) if (on(x, y)) { cols[x] = y / h; break; }
       }
       search: for (let y = h - 1; y >= 0; y--) for (let x = 0; x < w; x++) if (on(x, y)) { bottom = (y + 1) / h; break search; }
+      const filled = [...cols.keys()].filter((x) => cols[x] < 1);
+      if (filled.length) [left, right] = [filled[0] / w, (filled[filled.length - 1] + 1) / w];
     } catch (e) {
       cols.fill(0); // (unreadable: its own top edge, so nothing is drawn taller than its picture or placed from its feet)
     }
     const out = {
       bottom,
+      left,
+      right,
       // (a band with nothing solid in it: its picture's own top)
       top: (from = 0, to = 1) => {
         const t = Math.min(1, ...cols.slice(Math.max(0, Math.floor(from * w)), Math.max(1, Math.ceil(to * w))));
@@ -94,5 +101,12 @@ export function createOutlines({ scene, art, kit }) {
     return { key, w: tw };
   }
 
-  return { solid, shadowKey, shapeKey };
+  /** The thing's own box in its picture (where it is solid), as shares of the picture's width and height. */
+  function thingBox(ref) {
+    const o = solid(ref);
+    const top = o.top();
+    return { x: o.left, y: top, w: o.right - o.left, h: o.bottom - top };
+  }
+
+  return { solid, thingBox, shadowKey, shapeKey };
 }

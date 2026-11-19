@@ -7,7 +7,7 @@
  *       spot: the family's plan (where, how big, each dish's place); people: [{ id, face }]
  *   serving.set(i, ref)                 the dish resting in a state
  *   serving.frame(i, ref)               one frame of a fill (drawn just above the resting dish)
- *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise
+ *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise   serving.away(seats)
  *   serving.review(checks) -> Promise   the big faces: happy with a hop, or sad with a small shake of the head
  *   serving.praise(text) / serving.closeReview() -> Promise     serving.dishBox(i) / serving.dishMiddle(i)
  *   servingRefs({ kit, art, people }) -> { draw, then }: its dishes and labels, then its drop, twinkles and the review's faces
@@ -62,6 +62,13 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       for (const [k, ms] of V.settle) await stage.tween(o, { scale: sc * k }, ms);
     },
     undim: () => stage.tween(veil, { alpha: 0 }, V.undimMs),
+    /** These dishes and their faces are away from the spot (orders done right while another is remade); the rest are here. */
+    away(list) {
+      dishes.forEach((d, i) => {
+        d.away = list.includes(i);
+        [d.pic, d.over, d.face].forEach((p) => p.set({ visible: !d.away }));
+      });
+    },
     /** The painted drop that falls into a dish holding what was asked. */
     async drop(i) {
       const gw = glassW();
@@ -100,7 +107,9 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       const gaps = dishes.length > 1 ? Math.min(...dishes.slice(1).map((d, i) => Math.hypot(d.well.x - dishes[i].well.x, d.well.y - dishes[i].well.y))) : 0;
       const Rv = V.review;
       const size = dishes.length > 1 ? Math.max(Rv.least, Math.min(Rv.most, Rv.ofGap * gaps)) : Rv.one;
+      // (a dish that has left the spot is not looked at again)
       big = dishes.map((d, i) => {
+        if (d.away) return null;
         d.face.set({ visible: false });
         const off = Rv.off * (spot.gR + size / 2);
         const x = Math.max(spot.x + size / 2 + Rv.inside, d.well.x - off);
@@ -109,11 +118,13 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
         f.set({ scale: full * Rv.from, alpha: 0 });
         f.full = full;
         f.size = size;
+        f.right = checks[i].right;
         return f;
       });
+      big = big.filter(Boolean);
       await Promise.all(big.map((f) => f.to({ scale: f.full, alpha: 1 }, Rv.popMs, "back")));
-      big.forEach(async (f, i) => {
-        if (checks[i].right) {
+      big.forEach(async (f) => {
+        if (f.right) {
           const y = f.obj.y;
           for (let n = 0; n < Rv.hops; n++) {
             await f.to({ y: y - f.size * Rv.hop }, Rv.stepMs);
@@ -149,7 +160,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       big = [];
       if (praiseCard) praiseCard.destroy();
       praiseCard = null;
-      dishes.forEach((d) => d.face.set({ visible: true }));
+      dishes.forEach((d) => d.face.set({ visible: !d.away }));
     },
     dishMiddle: (i) => ({ x: dishes[i].well.x, y: dishes[i].well.y, r: spot.gR }),
     dishBox(i) {

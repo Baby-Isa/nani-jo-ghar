@@ -11,12 +11,13 @@ import { layoutOf, rowOf } from "./layout.js";
 import { bubbleAt } from "./heat.rules.js";
 import { carry } from "./carry.js";
 import { cookLights } from "./cook.lights.js";
-import { rowMayHold } from "./cook.rules.js";
+import { rowMayHold, hiddenWord } from "./cook.rules.js";
 import { createCountPills } from "./count-pills.js";
+import { reviewView } from "./review.view.js";
 
 const fill = (meaning, item) => JSON.parse(JSON.stringify(meaning).replace(/\$item/g, item));
 
-export function cookView({ stage, say, kit, kitchen, settings, game, people, ui, send, peek, ctxOf }) {
+export function cookView({ stage, say, kit, kitchen, settings, game, people, ui, send, peek, ctxOf, picOf }) {
   const G = game.rules;
   const A = settings.art;
   const K = kitchen.layout;
@@ -37,25 +38,25 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k) });
   };
 
-  /**
-   * Nani's line for a step: the game's own line for a thing where it has one, else the family's. A line given as
-   * { one, many } follows how many people ordered ("his or her glass" for one, "their glass" for more).
-   */
+  /** Nani's line for a step: the game's own line for a thing where it has one, else the family's. */
   function lineFor(step) {
     if (step && step.kind === "choose") return lineFor(step.then);
     if (!step || !step.line) return null;
     if (step.line === "use") return say.line((settings.lines.use && settings.lines.use[step.item]) || fill(kitchen.lines.use, step.item));
-    const m = settings.lines[step.line] || kitchen.lines[step.line];
-    return say.line(m && m.one ? (ui.round.order.for.length > 1 ? m.many : m.one) : m);
+    return say.line(settings.lines[step.line] || kitchen.lines[step.line]);
   }
 
   const ticks = (s, v) => ui.cards.ticks(v, s.vessels[v].ticked);
 
-  /** The count pills above the stove, for the chosen vessel while it is being made. */
+  /** The count pills above the stove, for the chosen vessel while it is being made: never one served or boiled over (null: none). */
   function counts(s) {
-    if (s.name !== "cooking") return pills.clear();
-    pills.show({ plan: D.plan, v: s.chosen, list: G.counts(s.vessels[s.chosen].dish), asWords: atLevel(kit.levels.countAsWords, level) });
+    const v = s && s.chosen;
+    const making = !!s && s.name === "cooking" && v != null && s.vessels[v].fire.fire !== "over" && !G.served(s.vessels[v].dish, ctxOf(s, v));
+    if (!making) return pills.clear();
+    pills.show({ plan: D.plan, v, list: G.counts(s.vessels[v].dish), asWords: atLevel(kit.levels.countAsWords, level) });
   }
+  /** A pan lost (boiled over, then emptied): its row's ticks and the pills are the rules' again (the old game cleared them on both). */
+  const afterLoss = (s, v) => (ticks(s, v), counts(s));
 
   /** A step opens: Nani's line shows (a pick shows what comes then); its light and call come at its moment (open). */
   function onStep(s) {
@@ -64,7 +65,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     ui.nani.helper(null);
     lights.clear();
     if (!step || step.kind === "wait" || !line) return; // her line stays until the next step opens: never an empty box
-    ui.nani.line(line, { arrow: step.kind === "use" });
+    ui.nani.line(line, { arrow: step.kind === "use", hide: hiddenWord(step, s.hint) });
     D.shelf.dimOthers(step.kind === "use" && settings.row.always.includes(step.item) ? step.item : null);
   }
   const itemRow = (v, item) => (ui.round.order.for[v].items.find((i) => i.word === item && !i.no) || {}).id;
@@ -140,11 +141,11 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       D.hob.puffs(e.vessel);
       ui.sounds.play("puff");
       D.vessels[e.vessel].pan.show(lookOf(s, e.vessel));
-      counts(s);
+      afterLoss(s, e.vessel);
     },
     spoiled(e, s) {
       D.vessels[e.vessel].pan.show(lookOf(s, e.vessel));
-      ticks(s, e.vessel);
+      afterLoss(s, e.vessel);
     },
     chosen(e, s) {
       D.hob.chosen(e.vessel);
@@ -152,7 +153,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       counts(s);
     },
     replay(e) {
-      say.speak(ui.cards.headOf(e.vessel));
+      const p = ui.round.order.for[e.vessel];
+      ui.cards.replay(e.vessel, e.dishCard ? { line: say.line(p.dishCard, { row: true }), pic: picOf("dish", p) } : null);
     },
     step(e, s) {
       onStep(s);
@@ -166,15 +168,22 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       const step = s.step;
       if (!step) return;
       if (step.kind === "use") ui.nani.helper(helperCard(step));
+      ui.nani.hide(hiddenWord(step, s.hint));
       lights.help(step);
       ui.nani.speak();
+    },
+    // her hint opened (her helper card, the step's word shown, and the line said) or shut (the word hidden again)
+    hint(e, s) {
+      ui.nani.helper(e.open ? helperCard(e.step) : null);
+      ui.nani.hide(hiddenWord(e.step, s.hint));
+      if (e.open) ui.nani.speak();
     },
     pour(e, s) {
       const v = e.vessel;
       const dish = s.vessels[v].dish;
       const frames = G.pourFrames(e.from, e.to, settings.serving.rest);
       lights.clear();
-      if (e.last) counts({ name: "none" });
+      if (e.last) counts(null);
       D.hob.chosen(null); // the chosen look hides while the pan is in the air
       chain = chain.then(() =>
         carry({
@@ -207,41 +216,16 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
         D.serving.drop(v).then(() => {
           ui.sounds.play("drop");
           ui.sounds.play("glass", { under: true });
-          if (full) {
-            ui.sounds.play("sparkle");
-            D.serving.twinkle(v);
-          }
+          // a glass closes only once it holds the amount its person asked for, so every one sparkles, a half glass too, whatever
+          // went in: never a verdict (Zafar, 19 Nov; the old game's tray station, :862-875 and :1409-1414)
+          ui.sounds.play("sparkle");
+          D.serving.twinkle(v);
         });
         stage.wait(kit.cards.foldAfterMs).then(() => ui.cards.fold(v));
       });
     },
-    review(e, s) {
-      chain = chain.then(async () => {
-        D.hob.stepBack();
-        e.checks.forEach((c, i) => c.right && D.serving.twinkle(i, true));
-        await D.serving.review(e.checks, (i, right) => (right ? people[s.vessels[i].who].faceHappy : people[s.vessels[i].who].faceSad) || people[s.vessels[i].who].face);
-        e.checks.forEach((c) => ui.sounds.play(c.right ? "right" : "soft"));
-        send({ type: "reviewed" });
-      });
-    },
-    "wrong-order"(e) {
-      chain = chain.then(async () => {
-        await D.serving.closeReview();
-        await ui.wrongOrder(e);
-        send({ type: "understood" });
-      });
-    },
-    redo(e, s) {
-      const v = e.vessel;
-      D.vessels[v].pan.show(lookOf(s, v));
-      D.serving.set(v, settings.serving.art.empty);
-      D.hob.fire(v, "off");
-      ui.cards.reopen(v);
-    },
-    "shown-the-way"(e, s) {
-      D.serving.set(e.vessel, G.glass(s.vessels[e.vessel].dish, A, settings.serving.rest));
-      ui.cards.served(e.vessel);
-    },
+    // the dishes looked at, a wrong order shown, and only it made again (./review.view.js)
+    ...reviewView({ stage, kit, settings, game, people, ui, send, drawn: () => D, later: (fn) => (chain = chain.then(fn)), lookOf, counts }),
   };
 
   return {
@@ -310,14 +294,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       ui.cards.seats.forEach((x, i) => ui.cards.open(i));
       ui.cards.focus(state.chosen);
       ui.sounds.ready(settings.sounds.ready);
-      onStep(state);
-      ui.nani.onArrow(() => {
-        const s = peek();
-        if (!s || !s.step || s.step.kind !== "use") return;
-        if (ui.nani.helperOpen()) return ui.nani.helper(null);
-        ui.nani.helper(helperCard(s.step));
-        ui.nani.speak();
-      });
+      ui.nani.onHint(() => send({ type: "hint" }));
       // a new size of the play area: the canvas is fitted by the stage; the worktop and the count pills follow
       offResize = stage.onResize(() => {
         groundTo(stage.topOf("worktop"));
@@ -334,6 +311,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
           const heating = x.fire.fire === "heating";
           D.hob.ring(v, heating ? x.fire.heat : null, k);
           D.hob.steam(v, heating && x.fire.bubbling);
+          D.hob.overflow(v, heating && x.fire.heat > k.hi ? (x.fire.heat - k.hi) / (1 - k.hi) : null);
           if (heating) {
             D.vessels[v].pan.show(lookOf(s, v));
             hottest = Math.max(hottest, x.fire.heat);
@@ -357,7 +335,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       const n = D.plan.vessels.length;
       const seats = [...Array(n).keys()];
       return [P("hob", 0, D.hob.hobBox(), { stands: true }), P("spot", 0, D.serving.spotBox(), { stands: true })].concat(
-        D.shelf.ids().flatMap((id) => [P("thing", id, D.shelf.picBox(id), { stands: true, taps: true }), P("pill", id, D.shelf.pillBox(id), { taps: true })]),
+        D.shelf.ids().flatMap((id) => [P("thing", id, D.shelf.picBox(id), { stands: true, taps: true }), P("pill", id, D.shelf.pillBox(id)), P("speaker", id, D.shelf.speakerBox(id), { taps: true })]),
         seats.flatMap((i) => [
           P("vessel", i, D.hob.vesselBox(i), { taps: true }), // (it sits on the hob's black top, where no shadow can show)
           P("knob", i, D.hob.knobBox(i), { taps: true }),

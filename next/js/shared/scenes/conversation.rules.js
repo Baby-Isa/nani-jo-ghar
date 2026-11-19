@@ -11,22 +11,29 @@ export function checkRules({ settings }) {
   return { states: ["done"], slots: ["check"], start: () => ({ name: "done" }), move: machine({ states: { done: {} } }) };
 }
 
-/** The word moment: a word no picture can show is shown first, once, while it is still new to the child. */
-export function wordMomentRules({ settings }) {
-  const wm = settings.wordMoment || null;
+/**
+ * A word moment as a scene: its words are shown once, when due(round) says so (always, by itself: a labs page), and the
+ * round has met it after.
+ */
+export function momentRules({ id, words, due = () => true }) {
   const move = machine({ states: { showing: { shown: (s) => ({ state: { ...s, name: "done" } }), time: (s) => ({ state: s }) }, done: {} } });
   return {
     states: ["showing", "done"],
-    start(round) {
-      if (!wm || round.met[wm.id]) return { name: "done" };
-      const asked = new Set(round.order.for.flatMap((p) => p.items.map((i) => i.word)));
-      const due = wm.words.every((w) => asked.has(w)) && wm.words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
-      return due ? { name: "showing", words: wm.words, id: wm.id } : { name: "done" };
-    },
+    start: (round) => (id && !round.met[id] && due(round) ? { name: "showing", words, id } : { name: "done" }),
     first: () => [{ type: "show" }],
     move,
     leave: (round, s) => (s.id ? { ...round, met: { ...round.met, [s.id]: true } } : round),
   };
+}
+
+/** The game's word moment: a word no picture can show is shown first, once, while it is still new to the child. */
+export function wordMomentRules({ settings }) {
+  const wm = settings.wordMoment || {};
+  const due = (round) => {
+    const asked = new Set(round.order.for.flatMap((p) => p.items.map((i) => i.word)));
+    return wm.words.every((w) => asked.has(w)) && wm.words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
+  };
+  return momentRules({ id: wm.id, words: wm.words, due });
 }
 
 /** Well done: one praise from Nani, once every person's whole card is right. */

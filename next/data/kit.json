@@ -59,9 +59,10 @@
   ]
  },
  "help": {
-  "_about": "showTheWayAt: a dish wrong this many times is shown the right way. noHelpFromStage: no stuck help for an asked-for word once the child's ladder has it at this stage.",
+  "_about": "showTheWayAt: a dish wrong this many times is shown the right way. pastSupportFrom: an asked-for word the child's ladder has at this stage or above is past support: no stuck help comes for it, and Nani's line shows it as hintDots round dots until her helper card opens (old js/shared/onboard.js:518, a word supported to stage 2 of the old ladder, whose stage 3 is four right as this ladder's is; old js/cook/lang.js:201-222, the same dots whatever the word's length, so its length tells nothing).",
   "showTheWayAt": 3,
-  "noHelpFromStage": 3
+  "pastSupportFrom": 3,
+  "hintDots": 3
  },
  "words": {
   "holdMs": {
@@ -177,7 +178,7 @@
   "pictureWaitMs": 20000
  },
  "look": {
-  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. turn-disc: the turn-your-phone card's disc; start, start-phone: the first-tap play button on a laptop and on a phone. item-*: the order row's item card, a share of its row (cqi: of the row for its padding, of the card inside it), as the standard measured; tick: its corner mark; no-sign, no-inset: a \"no\" card's sign in its picture's top right corner, and how far in, as shares of the picture's width (Zafar, 18 Nov: 'in the upper right corner ... but bigger than the old version': old chai's is 17.2 px on a 64 px picture at his phone, old css/shared/order-card.css:599; 0.40 is 1.5 times it, his pick A of three: Zafar, 18 Nov, 'A is the correct one'); no-pic: the picture under it, nearly whole so the thing shows; helper-*: Nani's helper card; big-*: the big card's insides, as shares of its width; tap: a full tap; panel-fade: the order list's soft foot; speaker-min, speaker-phone: a speaker's least drawn size, and its share on a phone. end-ground: the plain ground under the end card's dim, so nothing of the round shows round the card (the standard's end). wordFont, wordWeight: the words drawn in the play area (the shelf's pills, a word's pop): drawn sharp, so a step heavier than the standard's 600, which its blurrier drawing showed this heavy (measured side by side, 18 Nov). solidAlpha: a pixel this opaque (of 255) is part of a picture's own outline (stage.solid). The order panel's vars: nani-* her box (two lines' room and a hairline, nani-hair, as the standard's, nani-font-lift her line's size as the panel shrinks), cards-* the list, head-* a card's top line, fold-* a card folding and its tick, helper-*-ms her helper sliding, row-fade the row's edge fade; pop-* the big card's defaults; wm-* the word moment's card (shares of its width, old chai's measured at 1280x665 and 950x290: picture 56.25% tall, its art 6% in, the Kutchi 15% wide 4% under it, the English 7.4% (never under item-en) 3.5% under that, the divider 74.8% wide, 1.5 px, and the speaker 25% (never under a tap) 7% either side, no ring: old css/shared/word-moment.css:66-76), its frame (corners closing in from 30% further out, their size kit.wordMoment.corner, a 2 px white line with a soft shade, its flash fading over 420 ms: old word-moment.css:32-49); speaker-pulse-*: a speaker lit while its word is said (old css/shared/word-card.css:124-125); count-* the count pills; tail-* the bubble's tail. badge-*: the speaker badge on a face, all of it a share of the face it is on, so it is the same on every face at every size (Zafar, 18 Nov: 'make it scale with the face it's on'): badge-of-face its size, 0.40, between old chai's 16 on a 48 face and the 0.46 he had on his phone (Zafar, 18 Nov: 'somewhere between the old and current size'; old css/shared/face.css:40 draws 0.38 with a 16 px floor); badge-x, badge-hang its place (left of the face's box as the standard's 2 px on a 44 px face, and just below it: less than the standard's 3 px, so it stays clear of the item cards below: Zafar, 18 Nov); badge-ring its outline, thinner than the standard's 2 px (Zafar, 18 Nov: 'maybe reducing the outline around it will help'); bubble-line: the bubble's edge.",
+  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. turn-disc: the turn-your-phone card's disc; start, start-phone: the first-tap play button on a laptop and on a phone. item-*: the order row's item card, a share of its row (cqi: of the row for its padding, of the card inside it), as the standard measured; tick: its corner mark; no-sign, no-inset: a \"no\" card's sign in its picture's top right corner, and how far in, as shares of the picture's width (Zafar, 18 Nov: 'in the upper right corner ... but bigger than the old version': old chai's is 17.2 px on a 64 px picture at his phone, old css/shared/order-card.css:599; 0.40 is 1.5 times it, his pick A of three: Zafar, 18 Nov, 'A is the correct one'); no-pic: the picture under it, nearly whole so the thing shows; helper-*: Nani's helper card; big-*: the big card's insides, as shares of its width; tap: a full tap; panel-fade: the order list's soft foot; speaker-min, speaker-phone: a speaker's least drawn size, and its share on a phone. end-ground: the plain ground under the end card's dim, so nothing of the round shows round the card (the standard's end). wordFont, wordWeight: the words drawn in the play area (the shelf's pills, a word's pop): drawn sharp, so a step heavier than the standard's 600, which its blurrier drawing showed this heavy (measured side by side, 18 Nov). solidAlpha: a pixel this opaque (of 255) is part of a picture's own outline (stage.solid). The order panel's vars: nani-* her box (two lines' room and a hairline, nani-hair, as the standard's, nani-font-lift her line's size as the panel shrinks), cards-* the list, head-* a card's top line, fold-* a card folding and its tick, helper-*-ms her helper sliding, row-fade the row's edge fade; pop-* the big card's defaults; wm-* the word moment's card (shares of its width, old chai's measured at 1280x665 and 950x290: picture 56.25% tall, its art 6% in, the Kutchi 15% wide, the English 7.4% (never under item-en), the divider 74.8% wide, 1.5 px, and the speaker 25% (never under a tap) 7% either side, no ring: old css/shared/word-moment.css:66-76), its frame (corners closing in from 30% further out, their size kit.wordMoment.corner, a 2 px white line with a soft shade, rounded by kit.wordMoment.cornerRound, its flash fading over 420 ms: old word-moment.css:32-49); item-ku-top, item-en-top: the Kutchi under the picture's spare and the English under the Kutchi, old chai's card (Zafar, 6 Nov: old css/shared/order-card.css:680-681), the divider item-step under the English's ink (old js/shared/word-card.js fit14); big-gap: the big card's words' gaps (old css/shared/word-card.css:162, 2.4%); wm-ku-top, wm-en-top: the word moment card's (old css/shared/word-moment.css:73-74, 4% and 3.5%, the divider wm-gap under the English); speaker-pulse-*: a speaker lit while its word is said (old css/shared/word-card.css:124-125); count-* the count pills; tail-* the bubble's tail. badge-*: the speaker badge on a face, all of it a share of the face it is on, so it is the same on every face at every size (Zafar, 18 Nov: 'make it scale with the face it's on'): badge-of-face its size, 0.40, between old chai's 16 on a 48 face and the 0.46 he had on his phone (Zafar, 18 Nov: 'somewhere between the old and current size'; old css/shared/face.css:40 draws 0.38 with a 16 px floor); badge-x, badge-hang its place (left of the face's box as the standard's 2 px on a 44 px face, and just below it: less than the standard's 3 px, so it stays clear of the item cards below: Zafar, 18 Nov); badge-ring its outline, thinner than the standard's 2 px (Zafar, 18 Nov: 'maybe reducing the outline around it will help'); bubble-line: the bubble's edge.",
   "stone": "#dfd5cd",
   "minTap": 48,
   "coverFadeMs": 350,
@@ -232,11 +233,11 @@
    "item-pic-phone": "4 / 3",
    "item-ku": "16cqi",
    "item-ku-max": "32px",
-   "item-ku-gap": "4cqi",
    "item-en-cq": "10cqi",
    "item-en-max": "19px",
-   "item-en-gap": "3.5cqi",
    "item-step": "7cqi",
+   "item-ku-top": "4cqi",
+   "item-en-top": "3.5cqi",
    "item-rule-w": "74.8cqi",
    "item-rule-h": "1.4cqi",
    "item-rule": "#dccbae",
@@ -275,7 +276,7 @@
    "big-ku": "0.15",
    "big-en": "0.074",
    "big-spk": "0.25",
-   "big-spk-top": "0.013",
+   "big-spk-top": "0.037",
    "big-spk-foot": "0.02",
    "big-ring": "0.02",
    "big-ring-edge": "0.025",
@@ -297,6 +298,18 @@
    "reply-lit": "#e0a63a",
    "reply-lit-bg": "#f8ead0",
    "cog-bg": "#fffaf0",
+   "cog-menu-bg": "rgba(255, 250, 240, .92)",
+   "cog-shadow": "0 2px 8px rgba(40, 25, 10, .10)",
+   "cog-radius": "12px",
+   "cog-menu-radius": "14px",
+   "cog-gap": "8px",
+   "cog-pad": "6px",
+   "cog-icon": "26.4px",
+   "cog-glyph": "24px",
+   "cog-who-font": "14px",
+   "cog-who-pad": "8px 12px",
+   "cog-who-most": "min(260px, 60vw)",
+   "font-ui": "\"Nunito Sans\", system-ui, sans-serif",
    "dim": "rgba(30,18,10,.45)",
    "light-edge": "rgba(201,150,46,.9)",
    "light-fill": "rgba(255,243,214,.2)",
@@ -331,7 +344,6 @@
    "helper-shut-ms": "500ms",
    "row-fade": "34px",
    "pop-pad": "15px",
-   "pop-gap": "7.2px",
    "pop-ku-of-w": "0.15",
    "pop-en-of-w": "0.074",
    "pop-spk-of-w": "0.25",
@@ -340,16 +352,15 @@
    "wm-pad": "0.05",
    "wm-pic-h": "0.5625",
    "wm-pic-inset": "6%",
-   "wm-ku-gap": "0.04",
    "wm-ku-line": "1.08",
-   "wm-en-gap": "0.035",
    "wm-gap": "0.07",
+   "wm-ku-top": "0.04",
+   "wm-en-top": "0.035",
    "wm-rule-w": "0.748",
    "wm-rule-h": "1.5px",
    "wm-grow-at": "50% 40%",
    "wm-corner-from": "30%",
    "wm-corner-line": "2px",
-   "wm-corner-radius": "16px",
    "wm-corner-ms": "300ms",
    "wm-corner-ease": "cubic-bezier(.3,.7,.2,1)",
    "wm-corner-shade": "rgba(60,40,20,.35)",
@@ -454,7 +465,7 @@
    "gap": 8
   },
   "textures": {
-   "_about": "The sizes of pictures the stage makes itself, in px: a face badge, a soft shadow, a halo's small copy; the badge's hairline; solid: the small copy a picture's solid outline is read from; outline: the working copy a flat thing's own-shape shadow and dimming are drawn from.",
+   "_about": "The sizes of pictures the stage makes itself, in px: a face badge, a soft shadow, a halo's small copy; the badge's hairline; dprMost: the canvas drawn at the screen's pixel ratio (the frame's), never more than this (a phone's 3 costs more than it shows); textSharp: the canvas's words drawn this many times the screen's pixels they cover (a little over, so never shrunk much: drawn 3 times their size, they were shrunk 5 times on a laptop and looked grainy, Zafar, 18 Nov: 'even the text'); solid: the small copy a picture's solid outline is read from; outline: the working copy a flat thing's own-shape shadow and dimming are drawn from.",
    "badge": 192,
    "shadow": 128,
    "halo": 256,
@@ -465,7 +476,8 @@
     0.98
    ],
    "haloPad": 1.2,
-   "textSharp": 3,
+   "textSharp": 1.25,
+   "dprMost": 2,
    "solid": 256,
    "outline": 256
   },
@@ -572,22 +584,24 @@
   "clockMs": 50
  },
  "cards": {
-  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonCardMs: its light round the whole card first, then gliding to each part in lessonMoveMs; lessonMargin: its light's margin; lessonMinPx: a part smaller than this is not asked for. inkGap: the row card's three gaps between ink (the picture to the Kutchi's letters, the Kutchi's lowest ink to the English's highest, the English's lowest to the divider), one size, a share of the card's width (Zafar, 18 Nov: the Kutchi and the English 'too close together compared to' the other two gaps; the old game measured the last of them to the ink, old js/shared/word-card.js:703-716).",
-  "inkGap": 0.05,
+  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. kuLeast, enLeast: px; a word shrinks to fit its card no smaller than these, the Kutchi to two lines, the English to one, wrapping only below (old js/shared/word-card.js fit14: 11 and 10). dropShare: a letter's ink below its baseline counts as a tail past this share of its size (old dropOf14); fitSteps: the most px a word's lines are shrunk by, one at a time. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonCardMs: its light round the whole card first, then gliding to each part in lessonMoveMs; its light round each part's ink is every light's (the light block below: its margin and least room, even on all four sides; Zafar, 19 Nov), never a margin of its own; lessonMinPx: a part smaller than this is not asked for.",
   "foldAfterMs": 1500,
   "foldMs": 420,
   "peekMs": 3000,
+  "kuLeast": 11,
+  "enLeast": 10,
+  "dropShare": 0.1,
+  "fitSteps": 60,
   "dotsMin": 3,
   "dotsMax": 6,
   "lessonBeatMs": 450,
   "lessonEndMs": 700,
-  "lessonMargin": 6,
   "lessonCardMs": 700,
   "lessonMoveMs": 380,
   "lessonMinPx": 8
  },
  "sounds": {
-  "_about": "The sound effects, by name. files: recorded sounds (loop: played round and round; cut: only its first part, in ms). synth: sounds made of notes, each [wave, from Hz, to Hz, ms, loudness, starts at ms]; noise: [ms, band Hz, sharpness, loudness, starts at ms]. under: how loud a sound the child made plays under a voice; tick: a short tick under a voice; master: the made sounds' overall loudness. simmer: the boil's loudness in dB at heat 0, at the bubbling, and at boiling over. rise: a pour loop's playback rate from the glass empty to full (sounds.rise): the old game's pour rose in pitch as the glass filled, its synthesised loop's ring from 380 to 1500 Hz over the pour (old js/shared/sfx.js:290-296, word-moment.js:430 pitch(0.2 + 0.8 x the time)); its recorded loop kept one pitch (old sfx.js:401-404). Here the recording itself rises, gently: about a semitone below its own pitch to a little over one above (0.94 to 1.08), so a glass is heard filling and the water still sounds like water (the lead's choice, Zafar, 18 Nov: 'if you have a rising pitch sound for the pour, then great, use it').",
+  "_about": "The sound effects, by name. files: recorded sounds (loop: played round and round; cut: only its first part, in ms; rise: a loop's playback rate from empty to full, below). synth: sounds made of notes, each [wave, from Hz, to Hz, ms, loudness, starts at ms]; noise: [ms, band Hz, sharpness, loudness, starts at ms]. under: how loud a sound the child made plays under a voice; tick: a short tick under a voice; master: the made sounds' overall loudness. simmer: the boil's loudness in dB at heat 0, at the bubbling, and at boiling over. A loop's rise: its playback rate from the glass empty to full, by how full it is (sounds.rise; a half glass ends halfway): the old game's pour rose in pitch as the glass filled, its synthesised loop's ring from 380 to 1500 Hz over the pour (old js/shared/sfx.js:290-296, word-moment.js:430 pitch(0.2 + 0.8 x the time)); its recorded loop kept one pitch (old sfx.js:401-404). Here the recording itself rises, gently: about a semitone below its own pitch to a little over one above (0.94 to 1.08), so a glass is heard filling and the water still sounds like water (the lead's choice, Zafar, 18 Nov: 'if you have a rising pitch sound for the pour, then great, use it').",
   "files": {
    "knob": {
     "file": "assets/shared/sfx/knob-a.mp3"
@@ -619,7 +633,8 @@
     "loop": [
      0,
      5.04
-    ]
+    ],
+    "rise": [0.94, 1.08]
    },
    "pour-short": {
     "file": "assets/shared/sfx/pour-a.mp3",
@@ -887,7 +902,6 @@
     ]
    ]
   },
-  "rise": [0.94, 1.08],
   "master": 0.5,
   "under": 0.5,
   "tick": 0.35,
@@ -1061,9 +1075,11 @@
   "sideKeep": 10
  },
  "wordMoment": {
-  "_about": "The word moment's frame, shutter and card, sizes and times (ms) the old game's (old js/shared/word-moment.js, played at speed 0.75: old js/cook/ui.js:166, so each of its times is divided by 0.75 here). What shows each word is the family's act (the kitchen's pour: data/kitchen.json pourMoment). framePad: the snap's frame round the shown thing's own drawn box, the same on all four sides, a share of its height (old :469's 0.08 above and below; Zafar, 18 Nov: 'even padding all the way around'); corner: its corners, a share of its shorter side (old css/shared/word-moment.css:36). The word card's width is the act's (data/kitchen.json pourMoment cardOfGlass); shrunk at most cardFits times until it fits the room's height, never under cardLeast px (old :527-530); cardKeep: px it keeps inside the scene (old :531). cardGrowFrom, cardGrowMs, cardGrowEase: the card grows from the thing's size, from this opacity (old :534). lookMs: once shown, a look at all of them before the first snap (old :566-567: 450 and 900 at speed 0.75, less the kettle's going); cornersInMs: the corners start to close (old :480); cornersMs: the corners before the shutter (old :480-484, frameHold 500); shutterMs: the flash before the card (old :506); sayAfterMs: the card before its word (old :543); holdMs: after the word; lingerMs: the cards stay; fadeMs: the scene going (old js/cook/ui.js:172-174).",
-  "framePad": 0.08,
+  "_about": "The word moment's frame, shutter and card, sizes and times (ms) the old game's (old js/shared/word-moment.js, played at speed 0.75: old js/cook/ui.js:166, so each of its times is divided by 0.75 here). What shows each word is the family's act (the kitchen's pour: data/kitchen.json pourMoment). framePad: the snap's frame round the shown thing's own drawn box, the same on all four sides, a share of its height: the old frame's room at the glass's sides (0.232 of the glass, 19.7 px at his phone), now above and below too (Zafar, 18 Nov: 'more padding is better ... just increase the height of it to match the sides'); corner: its corners, a share of its shorter side (old css/shared/word-moment.css:36); One corner size for every frame in a moment (the smallest frame's). cornerCurve: their curve, px, the old frame's 16 px at every size (Zafar, 18 Nov: 'the slightly sharper corners are better': a share of the corner rounded the laptop's to 37 px), never more than cornerRound of a corner's size (16 px on his phone's 21.7 px corner). The word card's width is the act's (data/kitchen.json pourMoment cardOfGlass); shrunk at most cardFits times until it fits the room's height, never under cardLeast px (old :527-530); cardKeep: px it keeps inside the scene (old :531). cardGrowFrom, cardGrowMs, cardGrowEase: the card grows from the thing's size, from this opacity (old :534). lookMs: once shown, a look at all of them before the first snap (old :566-567: 450 and 900 at speed 0.75, less the kettle's going); cornersInMs: the corners start to close (old :480); cornersMs: the corners before the shutter (old :480-484, frameHold 500); shutterMs: the flash before the card (old :506); sayAfterMs: the card before its word (old :543); holdMs: after the word; lingerMs: the cards stay; fadeMs: the scene going (old js/cook/ui.js:172-174).",
+  "framePad": 0.232,
   "corner": 0.22,
+  "cornerCurve": 16,
+  "cornerRound": 0.74,
   "cardFits": 4,
   "cardLeast": 96,
   "cardKeep": 8,
@@ -1077,10 +1093,74 @@
   "sayAfterMs": 410,
   "holdMs": 1240,
   "lingerMs": 2200,
-  "fadeMs": 350
+  "fadeMs": 350,
+  "pictures": {
+   "_about": "The plain act (js/shared/scenes/word-moment.pictures.js): a contrast shown by pictures alone, each side a word with its picture drawn count times at its scale (data/moments/). The old game had none, so it is laid out as the kitchen's pour lays out its glasses (data/kitchen.json pourMoment). lineAt: the line the pictures stand on, a share of the scene's height; tallest: a full-scale picture's most height, a share of it; top: the least room kept above, px; across: the share of its side's width a side may fill; apart: the room between pictures in a side, a share of their height; mostEach: the most pictures in a side. cardOf: a word card's width, a share of a full-scale picture's height (the pour's card is 1.25 of its glass: old word-moment.js:520), never wider than its side less cardRoom px. cardFill: in a word card's picture, a full-scale thing's height, a share of the picture's (the card shows its side as the scene did). inMs, inFrom: a side comes in, growing from this share of its size on its line; apartMs: the pause before the next side.",
+   "lineAt": 0.72,
+   "tallest": 0.42,
+   "top": 24,
+   "across": 0.7,
+   "apart": 0.12,
+   "mostEach": 3,
+   "cardOf": 1.25,
+   "cardFill": 0.8,
+   "cardRoom": 16,
+   "inMs": 420,
+   "inFrom": 0.6,
+   "apartMs": 500
+  }
  },
  "wrongOrder": {
-  "holdMs": 900
+  "_about": "The wrong-order card (Fable's design with Zafar's six yeses, 19 Nov: docs/feedback/chai-2026-11-18-play3-wrong-order-design.md), in ms and shares of the play area. Its beats are old chai's, as short as they can be and still be seen (Zafar, 11 Nov night: 'change minimum because you want to be fast'; old js/shared/wrong-order.js:36-63): veilIn the veil; fly a card from the side panel to the middle and back; tick a right headline's tick and ding, glow its gold, float it up and off; stagger: the next right headline starts this long after (the design's 'overlapping'); open: the wrong one opening to its whole card; ripple: one thing landing to the next (the design's 0.15 s); land: a thing's flight from the pan; sayCap: the most a line holds the next; minSay: a line a tap stops is heard this long first; hold: the card, all shown, before it goes back. edge: the room kept round the middle (the game seen at its edges); bigW, bigH, bigK: the open card's most width and height, shares of that room, and its most growth; lineW, lineH, lineK: a headline's; minText: the open card's Kutchi words never under this many px, else its cards wrap to two rows (never scrolled, never cut); itemW: an item card's width as the card is laid, before it is fitted, padOfItem its padding, a share of that width (the panel's, which is a share of its row); ease: every move's easing (old's); fromOpacity, openOpacity, backOpacity: a line's first frame from the panel, the card's as it opens and its last as it goes back; floatPast: px a right line floats past the top; flySize: a thing flying up, a share of its pan; flyFrom: its first frame's opacity; park: where an extra with no card stops, beside the card on the side with more room, in shares of its size, as big as a card's picture or smaller to fit, never under least of it (the card shrinks as it opens to leave that room on each side), gap from the card and from the screen's edge (its cross reaches into it), step between two; it stays there crossed through the hold and drifts home as the card goes back; wobble, wobbleDeg: an extra's wobble and its turns; drift: its drift back to the shelf. vars: the style sheet's for the card (as --wo-*): a hollow's pulse, a 'no' card's shake, the gold's glow, a count's dots and their ring and gap.",
+  "veilIn": 160,
+  "fly": 340,
+  "tick": 300,
+  "glow": 620,
+  "float": 520,
+  "stagger": 300,
+  "open": 260,
+  "ripple": 150,
+  "land": 420,
+  "sayCap": 2400,
+  "minSay": 500,
+  "hold": 620,
+  "edge": 0.06,
+  "bigW": 0.92,
+  "bigH": 0.9,
+  "bigK": 2.4,
+  "lineW": 0.78,
+  "lineH": 0.34,
+  "lineK": 1.7,
+  "minText": 14,
+  "itemW": 96,
+  "padOfItem": 0.07,
+  "ease": "cubic-bezier(.3,.9,.4,1)",
+  "fromOpacity": 0.6,
+  "openOpacity": 0.4,
+  "backOpacity": 0.2,
+  "floatPast": 40,
+  "flySize": 0.5,
+  "flyFrom": 0.4,
+  "park": {
+   "gap": 0.3,
+   "step": 1.2,
+   "least": 0.5
+  },
+  "wobble": 520,
+  "wobbleDeg": [
+   -14,
+   12,
+   -8
+  ],
+  "drift": 700,
+  "vars": {
+   "pulse": "700ms",
+   "shake": "500ms",
+   "glow": "300ms",
+   "dot": "14px",
+   "dot-ring": "3px",
+   "dot-gap": "5px"
+  }
  },
  "greetings": {
   "_about": "The greeting's lines: each a meaning for the language engine, and the small picture that goes with an answer.",
@@ -1114,16 +1194,28 @@
   "knownFrom": 3
  },
  "light": {
-  "_about": "The light's box: a margin round the thing (a share of its smaller side, between two sizes in px) and its corner. followMs: after anything on the page moves, the light follows its thing this long.",
+  "_about": "The light's box (js/shared/kit/light.js litBox, old chai's one rule: old js/shared/onboard.js:278-331): one margin on all four sides of the thing (a share of its smaller side, between two sizes in px: old's LIGHT, onboard.js:289), less on every side together where a neighbour that stays dark is nearer (Zafar, 19 Nov: all four sides equal), keeping clear px off it, and its corner. least: never less than this on any side, a share of the thing's smaller side between two sizes in px as the margin is, so about 4 px on the phone and 6 on the laptop, about half the margin (Zafar, 6 Nov: 'much too tight - the highlight box need some padding around the item'; 19 Nov: 'equal padding all around'): a light that hugs its thing breaks his rule as surely as an uneven one, so a neighbour nearer than that is let into the light's edge, which shows it lit, rather than squeeze the room; never more than the margin itself (a margin given for a thing is its own most). clear: 4, not old's 2: this light's gold edge is a 4 px stroke centred on the box's line, so 2 px of it lie outside the box; 4 keeps old's 2 px between the gold and the neighbour. overlap: a neighbour overlapping the thing by less than this share of its smaller side (at least min px) takes the margin to nothing, more is let be (old onboard.js:301-308). edgeIn: at the screen's edge the light stops this many px in (old onboard.js:1036-1040: 1 px, so 3 of the edge's 4 px still show). followMs: after anything on the page moves, the light follows its thing this long.",
   "marginShare": 0.12,
   "marginMin": 8,
   "marginMax": 16,
+  "leastShare": 0.085,
+  "leastMin": 4,
+  "leastMax": 8,
+  "clear": 4,
+  "overlap": { "share": 0.25, "min": 4 },
+  "edgeIn": 1,
   "radius": 12,
   "cornerOfHeight": 4,
   "followMs": 600
  },
  "cog": {
-  "_about": "The cog's menu, top right of the play area: what each button is for.",
+  "_about": "The cog's menu, top right of the play area: its buttons, each with what it is for (a grown-ups' label) and its glyph; renews: the button that starts a new player. player: who is playing, shown beside the open menu for the grown-ups (Zafar, 19 Nov: 'the settings menu shows the player and has a New player button'), in the words the game and the labs page both use: label, then own (the child's own player), fresh (a new player), knows (a new player who knows the words).",
+  "player": {
+   "label": "Playing as",
+   "own": "the child",
+   "fresh": "a new player",
+   "knows": "a new player who knows the words"
+  },
   "items": [
    {
     "id": "help",
@@ -1139,6 +1231,12 @@
     "id": "book",
     "label": "Nani's recipe book",
     "glyph": "▤"
+   },
+   {
+    "id": "new-player",
+    "label": "New player",
+    "renews": true,
+    "glyph": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M19 8v6M16 11h6\"/></svg>"
    }
   ]
  },
@@ -1359,11 +1457,9 @@
   "popDrop": 3
  },
  "lineTimes": {
-  "_about": "Small waits round Nani's lines, in ms. wellDoneAfter: the praise comes this long after the faces pop; wellDoneCap: the longest it waits for her voice; wellDoneHold: the beat after it. wrongRowCap: the longest a wrong order's row waits for its voice; wrongRowGap: between rows.",
+  "_about": "Small waits round Nani's lines, in ms. wellDoneAfter: the praise comes this long after the faces pop; wellDoneCap: the longest it waits for her voice; wellDoneHold: the beat after it.",
   "wellDoneAfter": 500,
   "wellDoneCap": 2200,
-  "wellDoneHold": 400,
-  "wrongRowCap": 2500,
-  "wrongRowGap": 120
+  "wellDoneHold": 400
  }
 }

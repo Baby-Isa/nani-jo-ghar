@@ -8,9 +8,10 @@
  *       the divider over its speaker (rule) and the speaker
  *   wireSpeaker(card, { say, line }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said; a
  *       tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would
- *   inkGaps(card, share)   the row card's words spaced by their letters' own ink, not their boxes: the picture to the top
- *       of the Kutchi's letters, the Kutchi's lowest ink to the English's highest, the English's lowest to the divider, each the
- *       same gap (share x the card's width); measured on the English's letters even while they show as dots, so a peek moves nothing
+ *   spaceWords(cards, kit)   every word card (the row's, the big card, the word moment's; one card or an order row) spaced
+ *       as the old game's card (below): its words fitted to the card, one size each per row, and on the row's card only, the
+ *       divider's gap to the English's ink. Run now, once the faces are in, and when the card's width or the panel's scale
+ *       changes; never on a change of form.
  *   wirePeeks(card, { kit, onPeek })            onPeek("english" | "picture")
  *   revealLesson(card, { kit, light, sounds }) -> Promise      resolves when every part has been tapped open
  */
@@ -50,28 +51,163 @@ export function wireSpeaker(card, { say, line }) {
   return sayIt;
 }
 
+/*
+ * The old game's card, carried (Zafar, 6 Nov; old js/shared/word-card.js fitOne14 and fit14's row pass, :640-822): each word
+ * shrinks to fit its card, a px at a time, never under its floor (the Kutchi to at most two lines, the English to one, wrapping only as
+ * a last resort); then each order row takes one Kutchi size and one English size, the smallest the fit gave, their dots
+ * following; then, on the row's card only (the word moment's divider sits under its box), the divider's gap is measured to the
+ * ink: the lowest ink of the English's last line over the divider's span (a letter's tail where one hangs there, else the
+ * baseline: his "D-A-Y" rule), its box giving back what runs below (--en-ink); a card whose English has no letters, its Kutchi's.
+ */
 let pen = null;
-/** A word's ink against its own block (its line boxes): how far in from its top its letters reach, and from its bottom (px). */
-function inkOf(el) {
+/** A canvas pen in an element's face (its computed style), at a size: the one way a word's letters are measured. */
+function penFor(cs, px = parseFloat(cs.fontSize)) {
   pen = pen || document.createElement("canvas").getContext("2d");
-  const cs = getComputedStyle(el);
-  pen.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-  const face = pen.measureText("Hg");
-  const half = (parseFloat(cs.lineHeight) - face.fontBoundingBoxAscent - face.fontBoundingBoxDescent) / 2;
-  const m = pen.measureText(el.querySelector(".w").textContent);
-  return { top: half + face.fontBoundingBoxAscent - m.actualBoundingBoxAscent, bottom: half + face.fontBoundingBoxDescent - m.actualBoundingBoxDescent };
+  pen.font = `${cs.fontStyle} ${cs.fontWeight} ${px}px ${cs.fontFamily}`;
+  return pen;
+}
+const inside = (card) => {
+  const cs = getComputedStyle(card);
+  return card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+};
+/** How many lines a part's word is laid out on (its words' tops). */
+function linesOf(w) {
+  const node = w.firstChild;
+  if (!node || node.nodeType !== 3) return 1;
+  const r = document.createRange();
+  const tops = [];
+  let from = 0;
+  for (const word of node.textContent.split(" ").filter(Boolean)) {
+    const at = node.textContent.indexOf(word, from);
+    from = at + word.length;
+    r.setStart(node, at);
+    r.setEnd(node, from);
+    const t = r.getBoundingClientRect().top;
+    if (!tops.some((x) => Math.abs(x - t) < r.getBoundingClientRect().height / 2)) tops.push(t);
+  }
+  return Math.max(1, tops.length);
+}
+/**
+ * A word shrinks to fit its line and never leaves its card (old fitOne14): from its own size a px at a time, never under
+ * `least`. Differs from old in how: old laid the page out at every px; a word's width on the canvas grows straight with its
+ * size, so the px it fits at is found by one division, and only "more lines than allowed" asks the page, a px at a time.
+ */
+function fitOne(card, part, least, maxLines, steps) {
+  part.style.fontSize = "";
+  part.classList.remove("wrap");
+  const w = part.querySelector(".w");
+  const room = inside(card) + 1;
+  const cs = getComputedStyle(part);
+  const fs0 = parseFloat(cs.fontSize);
+  const p = penFor(cs, fs0);
+  const widest = Math.max(...w.textContent.split(maxLines > 1 ? " " : "\n").map((x) => p.measureText(x).width));
+  let fs = widest > room ? Math.max(least, fs0 - Math.ceil(fs0 - (fs0 * room) / widest)) : fs0;
+  if (fs < fs0) part.style.fontSize = `${fs}px`;
+  for (let n = 0; maxLines > 1 && fs > least && n < steps && linesOf(w) > maxLines; n++) {
+    fs = Math.max(least, fs - 1);
+    part.style.fontSize = `${fs}px`;
+  }
+  if (maxLines === 1 && (widest * fs) / fs0 > room) part.classList.add("wrap");
+  return fs;
+}
+/**
+ * Where a word's letters really are on the page (its ink), letter by letter: { x, y, w, h } round its lines from the first
+ * line's tallest letter to the last line's lowest ink, `foot` that lowest ink over [l, r] alone where a span is given (a
+ * letter's tail where one hangs there, else the baseline: old inkFoot14), and `zoom`: page px for one of the word's own.
+ * A letter's box is its face's ascent and descent, so its baseline is the box's foot less that descent.
+ */
+function ink(w, dropShare, l = -Infinity, r = Infinity) {
+  const range = document.createRange();
+  const walk = document.createTreeWalker(w, 4); // (text nodes)
+  const gl = [];
+  for (let t = walk.nextNode(); t; t = walk.nextNode())
+    for (let i = 0; i < t.nodeValue.length; i++) {
+      if (/\s/.test(t.nodeValue[i])) continue;
+      range.setStart(t, i);
+      range.setEnd(t, i + 1);
+      const b = range.getBoundingClientRect();
+      if (b.width) gl.push({ ch: t.nodeValue[i], b, el: t.parentElement });
+    }
+  if (!gl.length) return null;
+  const cs = getComputedStyle(gl[0].el);
+  const p = penFor(cs);
+  const face = p.measureText(gl[0].ch);
+  const zoom = gl[0].b.height / (face.fontBoundingBoxAscent + face.fontBoundingBoxDescent);
+  const at = gl.map((g) => {
+    const m = p.measureText(g.ch);
+    const base = g.b.bottom - m.fontBoundingBoxDescent * zoom;
+    // (a letter that only sits on the baseline drops nothing: old dropOf14's share of the size)
+    const drop = m.actualBoundingBoxDescent > parseFloat(cs.fontSize) * dropShare ? m.actualBoundingBoxDescent * zoom : 0;
+    return { ...g, top: base - m.actualBoundingBoxAscent * zoom, foot: base + drop };
+  });
+  const lineOf = (top) => at.filter((g) => Math.abs(g.b.top - top) < g.b.height / 2);
+  const first = lineOf(Math.min(...at.map((g) => g.b.top)));
+  const last = lineOf(Math.max(...at.map((g) => g.b.top)));
+  const over = last.filter((g) => g.b.right > l && g.b.left < r);
+  const x0 = Math.min(...at.map((g) => g.b.left));
+  const y0 = Math.min(...first.map((g) => g.top));
+  const y1 = Math.max(...last.map((g) => g.foot));
+  return { x: x0, y: y0, w: Math.max(...at.map((g) => g.b.right)) - x0, h: y1 - y0, foot: Math.max(...(over.length ? over : last).map((g) => g.foot)), zoom };
 }
 
-export function inkGaps(card, share) {
-  const gap = share * card.clientWidth;
-  const ku = inkOf(card.querySelector(".ku"));
-  const en = inkOf(card.querySelector(".en"));
-  card.style.setProperty("--ku-ink", `${gap - ku.top}px`);
-  card.style.setProperty("--en-ink", `${gap - ku.bottom - en.top}px`);
-  card.style.setProperty("--rule-ink", `${gap - en.bottom}px`);
+/** One card, or one order row of them: each word fitted, the row's one size each, then the divider's gap to the ink. */
+function spaceRow(cards, kit) {
+  const K = kit.cards;
+  const parts = (sel) => cards.map((c) => c.querySelector(sel));
+  const ku = parts(".ku").map((p, i) => fitOne(cards[i], p, K.kuLeast, 2, K.fitSteps));
+  const en = parts(".en").map((p, i) => fitOne(cards[i], p, K.enLeast, 1, K.fitSteps));
+  // (one size per row, the smallest the fit gave: a card on its own keeps its own)
+  for (const [sel, sizes] of [[".ku", ku], [".en", en]]) {
+    const least = Math.min(...sizes);
+    parts(sel).forEach((p, i) => sizes[i] > least + 0.05 && (p.style.fontSize = `${least}px`));
+  }
+  // every card measured first, then every one set (no layout in between); in the card's own px
+  const gives = cards.map((c) => {
+    const rule = c.querySelector(".rule");
+    const e = c.querySelector(".en");
+    if (!rule || !c.classList.contains("icard")) return null;
+    const rr = rule.getBoundingClientRect();
+    const words = e.querySelector(".w").textContent.trim() ? e : c.querySelector(".ku");
+    const i = ink(words.querySelector(".w"), K.dropShare, rr.left, rr.right);
+    return i ? (e.getBoundingClientRect().bottom - i.foot) / i.zoom : 0;
+  });
+  cards.forEach((c, i) => gives[i] != null && c.style.setProperty("--en-ink", `${gives[i].toFixed(2)}px`));
 }
 
-/** One tap opens a hidden part in its own place for a moment; then it hides again. */
+// every card known by its kit and the width and panel scale it was spaced at; an order row is spaced as one
+const known = new WeakMap();
+const keyOf = (card) => `${card.clientWidth}|${getComputedStyle(card).getPropertyValue("--p")}`;
+const rowOf = (card) => (card.classList.contains("icard") && card.parentElement ? [...card.parentElement.children].filter((c) => known.has(c)) : [card]);
+function spaceAll(cards) {
+  const rows = new Map();
+  for (const c of cards) if (c.isConnected && c.clientWidth > 0) rows.set(c.parentElement && c.classList.contains("icard") ? c.parentElement : c, rowOf(c));
+  for (const row of rows.values()) {
+    const ready = row.filter((c) => c.isConnected && c.clientWidth > 0);
+    if (!ready.length) continue;
+    spaceRow(ready, known.get(ready[0]).kit);
+    ready.forEach((c) => (known.get(c).key = keyOf(c)));
+  }
+}
+const stale = (card) => keyOf(card) !== known.get(card).key;
+// a card is spaced again (with its row) only when its width or the panel's scale changes, never on a change of form
+const sized = typeof ResizeObserver !== "undefined" ? new ResizeObserver((list) => spaceAll(list.map((e) => e.target).filter((c) => known.has(c) && stale(c)))) : null;
+// and once the faces are in, if they were not yet
+const waiting = new Set();
+const afterFonts = (card) => {
+  if (!document.fonts || document.fonts.status === "loaded") return;
+  if (!waiting.size) document.fonts.ready.then(() => (spaceAll([...waiting]), waiting.clear()));
+  waiting.add(card);
+};
+
+export function spaceWords(cards, kit) {
+  const list = [].concat(cards);
+  const fresh = list.filter((c) => !known.has(c));
+  fresh.forEach((c) => known.set(c, { kit, key: null }));
+  spaceAll(list.filter(stale));
+  fresh.forEach((c) => (sized && sized.observe(c), afterFonts(c)));
+}
+
+/** One tap opens a hidden part in its own place for a moment; then it hides again. Its room is already there: nothing moves. */
 export function wirePeeks(card, { kit, onPeek }) {
   const peek = (part, what) => (ev) => {
     ev.stopPropagation();
@@ -112,24 +248,56 @@ function tapOn(part, min, everyMs) {
   });
 }
 
+const rectOf = (el) => {
+  const r = el.getBoundingClientRect();
+  return { x: r.left, y: r.top, w: r.width, h: r.height };
+};
+/**
+ * What the child sees of a part, on the page, by its kind: the picture's (or the speaker's) own box; a hidden word, the
+ * box round every one of its dots; a word shown, its letters' ink (or, with no letters, its own box).
+ */
+function partBox(part, K) {
+  const w = part.querySelector(".w");
+  if (!w) return rectOf(part);
+  const dots = part.querySelector(".kdots, .d");
+  if (!part.classList.contains("shown") && getComputedStyle(dots).display !== "none") {
+    const ds = [...dots.children].map(rectOf);
+    const [l, t] = [Math.min(...ds.map((d) => d.x)), Math.min(...ds.map((d) => d.y))];
+    return { x: l, y: t, w: Math.max(...ds.map((d) => d.x + d.w)) - l, h: Math.max(...ds.map((d) => d.y + d.h)) - t };
+  }
+  const i = ink(w, K.dropShare);
+  // (a word with no letters to draw has no ink: its part's own box)
+  return i ? { x: i.x, y: i.y, w: i.w, h: i.h } : rectOf(part);
+}
+
 /** The lesson on a big card: everything hidden, then each part lit in turn; a tap on the lit part shows it. */
 export async function revealLesson(card, { kit, light, sounds }) {
   const K = kit.cards;
   card.classList.add("lesson");
   const parts = [".well", ".ku", ".en"].map((sel) => card.querySelector(sel)).filter((p) => p && p.getBoundingClientRect().height >= K.lessonMinPx);
-  const boxOf = (el) => () => {
-    const r = el.getBoundingClientRect();
-    return { x: r.left, y: r.top, w: r.width, h: r.height };
+  // the lesson's light holds each part's ink in one box (a hidden word and every one of its dots: old js/cook/ui.js blurLesson), with the same room
+  // on all four sides, kept clear of the other parts' ink: the kit's one light, its margin and its least room as every
+  // light's (js/shared/kit/light.js litBox; Zafar, 19 Nov: "equal padding all around")
+  const near = [...parts, card.querySelector(".speaker")].filter(Boolean);
+  // each step's boxes are measured once, and again only when the card has moved or changed size (the screen turned) or a
+  // part has opened (its dots become letters, so its light follows the word)
+  let at = null;
+  const boxes = (part) => {
+    const key = Object.values(rectOf(card)).map((v) => v.toFixed(1)).join() + near.map((p) => p.className).join();
+    if (!at || at.part !== part || at.key !== key) at = { part, key, box: partBox(part, K), avoid: near.filter((p) => p !== part).map((p) => partBox(p, K)) };
+    return at;
   };
   // one light the whole lesson: first round the whole card, then gliding onto each part in turn (the standard's)
-  light.show(boxOf(card), { hard: true, margin: K.lessonMargin });
+  light.show(() => rectOf(card), { hard: true });
   await wait(K.lessonCardMs);
   for (const [i, part] of parts.entries()) {
     part.classList.add("lit");
-    light.show(boxOf(part), { hard: true, margin: K.lessonMargin, from: light.box(), ms: K.lessonMoveMs });
+    const lightOn = (glide) => light.show(() => boxes(part).box, { hard: true, avoid: () => boxes(part).avoid, ...glide });
+    lightOn({ from: light.box(), ms: K.lessonMoveMs });
     if (!(await tapOn(part, kit.look.minTap, K.lessonBeatMs))) break; // (the card went away: its light goes too)
     part.classList.remove("lit");
     part.classList.add("shown");
+    lightOn({}); // (the part as it now shows: a word's letters where its dots were)
     sounds.play("reveal");
     await wait(i === parts.length - 1 ? K.lessonEndMs : K.lessonBeatMs);
   }

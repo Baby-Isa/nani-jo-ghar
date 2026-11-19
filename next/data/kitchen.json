@@ -197,7 +197,7 @@
   }
  },
  "lights": {
-  "_about": "When a step's moment comes (js/kitchen/cook.rules.js), in milliseconds on the round's clock, carried from old chai's rule table (old docs/design-language/standard/values.md:78-102, D1 the first time). The rules time every movement they start (a pour, a spoonful, a serve); the moment waits for the last to end, then a breath, never longer than the most: breathMs, breathMaxMs (old js/shared/onboard.js:426 Onboard.WAIT breath 1000, breathMax 3000; values.md:82; chai-tray.js:274 CONTROL_PAUSE_MS) for a thing's first light and a control's call; a pour waits only for the stillness (old chai-tray.js:1964). The first thing asked for: its card is lit cardStillMs after the stillness (old data/rules.json showing.pointAfterMoveMs), and never before the order list has stopped after the step opened (kit.json panel.settleMs, the list's longest move; so the light never waits on the list itself), waiting at most cardMaxMs (Onboard.WAIT.still), for cardLitMs: 1500, Zafar's own measure (18 Nov: \"a brief highlight of milk item card, which only lasts about 1.5 secs\"), over old's 1200 (showing.pointMs). The next vessel: its first light nextAfterMs after the first dish's pour ends (Onboard.WAIT.nextVessel; old chai-tray.js:1440, 1606-1607, 1713: never while another dish is on the heat or waiting to be poured), its stuck help counted from the stillness. At the moment a first-time light is spent (only then: old chai-tray.js:1950-1956), and the stuck help's wait starts again, as the end of each movement restarts it (old SH-184, chai-tray.js:1433-1437). cardMargin: px round a lit card.",
+  "_about": "When a step's moment comes (js/kitchen/cook.rules.js), in milliseconds on the round's clock, carried from old chai's rule table (old docs/design-language/standard/values.md:78-102, D1 the first time). The rules time every movement they start (a pour, a spoonful, a serve); the moment waits for the last to end, then a breath, never longer than the most: breathMs, breathMaxMs (old js/shared/onboard.js:426 Onboard.WAIT breath 1000, breathMax 3000; values.md:82; chai-tray.js:274 CONTROL_PAUSE_MS) for a thing's first light and a control's call; a pour waits only for the stillness (old chai-tray.js:1964). The first thing asked for: its card is lit cardStillMs after the stillness (old data/rules.json showing.pointAfterMoveMs), and never before the order list has stopped after the step opened (kit.json panel.settleMs, the list's longest move; so the light never waits on the list itself), waiting at most cardMaxMs (Onboard.WAIT.still), for cardLitMs: 1500, Zafar's own measure (18 Nov: \"a brief highlight of milk item card, which only lasts about 1.5 secs\"), over old's 1200 (showing.pointMs). The next vessel: its first light nextAfterMs after the first dish's pour ends (Onboard.WAIT.nextVessel; old chai-tray.js:1440, 1606-1607, 1713: never while another dish is on the heat or waiting to be poured), its stuck help counted from the stillness. At the moment a first-time light is spent (only then: old chai-tray.js:1950-1956), and the stuck help's wait starts again, as the end of each movement restarts it (old js/cook/stations/chai-tray.js:1433-1437). cardMargin: px round a lit card.",
   "breathMs": 1000,
   "breathMaxMs": 3000,
   "cardStillMs": 500,
@@ -208,7 +208,7 @@
   "popVolume": 0.5
  },
  "steam": {
-  "_about": "Steam over a vessel at the boil, in vessel-rim radii and milliseconds: a wisp every so often, rising and fading; two puffs at a boil-over.",
+  "_about": "Steam over a vessel at the boil, in vessel-rim radii and milliseconds: a wisp every so often, rising and fading; two puffs at a boil-over. Past the green the boil-over shows already and grows until the pan spills (Zafar, 19 Nov: 'the boiling over look starts as soon as the heat passes the green and grows'): its puffs come every overEveryMs, from the first to the second as the heat climbs to the spill, each overGrow (from, to) of a boil-over's own; drawn with the steam wisps until its own art comes (the boil-over, still to make).",
   "everyMs": 800,
   "w": 1.49,
   "startUp": 1.36,
@@ -223,6 +223,8 @@
    0.8,
    1.15
   ],
+  "overEveryMs": [480, 150],
+  "overGrow": [0.7, 1.7],
   "puffs": [
    [
     -0.443,
@@ -239,7 +241,7 @@
   ]
  },
  "pourMoment": {
-  "_about": "The kitchen's act in the word moment (js/kitchen/pour-moment.js): a kettle pours each glass to its measure. Sizes and times (ms) the old game's (old js/shared/word-moment.js at speed 0.75), the pour's end Zafar's (18 Nov). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses (old :178-215). streamW: the stream's width, in glasses (old :346); streamEdge: the soft edge of its front and end, a share of its length (old :301); fall: things fall as time to this power, slow from the spout, then quicker (old :312). dropW: the last drop, in glasses (old :447). startMs: before the kettle comes; soundWaitMs: it waits at most this long for the pour's sound (old :168, POUR_WAIT, not slowed); moveMs, moveEase: the kettle moving (old :327, :337); tipMs: it tips forward (old :393-394); runMs: the stream running down (old :406); pourBaseMs + pourFullMs x the measure: the tea rising (old :416), slowing over its last part (from slowFrom of the time, at slowAt of the measure: old :428); tailMs: the stream ending from the top down (old :438), started this long before the tea stops so the last of it lands as the level stops (Zafar, 18 Nov: 'start the stream ending animation earlier'); dropAfterMs: the last drop leaves the spout this long into the end, and lands with it (old :450); afterPourMs: after the tea stops (old :460: 800 ms from the end starting). cardOfGlass, cardRoom: the word card's width for a glass, its size before the counter's room shrank it times this, never wider than its share of the room less cardRoom px (old :520). rimClip: the glass's front lip, laid back over the stream so the stream goes into the glass (rows 3 to 5% of the glass: old css/shared/word-moment.css:29-30).",
+  "_about": "The kitchen's act in the word moment (js/kitchen/pour-moment.js): a kettle pours each glass to its measure. Sizes and times (ms) the old game's (old js/shared/word-moment.js at speed 0.75), the pour's end Zafar's (18 Nov). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses (old :178-215). streamW: the stream's width, in glasses (old :346); streamEdge: the soft edge of its front and end, a share of its length (old :301); fall: things fall as time to this power, slow from the spout, then quicker (old :312). dropW: the last drop, in glasses (old :447). startMs: before the kettle comes; soundWaitMs: it waits at most this long for the pour's sound (old :168, POUR_WAIT, not slowed); moveMs, moveEase: the kettle moving (old :327, :337); tipMs: it tips forward (old :393-394); runMs: the stream running down (old :406); pourBaseMs + pourFullMs x the measure: the tea rising (old :416), at one rate, as the tea lands, until the stream's last reaches it (Zafar, 18 Nov: 'the tea level should keep rising while any part of the poured stream is visible'; the old ease-out, old :428, stopped the level while the stream still showed); tailMs: the stream ending from the top down (old :438), started this long before the tea stops so the last of it lands as the level stops; dropAfterMs: the last drop leaves the spout this long into the end, and lands with it (old :450); afterPourMs: after the tea stops (old :460: 800 ms from the end starting). cardOfGlass, cardRoom: the word card's width for a glass, its size before the counter's room shrank it times this, never wider than its share of the room less cardRoom px (old :520). rimClip: the glass's front lip, laid back over the stream so the stream goes into the glass (rows 3 to 5% of the glass: old css/shared/word-moment.css:29-30).",
   "pitch": 1.9,
   "side": 0.4,
   "glassMost": 0.42,
@@ -259,8 +261,6 @@
   "runMs": 400,
   "pourBaseMs": 400,
   "pourFullMs": 3467,
-  "slowFrom": 0.85,
-  "slowAt": 0.96,
   "tailMs": 613,
   "dropAfterMs": 213,
   "afterPourMs": 187,

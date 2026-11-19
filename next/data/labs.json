@@ -1,4 +1,5 @@
 {
-  "_about": "The labs page (labs.html), for grown-ups: the games it can start, by the id of their settings file in data/games/ and the name shown. A new game is offered here once its settings file is in.",
-  "games": [{ "id": "chai", "name": "Chai" }]
+  "_about": "The labs page (labs.html), for grown-ups: the games it can start, by the id of their settings file in data/games/ and the name shown. A new game is offered here once its settings file is in. moments: the word moments it can play by themselves, by the id of their file in data/moments/.",
+  "games": [{ "id": "chai", "name": "Chai" }],
+  "moments": [{ "id": "one-two", "name": "One and two" }, { "id": "big-small", "name": "Big and small" }]
 }

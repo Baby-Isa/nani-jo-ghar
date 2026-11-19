@@ -18,7 +18,7 @@
  *   frame.onResize(fn) -> off     fn() after every new layout (a resize, a turn, the browser's bar showing or going)
  *   frame.upright() -> boolean    the turn card is up: the round waits behind it
  *   frame.ready() -> Promise      the fonts are in, the phone is on its side, and the first tap (if one is needed) is made
- *   frame.now -> { ff, scale, w, h, sideW }
+ *   frame.now -> { ff, scale, w, h, sideW, dpr }   dpr: the screen's pixel ratio
  *   setLook(kit)                  the kit's colours and sizes (look.vars) as the style sheet's variables, on any page
  */
 export function setLook(kit, root = document.documentElement) {
@@ -68,7 +68,10 @@ export function createFrame({ kit }) {
     root.style.setProperty("--s", String(scale));
     root.style.setProperty("--side-w", `${sideW}px`);
     root.style.setProperty("--p", String(F.panel[ff]));
-    frame.now = { ff, scale, w, h, sideW };
+    // the screen's own pixel ratio, the page's one answer to "one screen pixel" (--dpx: one of them, in css px)
+    const dpr = globalThis.devicePixelRatio || 1;
+    root.style.setProperty("--dpx", `${1 / dpr}px`);
+    frame.now = { ff, scale, w, h, sideW, dpr };
     fitSide();
     listeners.forEach((fn) => fn(frame.now));
   }

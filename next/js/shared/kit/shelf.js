@@ -8,7 +8,7 @@
  *   shelf.pour(id, to, times, onFill) -> Promise      shelf.spoon(id, to, spoonRef, times, onLand) -> Promise
  *   shelf.back(id, from, spoonRef) -> Promise         shelf.wiggle(id)   shelf.glow(id, on)   shelf.dimOthers(id | null)
  *   shelf.pop(id, at)       the thing's word pops over the vessel as it goes in
- *   shelf.boxOf(id) -> { x, y, w, h } in design px (the thing with its pill), for a light
+ *   shelf.partsOf(id) -> [{ x, y, w, h }] in design px: the thing (with the room it hops into) and its pill, lit as one
  *   shelfRefs({ kit, ids }) -> the pictures it draws with, for a scene to name (ids: every thing its row may hold)
  */
 export const shelfRefs = ({ kit, ids }) => [kit.art.band, kit.art.shelf].concat(ids.map((id) => kit.wordArt[id].art));
@@ -36,6 +36,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
   stage.tiled(ground, kit.art.shelf, { x: -FAR, y: b.shelfY, w: SW + 2 * FAR, h: b.shelfH, scale: Z.band.shelfTile });
 
   const items = new Map();
+  const thingTaps = [];
   for (const slot of row.slots) {
     const wa = wordArt[slot.id];
     const [pw, ph] = stage.art.size(wa.art);
@@ -55,12 +56,23 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     const entry = say.entry(slot.id);
     const pill = makePill(slot, entry ? entry.kutchi : "", pillShows(slot.id));
     items.set(slot.id, { slot, pic, shade, pill, w, h, top, mid, drawnTop, busy: false });
-    stage.onTap({ obj: pic.obj }, () => onItem(slot.id));
-    stage.onTap({ view: "worktop", x: slot.x - pill.w / 2, y: row.pillY - pill.h / 2, w: pill.w, h: pill.h }, () => {
+    // only the pill's speaker says the word; the thing takes every other tap in its slot, down to and across its pill, and
+    // where the two meet the thing wins (Zafar, 11 Nov: "they still sometimes tap the word pills rather than tapping the
+    // item when they wanted to tap the item"; old js/shared/shelf.js's one rule): the speakers' areas first, the things' after
+    const spk = pill.speaker;
+    stage.onTap({ view: "worktop", x: slot.x + spk.x, y: row.pillY - pill.h / 2, w: spk.w, h: pill.h }, () => {
       stage.tween(pill.c, { scale: row.pillScale * Z.pillPop[0] }, Z.pillPop[1]).then(() => stage.tween(pill.c, { scale: row.pillScale }, Z.pillPop[1]));
       onPill(slot.id);
     });
+    thingTaps.push(() => {
+      const tapTop = Math.min(drawnTop, top);
+      const half = Math.max(w, row.slotW - Z.fit) / 2;
+      stage.onTap({ view: "worktop", x: slot.x - half, y: tapTop, w: 2 * half, h: row.pillY - pill.h / 2 - tapTop }, () => onItem(slot.id));
+      if (spk.x + spk.w < pill.w / 2) stage.onTap({ view: "worktop", x: slot.x + spk.x + spk.w, y: row.pillY - pill.h / 2, w: pill.w / 2 - spk.x - spk.w, h: pill.h }, () => onItem(slot.id));
+    });
   }
+  // (every speaker's area before any thing's, so no speaker's least tap reaches over a neighbour's thing)
+  thingTaps.forEach((f) => f());
 
   /** The flat speaker with its two waves, from its left edge. */
   function speakerMark(g, x, y, k) {
@@ -87,7 +99,10 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     c.bringToTop(text);
     text.setOrigin(0, 1 / 2).setPosition(-w / 2 + M.pad + M.width + M.gap, -1);
     c.setScale(row.pillScale);
-    return { c, w: w * row.pillScale, h: h * row.pillScale };
+    // the speaker's part of the pill, from its left edge to half the gap after the icon (all of it when the word is earned)
+    const sk = row.pillScale;
+    const speaker = shown ? { x: (-w / 2) * sk, w: (M.pad + M.width + M.gap / 2) * sk } : { x: (-w / 2) * sk, w: w * sk };
+    return { c, w: w * sk, h: h * sk, speaker };
   }
 
   const wait = (ms) => stage.wait(ms);
@@ -233,12 +248,11 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     dimOthers(id) {
       for (const [key, it] of items) it.pic.obj.alpha = id && key !== id ? L.dimOthers : 1;
     },
-    boxOf(id) {
+    partsOf(id) {
       const it = items.get(id);
-      const w = Math.max(it.w, it.pill.w);
       const hopRoom = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));
       const y0 = it.top - hopRoom;
-      return { x: it.slot.x - w / 2, y: y0, w, h: row.pillY + it.pill.h / 2 + 2 - y0 };
+      return [{ x: it.slot.x - it.w / 2, y: y0, w: it.w, h: b.base - y0 }, this.pillBox(id)];
     },
     /** The thing as drawn, standing on the shelf line (its picture's empty margins left out). */
     picBox(id) {
@@ -248,6 +262,11 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     pillBox(id) {
       const it = items.get(id);
       return { x: it.slot.x - it.pill.w / 2, y: row.pillY - it.pill.h / 2, w: it.pill.w, h: it.pill.h };
+    },
+    /** The pill's speaker, the one part of the slot that says the word rather than picking the thing. */
+    speakerBox(id) {
+      const it = items.get(id);
+      return { x: it.slot.x + it.pill.speaker.x, y: row.pillY - it.pill.h / 2, w: it.pill.speaker.w, h: it.pill.h };
     },
     middleOf: (id) => ({ x: items.get(id).slot.x, y: items.get(id).mid }),
     ids: () => [...items.keys()],

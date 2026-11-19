@@ -13,11 +13,16 @@
  *   cards.pop(seat, id | null, dish?) -> the big card: { fly() -> Promise, out() -> Promise, lesson() -> Promise, el }
  *   cards.bigPlace(heads, bubble, { again? }) -> where the big card sits for this order, in the play area's px (kept for the
  *       whole order; again: worked out afresh for a new size of the play area, and a big card showing moves there)
- *   cards.copy(seat) -> { el, rows: [{ id, el, line }] }   a copy of the card, open, nothing ticked, its item cards in the
- *       order asked (the wrong-order card shows it)
+ *   cards.replay(seat, dish?) -> Promise   the order said again from its face; dish: { line, pic }, the dish's own card,
+ *       popped again beside it while the order is said (Zafar, 13 Nov: at level 1, as it first showed)
+ *   cards.copy(seat) -> { top, rows: [{ id, el, line, word, no, said, pic }] }   a copy of the card's top line (its face
+ *       and order, nothing on it to press) and of its item cards, nothing ticked, in the order asked (the wrong-order card
+ *       shows it); pic: the item's picture's file          cards.boxOf(seat) -> its top line's rectangle on the page
+ *   cards.away(seats, top?)   these cards leave the list (orders done right while another is remade), `top` first of the
+ *       rest; with none away, every card is back in the order they ordered
  */
 import { lineHtml } from "./nani-box.js";
-import { wordCardHtml, wirePeeks, wireSpeaker } from "./word-card.js";
+import { wordCardHtml, wirePeeks, wireSpeaker, spaceWords } from "./word-card.js";
 import { atLevel } from "../round.js";
 import { panelOf } from "./order-panel.js";
 import { createRow } from "./order-row.js";
@@ -63,6 +68,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       items.set(it.id, { el: c, line, pic: picOf(it, p), word: it.word, id: it.id, no: !!it.no, atServe });
     }
     host.appendChild(el);
+    spaceWords([...items.values()].map((it) => it.el), kit);
     panel.track(el);
     return { el, items, head, person: p, row: createRow({ stage, kit, el: rowEl, items, panel }) };
   });
@@ -97,13 +103,25 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     slot: (seat, id) => seats[seat].items.get(id).el.getBoundingClientRect(),
     lineOf: (seat, id) => seats[seat].items.get(id).line,
     headOf: (seat) => seats[seat].head,
+    async replay(seat, dish = null) {
+      const card = dish ? big.pop(dish, firstCard(seats[seat])) : null;
+      await say.speak(seats[seat].head);
+      if (card) await card.out();
+    },
     copy(seat) {
-      const el = seats[seat].el.cloneNode(true);
-      el.classList.remove("folded", "served");
-      const rows = [...seats[seat].items.values()].map((it) => ({ id: it.id, line: it.line, el: it.el.cloneNode(true) }));
-      rows.forEach((r) => r.el.classList.remove("done", "cross", "waiting"));
-      el.querySelector(".orow").replaceChildren(...rows.map((r) => r.el));
-      return { el, rows };
+      const top = seats[seat].el.querySelector(".ocard-top").cloneNode(true);
+      top.querySelector(".facebtn").replaceWith(...top.querySelector(".facebtn").childNodes);
+      const asked = new Map(seats[seat].person.items.map((it) => [it.id, it]));
+      const rows = [...seats[seat].items.values()].map((it) => ({ id: it.id, line: it.line, word: it.word, no: it.no, said: asked.get(it.id).said, pic: stage.art.file(it.pic), el: it.el.cloneNode(true) }));
+      // (a copy is only shown: nothing on it is a button to press)
+      const still = (el) => el.querySelectorAll("button").forEach((b) => b.replaceWith(Object.assign(document.createElement("span"), { className: b.className, innerHTML: b.innerHTML })));
+      rows.forEach((r) => (r.el.classList.remove("done", "cross", "waiting"), still(r.el)));
+      return { top, rows };
+    },
+    boxOf: (seat) => seats[seat].el.querySelector(".ocard-top").getBoundingClientRect(),
+    away(list, top = null) {
+      seats.forEach((s, i) => ((s.el.hidden = list.includes(i)), host.appendChild(s.el)));
+      if (top != null) (host.prepend(seats[top].el), panel.focus(seats[top].el));
     },
     bigPlace: (heads, bubble, { again = false } = {}) => big.place(firstCard(seats[0]), heads, bubble, { again }),
     /** The big card that pops as a thing is said (or the dish's own card beside it, in the person's first slot), then flies into its slot. */

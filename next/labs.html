@@ -8,7 +8,8 @@
 <!--
   The labs: one page for grown-ups to start a round exactly as wanted, in place of typing the game's link by hand.
   It only builds the link (index.html?game=&level=&seed=&player=) and, for a new player who knows the words, that
-  player's saved record (js/shared/progress.js); the game itself decides everything else. Its games: data/labs.json.
+  player's saved record (js/shared/progress.js); the game itself decides everything else. Its games, and the word
+  moments it plays by themselves (index.html?moment=): data/labs.json.
 -->
 <style>
   /* a page that scrolls, unlike the game's; its colours and sizes are the kit's (set from data/kit.json as it opens) */
@@ -71,15 +72,15 @@
     <button class="go" id="go" type="button">Play</button>
     <p class="link" id="link"></p>
   </section>
+  <section class="box">
+    <b>Word moment</b><div class="seg" id="moments"></div>
+  </section>
 </main>
 <script type="module">
   import { setLook } from "./js/shared/frame.js";
   import { levelsOf } from "./js/shared/round.js";
-  import { loadProgress, knowing, storeProgress, progressKey, OWN_PLAYER } from "./js/shared/progress.js";
+  import { loadProgress, knowing, storeProgress, newPlayer, OWN_PLAYER } from "./js/shared/progress.js";
   import { loadJSON as json } from "./js/core/env.js";
-
-  // the start of every player this page makes, so it can find its own again and clear the last one
-  const LAB_PLAYER = "lab-";
   const [labs, kit] = await Promise.all([json("data/labs.json"), json("data/kit.json")]);
   setLook(kit);
   const levels = [...Array(levelsOf(kit)).keys()].map((i) => i + 1);
@@ -109,6 +110,14 @@
   }
   segment($("games"), labs.games, (g) => (pick.game = g.id), (g) => g.name);
   segment($("levels"), levels, (n) => (pick.level = n), String);
+  // a word moment by itself, shown by pictures alone (data/moments/): it starts at once
+  for (const m of labs.moments) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = m.name;
+    b.addEventListener("click", () => (location.href = `index.html?${new URLSearchParams({ moment: m.id })}`));
+    $("moments").appendChild(b);
+  }
   // only digits are kept, where they are typed; anything else is simply not taken
   $("seed").addEventListener("input", (e) => {
     const box = e.target;
@@ -137,8 +146,9 @@
     $("fresh").checked = pick.fresh;
     $("known").disabled = !pick.fresh;
     $("known").checked = knownNow();
-    $("as").innerHTML = `Playing as: <b>${pick.fresh ? (knownNow() ? "a new player who knows the words" : "a new player") : "the child's own player"}</b>`;
-    $("link").textContent = decodeURIComponent(linkFor(pick.fresh ? `${LAB_PLAYER}(new)` : OWN_PLAYER));
+    const P = kit.cog.player;
+    $("as").innerHTML = `${P.label}: <b>${pick.fresh ? (knownNow() ? P.knows : P.fresh) : P.own}</b>`;
+    $("link").textContent = decodeURIComponent(linkFor(pick.fresh ? "(new)" : OWN_PLAYER));
     try {
       localStorage.setItem(MINE, JSON.stringify(pick));
     } catch (e) {
@@ -153,12 +163,7 @@
     let player = OWN_PLAYER;
     if (pick.fresh) {
       // one new player at a time: the last one's record goes as the next is made
-      try {
-        Object.keys(localStorage).filter((k) => k.startsWith(progressKey(LAB_PLAYER))).forEach((k) => localStorage.removeItem(k));
-      } catch (e) {
-        /* nothing kept to clear */
-      }
-      player = `${LAB_PLAYER}${Date.now().toString(36)}`;
+      player = newPlayer();
       if (pick.known) storeProgress(knowing(loadProgress(player), await json(`data/games/${pick.game}.json`), kit.ladder));
     }
     location.href = linkFor(player);

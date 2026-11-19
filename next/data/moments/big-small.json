@@ -1,0 +1,15 @@
+{
+  "_about": "A word moment shown by pictures alone (js/shared/scenes/word-moment.pictures.js): a big tea jar, then a small one. Its id is its file's name. sides: each word (a language engine id, said and spelt by the engine), its picture, and its scale.",
+  "sides": [
+    {
+      "word": "a.big",
+      "art": "shelf.tea-jar",
+      "scale": 1
+    },
+    {
+      "word": "a.small",
+      "art": "shelf.tea-jar",
+      "scale": 0.55
+    }
+  ]
+}

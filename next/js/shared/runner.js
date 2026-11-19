@@ -6,7 +6,7 @@
  * A scene is { id, rules, view? }.
  *   rules.start(round, chance) -> state           a state named "done" means the scene has nothing to do
  *   rules.move(state, move, ctx) -> { state, events }      ctx: { round }
- *   rules.first(round, state) -> events           what the scene opens with (optional)
+ *   rules.first(round, state) -> events           what the scene opens with (optional), asked once as it is entered
  *   rules.leave(round, state) -> round            what the scene hands on (optional)
  *   view.pictures(round) -> ids | { draw, then }  what the scene shows, from the round as it starts: `draw` before it can
  *                                                 be drawn, `then` straight after
@@ -18,7 +18,8 @@
  *   leaving   its view is closing (its rules have already handed on)
  * and before the first scene, idle; after the last, ended. A move in idle, leaving or ended is not taken.
  * Until a scene is open no time passes for its rules and its view hears nothing, so no clock, help or light can run
- * ahead of the screen: what its rules say waits, and is told as it opens, after its opening events. A child's moves still
+ * ahead of the screen: what its rules say waits, and is told as it opens, after its opening events (asked as it is entered,
+ * so they come before anything it says). A child's moves still
  * reach the rules (a tap that skips the order while the people walk in), so a scene may end before it opens: its view
  * is let finish drawing and is then closed, but told nothing. Pictures load ahead, scene after scene in the list's order
  * from the first scene played: a later scene's while an earlier one plays, so the scene now never waits behind a later
@@ -27,7 +28,9 @@
  * without saying why.
  *
  *   const run = createRunner({ scenes, round, views: true|false, load(ids) -> Promise, onEnd, onError })
- *   run.start()   run.send(move) -> events   run.tree() -> { round, at, scene, state, phase }   run.settled()
+ *   run.start() -> events, run.send(move) -> events: what the move made, and what a scene opened by it (inside that call,
+ *       as with no pictures to wait for, the robot's way) opens with; a scene that opens later is told only to its view
+ *   run.tree() -> { round, at, scene, state, phase }   run.settled()
  */
 import { chanceFrom } from "./round.js";
 
@@ -46,7 +49,8 @@ export function createRunner({ scenes, round, views = true, load = null, onEnd =
     onError(e);
   };
   let loads = null; // each scene's pictures to draw it with, by its place in the list
-  let held = []; // what the scene's rules said before its view opened
+  let held = []; // what the scene's rules say before its view opens, its opening events first
+  let openedNow = null; // inside start or send: what a scene opened there opens with, handed back by that call
   let drawing = null; // the scene's drawing, while it is in flight
   let moving = Promise.resolve();
 
@@ -74,15 +78,14 @@ export function createRunner({ scenes, round, views = true, load = null, onEnd =
   /** Scene i: its pictures, then its drawing, then open. */
   function open(i) {
     tree.phase = "loading";
-    held = [];
     const now = (phase) => tree.at === i && tree.phase === phase;
     const opened = () => {
       drawing = null;
       if (!now("drawing")) return;
       tree.phase = "open";
-      const first = typeof scenes[i].rules.first === "function" ? scenes[i].rules.first(tree.round, tree.state) : [];
-      const events = first.concat(held);
+      const events = held;
       held = [];
+      if (openedNow) openedNow.push(...events);
       if (events.length) tell("on", events, tree.state, tree.round);
     };
     const draw = () => {
@@ -111,6 +114,8 @@ export function createRunner({ scenes, round, views = true, load = null, onEnd =
       tree.state = scenes[i].rules.start(tree.round, chance);
       if (!tree.state || typeof tree.state.name !== "string") throw new Error(`runner: scene "${scenes[i].id}" started without a named state`);
       if (tree.state.name !== "done") {
+        const r = scenes[i].rules;
+        held = typeof r.first === "function" ? r.first(tree.round, tree.state) : [];
         if (!loads) loadAhead(i);
         return open(i);
       }
@@ -147,6 +152,18 @@ export function createRunner({ scenes, round, views = true, load = null, onEnd =
     else enter(next);
   }
 
+  /** Runs fn, handing back what a scene opened inside it opens with (one list per call, so never another call's). */
+  function catching(fn, events = []) {
+    const was = openedNow;
+    openedNow = [];
+    try {
+      fn();
+      return events.concat(openedNow);
+    } finally {
+      openedNow = was;
+    }
+  }
+
   /** A move for the scene now. Returns the events at once: a tap is never held up by a view. */
   function send(move) {
     if (tree.phase === "idle" || tree.phase === "leaving" || tree.phase === "ended") return []; // (before, between or after the scenes)
@@ -158,14 +175,12 @@ export function createRunner({ scenes, round, views = true, load = null, onEnd =
       if (tree.phase === "open") tell("on", events, tree.state, tree.round);
       else held.push(...events);
     }
-    if (tree.state.name === "done") finish();
-    return events;
+    // (and what a scene opened by this move opens with, where it opens at once: no pictures to wait for, as for the robot)
+    return catching(() => tree.state.name === "done" && finish(), events);
   }
 
   return {
-    start() {
-      enter(0);
-    },
+    start: () => catching(() => enter(0)),
     send,
     tree: () => tree,
     settled: () => moving,
