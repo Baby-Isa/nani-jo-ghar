@@ -11,7 +11,7 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
   const G = game.rules;
   const A = settings.art;
   const faceOf = (s) => (i, right) => (right ? people[s.vessels[i].who].faceHappy : people[s.vessels[i].who].faceSad) || people[s.vessels[i].who].face;
-  // where on the page what was made comes up from, and where a thing nobody asked for goes back to
+  // where on the page what was made comes up from
   const page = (box) => {
     const r = stage.pageRect("worktop", box);
     return { left: r.x, top: r.y, width: r.w, height: r.h };
@@ -33,11 +33,7 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
         await D.serving.closeReview();
         // (nothing of the cooking shows over the card: the count pills come back with the remake)
         counts(null);
-        await ui.wrongOrder(e, {
-          pan: (v) => page(D.hob.vesselBox(v)),
-          home: (word) => (D.shelf.ids().includes(word) ? page(D.shelf.picBox(word)) : null),
-          picOf: (word) => stage.art.file(kit.wordArt[word].art),
-        });
+        await ui.wrongOrder(e, { pan: (v) => page(D.hob.vesselBox(v)) });
         send({ type: "understood" });
       });
     },

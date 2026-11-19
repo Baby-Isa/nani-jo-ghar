@@ -14,7 +14,7 @@
  *   const V = createVoice({ player, path, gapMs, wait })    player: {play(url, {onStart}) -> Promise, stop(), synth?(text, o) -> Promise}
  *       wait(ms): the pause between two words, on the caller's clock (one that stands still while the round is held)
  *   V.say({ clipPlan }, { onWord, onStart, queue = false, ifIdle }) -> Promise<{ done }>
- *       onWord(tokens, item): a piece is next; onStart(tokens, item): it is really heard
+ *       onWord(tokens, item): a piece is next; onStart(tokens, item, { ms }?): it is really heard (ms: a clip's length, when known)
  *       queue: false replaces what is said; true waits its turn. ifIdle: said only when nothing is said or waiting.
  *   V.stop()      V.busy() (saying or waiting)
  *   deviceSpeak(text, { times, onStart, due, wait }) -> Promise<heard>    the device voice; due() false: it is not wanted any more
@@ -168,7 +168,7 @@ export function createVoice({ player, path, gapMs = 0, wait = (ms) => new Promis
           /* the caller's problem */
         }
       }
-      const heard = onStart ? () => onStart(it.tokens, it) : null;
+      const heard = onStart ? (info) => onStart(it.tokens, it, info) : null;
       if (it.file && (it.source === "family-ok" || thePath() === "test")) await P.play(it.file, { onStart: heard });
       else if (it.source === "device" && thePath() === "test" && P.synth) await P.synth(it.text, { onStart: heard, due: alive });
       // the pause between two words of a line (none after the last: the next line keeps its own beat)

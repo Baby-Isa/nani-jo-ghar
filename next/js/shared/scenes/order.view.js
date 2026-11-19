@@ -2,13 +2,14 @@
  * The order scene's drawing. Each person says their order part by part; as a part is said its bubble shows over their
  * head and its big card pops, then flies whole into its slot on their card. Said before shown: nothing of an order
  * appears until a voice says it. A tap on the kitchen skips the rest; a tap on a face says that card again.
+ *   meet(key): what the child has now met, kept for good at once (the first-time lesson, as it plays)
  */
 import { createRoom, roomKey, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { atLevel } from "../round.js";
 import { wordStage } from "../progress.js";
 
-export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf }) {
+export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, meet = null }) {
   const O = kit.order;
   let room = null;
   let big = null;
@@ -19,9 +20,15 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
   // (the stage's own clock: it stands still while the round is held behind the turn card)
   const wait = (ms) => stage.wait(ms);
 
+  /** The least time a big card is held: by how well the child knows its word (the kit's words.holdMs). */
+  const holdOf = (round, word) => wait(kit.words.holdMs[wordStage(round, word)]);
+
   /**
    * One part: its bubble and its voice start together; its card pops as the line's first word is really heard (or when the
-   * line ends unheard, a line with no voice at once), is held for its word's time and the line together, and flies as both are over.
+   * line ends unheard, a line with no voice at once), is held for its word's time and the line together, and flies as both
+   * are over. At the levels that show it, the dish's own card comes first, as any item card does but on the dish's own
+   * word, held by that word's time and the line, then goes where it stands: one big card at a time, so a headline's own
+   * item card pops only after it.
    */
   async function sayPart(e, round) {
     const person = round.order.for[e.seat];
@@ -42,8 +49,12 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     let wasHeard = false;
     let heardIt = null;
     const heard = new Promise((res) => (heardIt = res));
+    let dishIt = null;
+    const dishHeard = new Promise((res) => (dishIt = res));
+    const dishEntry = e.dishCard && person.dishWord ? say.entry(person.dishWord) : null;
+    const dishSaid = !!dishEntry && line.tokens.some((tk) => tk.word === dishEntry.id);
     // heard: a clip of the line really started (never a clip that failed to load, a piece with no voice, a sound asleep)
-    const spoken = say.speak(line, { onHeard: () => ((wasHeard = true), heardIt()) }).then(() => room.reading(false));
+    const spoken = say.speak(line, { onHeard: () => ((wasHeard = true), heardIt()), onWord: dishSaid ? { word: dishEntry.id, then: dishIt } : null }).then(() => room.reading(false));
     // a line no voice says is still given its time to be read, so a silent order is never hurried
     const quiet = Math.max(O.silentMin, Math.min(O.silentMax, O.silentBase + O.silentPerLetter * line.text.length)) * O.quietShare;
     const readTime = wait(quiet);
@@ -51,8 +62,17 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     // (a clip still loading is waited for as long as the player itself waits for it: the card never pops before the word)
     await Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
     if (!live) return;
-    let dishCard = null;
-    if (e.dishCard) dishCard = ui.cards.pop(e.seat, null, { line: say.line(person.dishCard, { row: true }), pic: picOf("dish", person) });
+    if (e.dishCard) {
+      // (a line heard waits for its dish word; a line no voice says shows it as its other cards would show)
+      if (wasHeard && dishSaid) await Promise.race([dishHeard, spoken]);
+      if (!live) return;
+      const dishCard = ui.cards.pop(e.seat, null, { line: say.line(person.dishCard, { row: true }), pic: picOf("dish", person) });
+      await Promise.all([holdOf(round, person.dishWord), said]);
+      if (!live) return;
+      const gone = dishCard.out();
+      if (part.lands.length) await gone;
+      if (!live) return;
+    }
     const landing = part.lands[0];
     if (landing) {
       if (head) ui.cards.open(e.seat);
@@ -60,14 +80,15 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
       ui.cards.lead(e.seat, part.lands);
       big = ui.cards.pop(e.seat, landing);
     }
-    const word = landing ? person.items.find((i) => i.id === landing).word : person.items[0].word;
-    await Promise.all([wait(kit.words.holdMs[wordStage(round.ladder, word, kit.ladder)]), said]);
+    // (a part with no card of its own waits only for its line)
+    await Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, said]);
     room.talk(e.seat, false);
     if (!live) return;
-    if (dishCard) dishCard.out();
     if (big) {
-      // the first card with a hidden part: the order waits while the child taps each part open
+      // the first card that hides a part: the order waits while the child taps each hidden part open; it is met for good
+      // the moment it plays, so a round left early never shows it again
       if (e.lesson) {
+        if (meet) meet(e.lesson);
         await big.lesson();
         if (!live) return;
         send({ type: "lessoned" });

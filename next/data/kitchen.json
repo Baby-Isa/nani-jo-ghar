@@ -1,5 +1,5 @@
 {
- "_about": "The stove-top kitchen's own numbers, the same for every kitchen game.",
+ "_about": "The stove-top kitchen's own numbers, the same for every kitchen game. notYetEveryMs, noEveryMs: Nani's 'not yet' (a knob before the green) and her 'no' (a wrong thing refused) are not said again within this long; a 'no' asked for while she speaks is said straight after, never dropped.",
  "heat": {
   "_about": "greenRate: from the green on, the heat climbs at this share of the level's rate. overResetMs: how long a spoiled vessel shows before it starts again. holdAt: where in the green a first-time player's heat waits (share of the band). bubbleLead: the boil shows this many seconds before the green, never under bubbleMin. near: the knob is the step from this far below the green.",
   "greenRate": 0.5,
@@ -11,6 +11,7 @@
   "firstTimeHold": true
  },
  "notYetEveryMs": 1500,
+ "noEveryMs": 1500,
  "lines": {
   "_about": "Nani's lines for the kitchen's own steps, as meanings for the language engine. use: put this thing in ($item is the thing). light, turn-down: the knob. Picking the next vessel shows that vessel's next line, said only with the pick's stuck help, never as it opens (old js/cook/stations/chai-tray.js:393-409); a control's call comes at its step's moment (lights), together with its first light (old js/cook/coach.js:800-840; values.md:82-83).",
   "use": {
@@ -241,7 +242,7 @@
   ]
  },
  "pourMoment": {
-  "_about": "The kitchen's act in the word moment (js/kitchen/pour-moment.js): a kettle pours each glass to its measure. Sizes and times (ms) the old game's (old js/shared/word-moment.js at speed 0.75), the pour's end Zafar's (18 Nov). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses (old :178-215). streamW: the stream's width, in glasses (old :346); streamEdge: the soft edge of its front and end, a share of its length (old :301); fall: things fall as time to this power, slow from the spout, then quicker (old :312). dropW: the last drop, in glasses (old :447). startMs: before the kettle comes; soundWaitMs: it waits at most this long for the pour's sound (old :168, POUR_WAIT, not slowed); moveMs, moveEase: the kettle moving (old :327, :337); tipMs: it tips forward (old :393-394); runMs: the stream running down (old :406); pourBaseMs + pourFullMs x the measure: the tea rising (old :416), at one rate, as the tea lands, until the stream's last reaches it (Zafar, 18 Nov: 'the tea level should keep rising while any part of the poured stream is visible'; the old ease-out, old :428, stopped the level while the stream still showed); tailMs: the stream ending from the top down (old :438), started this long before the tea stops so the last of it lands as the level stops; dropAfterMs: the last drop leaves the spout this long into the end, and lands with it (old :450); afterPourMs: after the tea stops (old :460: 800 ms from the end starting). cardOfGlass, cardRoom: the word card's width for a glass, its size before the counter's room shrank it times this, never wider than its share of the room less cardRoom px (old :520). rimClip: the glass's front lip, laid back over the stream so the stream goes into the glass (rows 3 to 5% of the glass: old css/shared/word-moment.css:29-30).",
+  "_about": "The kitchen's act in the word moment (js/kitchen/pour-moment.js): a kettle pours each glass to its measure. Sizes and times (ms) the old game's (old js/shared/word-moment.js at speed 0.75), the pour's end Zafar's (18 Nov). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses (old :178-215). streamW: the stream's width, in glasses (old :346); streamEdge: the soft edge of its front and end, a share of its length (old :301); fall: things fall as time to this power, slow from the spout, then quicker (old :312). dropW: the last drop, in glasses (old :447). startMs: before the kettle comes; soundWaitMs: it waits at most this long for the pour's sound (old :168, POUR_WAIT, not slowed); moveMs, moveEase: the kettle moving (old :327, :337); tipMs: it tips forward (old :393-394); runMs: the stream running down (old :406); pourBaseMs + pourFullMs x the measure: the tea rising (old :416), at one rate, as the tea lands, until the stream's last reaches it (Zafar, 18 Nov: 'the tea level should keep rising while any part of the poured stream is visible'; the old ease-out, old :428, stopped the level while the stream still showed); tailMs: the stream ending from the top down (old :438), started this long before the tea stops so the last of it lands as the level stops; dropAfterMs: the last drop leaves the spout this long into the end, and lands with it (old :450); afterPourMs: after the tea stops (old :460: 800 ms from the end starting), halved; awayMs: after the last glass the kettle starts going and the look begins this long after, half its move (Zafar, 19 Nov: the wait from the last glass to the first photo halved, about 2 s to 1 s). cardOfGlass, cardRoom: the word card's width for a glass, its size before the counter's room shrank it times this, never wider than its share of the room less cardRoom px (old :520). rimClip: the glass's front lip, laid back over the stream so the stream goes into the glass (rows 3 to 5% of the glass: old css/shared/word-moment.css:29-30).",
   "pitch": 1.9,
   "side": 0.4,
   "glassMost": 0.42,
@@ -263,7 +264,8 @@
   "pourFullMs": 3467,
   "tailMs": 613,
   "dropAfterMs": 213,
-  "afterPourMs": 187,
+  "afterPourMs": 94,
+  "awayMs": 400,
   "cardOfGlass": 1.25,
   "cardRoom": 16,
   "rimClip": "inset(3% 0 95% 0)"

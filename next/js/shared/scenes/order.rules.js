@@ -9,9 +9,11 @@
  *   events: person {seat} | part {seat, part} | landed {seat, items} | skipped | folded
  */
 import { machine } from "../machine.js";
-import { atLevel } from "../round.js";
+import { atLevel, pictureHidden } from "../round.js";
 
 const SPEAKERS = ["each", "nani"];
+// what the child has met once the first-time lesson has played (progress keeps it)
+const LESSON_MET = "revealCard";
 
 /**
  * The parts one person's order is said in: the headline with the things it names, then each other thing said. A thing
@@ -36,7 +38,7 @@ export function orderRules({ settings, kit }) {
   const partEvent = (s, round) => {
     const person = round.order.for[s.seat];
     const part = partsOf(person)[s.part];
-    return { type: "part", seat: s.seat, who: person.who, spokenBy: person.spokenBy, part, last: s.part === partsOf(person).length - 1, lesson: !!s.lesson && !s.lessoned && s.lesson.seat === s.seat && s.lesson.part === s.part, dishCard: s.part === 0 && atLevel(kit.levels.dishCard, round.level) ? person.dishCard || true : null };
+    return { type: "part", seat: s.seat, who: person.who, spokenBy: person.spokenBy, part, last: s.part === partsOf(person).length - 1, lesson: !!s.lesson && !s.lessoned && s.lesson.seat === s.seat && s.lesson.part === s.part ? LESSON_MET : null, dishCard: s.part === 0 && atLevel(kit.levels.dishCard, round.level) ? person.dishCard || true : null };
   };
   const unsaid = (person) => person.items.filter((i) => !i.said).map((i) => i.id);
 
@@ -82,10 +84,15 @@ export function orderRules({ settings, kit }) {
     slots: ["ask", "items", "check", "question", "options"],
     start(round) {
       if (!round.order.for.length) return { name: "done" };
-      // the first-time lesson: once per child, on the first big card of an order whose cards hide a part
-      const hides = !atLevel(kit.levels.cardEnglish, round.level) || !atLevel(kit.levels.cardPicture, round.level);
-      const part = partsOf(round.order.for[0]).findIndex((x) => x.lands.length);
-      const lesson = hides && !round.met.revealCard && part >= 0 ? { seat: 0, part } : null;
+      // the first-time lesson: once ever per child, on the first big card that really hides a part, just before it is seen.
+      // A card hides its picture (it never hides its Kutchi: only Nani's line does); dotted English alone does not call it
+      let lesson = null;
+      round.order.for.forEach((person, seat) =>
+        partsOf(person).forEach((x, part) => {
+          const shows = x.lands[0] && person.items.find((i) => i.id === x.lands[0]);
+          if (!lesson && !round.met[LESSON_MET] && shows && pictureHidden(kit, round, shows.word)) lesson = { seat, part };
+        })
+      );
       return { name: "saying", seat: 0, part: 0, skipped: false, lesson, lessoned: false, peeks: [], repeats: 0 };
     },
     /** The first thing to show: the runner has no events at a scene's start, so the view asks. */
@@ -96,7 +103,7 @@ export function orderRules({ settings, kit }) {
       orderSkipped: !!s.skipped,
       peeks: (round.peeks || []).concat(s.peeks || []),
       hints: (round.hints || 0) + (s.peeks || []).length + (s.repeats || 0),
-      met: s.lessoned ? { ...round.met, revealCard: true } : round.met,
+      met: s.lessoned ? { ...round.met, [LESSON_MET]: true } : round.met,
     }),
   };
 }

@@ -4,13 +4,14 @@
  * and a breath has gone. The cook rules time every movement they start (a pour, a spoonful, a serve), so they know when
  * the kitchen is still, and the moment is worked out again on every move (a movement started meanwhile pushes it back).
  * At the moment a first-time light is shown, and so spent (a step left before its moment keeps its light for the next
- * time), and the stuck help's wait starts again; the end of each movement restarts it too, as a tap does.
+ * time). The stuck help's wait runs from the step's opening (Zafar, 19 Nov), its clock standing still until the moment, so
+ * help never lands on a first light; the end of each movement restarts it, as a tap does.
  *
  *   stepMoment({ settings, kit, kitchen }) -> { opening(s, step, events) -> s, opened(s, events) -> s, keyOf(step) }
  *       keyOf: a step's identity (a step whose key changes has opened anew)
  *   events: step {step} as a step opens | open {step, first?} at its moment: its first-time light and its call (step.spoken)
  */
-import { acted, stepped } from "../shared/kit/help.rules.js";
+import { stepped } from "../shared/kit/help.rules.js";
 
 export function stepMoment({ settings, kit, kitchen }) {
   const L = kitchen.lights;
@@ -56,12 +57,12 @@ export function stepMoment({ settings, kit, kitchen }) {
     if (st) events.push({ type: "step", step: st });
     return { ...s, step: st, help: stepped(s.help), moment: st && st.kind !== "wait" ? { wait: st.wait, from: s.clock, first } : null };
   }
-  /** The moment has come: the light is shown (and so spent), the call said, and the stuck help's wait starts again. */
+  /** The moment has come: the light is shown (and so spent) and the call said; the stuck help's wait runs on. */
   function opened(s, events) {
     if (!s.moment || s.clock < dueAt(s)) return s;
     const { first } = s.moment;
     events.push({ type: "open", step: s.step, first });
-    return { ...s, moment: null, help: acted(s.help), lit: first && !s.lit.includes(first) ? s.lit.concat(first) : s.lit };
+    return { ...s, moment: null, lit: first && !s.lit.includes(first) ? s.lit.concat(first) : s.lit };
   }
 
   return { opening, opened, keyOf };

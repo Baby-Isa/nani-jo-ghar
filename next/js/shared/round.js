@@ -5,11 +5,14 @@
  *
  *   chanceFrom(holder) -> () => number in [0, 1)        holder: { seed, drawn }; each draw moves `drawn` on
  *   levelsOf(kit) -> how many levels there are       atLevel(list, level) -> a level's entry
- *   newRound({ game, settings, people, level, seed, player, ladder, met, today, best, earned, card }) -> round      today: the day, as text (a greeting is due on the day's first meeting)
+ *   pictureHidden(kit, round, word) -> whether a word's card blurs its picture this round
+ *   newRound({ game, settings, people, level, seed, player, ladder, met, today, best, earned, tried, card }) -> round      today: the day, as text (a greeting is due on the day's first meeting)
  *       settings.order: who orders and what each can ask for, by level (the game's settings file)
  *       people: the family, by id (data/people.json)
  *       ladder: the child's word ladder as the round starts, { wordId: stage }
- *       card(asks, { level, words }) -> { headline, items }   the game's own rule for turning asks into a card
+ *       earned, tried: the words whose shelf pill is earned, and those picked right at least once, { wordId: true }
+ *       card(asks, { level, words }) -> { headline, items, dishCard?, dishWord? }   the game's own rule for turning asks into a
+ *       card; dishCard: the dish's own card as a meaning, dishWord: the word it is (said in the headline)
  */
 
 export function chanceFrom(holder) {
@@ -27,6 +30,9 @@ export const levelsOf = (kit) => kit.levels.count;
 
 /** A level's entry in a by-level list: the last entry stands for every later level. */
 export const atLevel = (list, level) => (Array.isArray(list) && list.length ? list[Math.min(level, list.length) - 1] : undefined);
+
+/** The level hides a card's picture only for a word the child has earned (its shelf pill the speaker alone). */
+export const pictureHidden = (kit, round, word) => !atLevel(kit.levels.cardPicture, round.level) && !!round.earned[word];
 
 function shuffle(list, chance) {
   const a = list.slice();
@@ -61,11 +67,12 @@ function taught(ask, level, seat, ladder) {
   return isNew ? t.seats[seat] : undefined;
 }
 
-export function newRound({ game, settings, people, level, seed, player = {}, ladder = {}, met = {}, today = null, best = {}, earned = {}, card }) {
+export function newRound({ game, settings, people, level, seed, player = {}, ladder = {}, met = {}, today = null, best = {}, earned = {}, tried = {}, card }) {
   const o = settings.order;
   if (!["each", "nani"].includes(o.speaker)) throw new Error(`round: order.speaker "${o.speaker}" is not a way of speaking the order`);
   const round = { game, level, seed: seed >>> 0, drawn: 0, player: { gender: player.gender || null }, ladder: { ...ladder }, met: { ...met }, today };
   round.earned = { ...earned }; // the words whose shelf pill is the speaker alone
+  round.tried = { ...tried };
   round.best = best[`${game}:${level}`] || null; // the best time so far at this level
   // a greeting is due on the first meeting of the day
   round.greeting = !!settings.greeting && !!today && met.greetedOn !== today;
@@ -89,7 +96,7 @@ export function newRound({ game, settings, people, level, seed, player = {}, lad
         asks[ask.id] = t !== undefined ? t : drawAsk(ask, level, usual[ask.id], chance);
       }
       const c = card(asks, { level, words: settings.words });
-      return { who: p.id, spokenBy: o.speaker === "each" ? p.id : "nani", asks, headline: c.headline, items: c.items, dishCard: c.dishCard || null };
+      return { who: p.id, spokenBy: o.speaker === "each" ? p.id : "nani", asks, headline: c.headline, items: c.items, dishCard: c.dishCard || null, dishWord: c.dishWord || null };
     }),
   };
   return round;

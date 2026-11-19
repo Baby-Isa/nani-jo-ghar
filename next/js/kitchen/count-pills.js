@@ -30,7 +30,9 @@ export function createCountPills({ stage, say, kit, kitchen, onTap }) {
       el.dataset.ownTaps = "1";
       el.dataset.item = c.item;
       const word = asWords ? say.line({ fn: "Item", kind: c.item, n: c.n }, { row: true }).pieces[0].t : "●".repeat(Math.min(CP.dotsMost, c.n));
-      el.innerHTML = `<img src="${stage.art.file(kit.wordArt[c.item].art)}" alt=""><span>${word}</span>`;
+      // the thing's close-up fills the round, so it reads at pill size (Zafar, 19 Nov: "the pill items should fill the circle as much as possible")
+      const wa = kit.wordArt[c.item];
+      el.innerHTML = `<img src="${stage.art.file(wa.closeup ?? wa.art)}" alt=""><span>${word}</span>`;
       el.addEventListener("pointerdown", () => onTap(c.item));
       stage.el.over.appendChild(el);
       return el;

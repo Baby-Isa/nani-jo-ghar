@@ -10,7 +10,7 @@
  *   moves while cooking: item {id} | knob {vessel} | vessel {vessel} | face {vessel} | count {item} | time {ms} | hint
  *   (Nani's hint opened or shut: her helper card and the step's word; counted as help; opened on a word she hides, it is a
  *   peek at that word, so the word's ladder does not move this round)
- *   then: reviewed and, for wrong dishes, understood; wrong-order {right, wrong: [{vessel, who, faults}]},
+ *   then: reviewed and, for wrong dishes, understood; wrong-order {right, wrong: [{vessel, who, faults, play}]},
  *   remake {vessels, away}: only those are made again, the rest leave the screen (state.away) until all-right
  *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's row)
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
@@ -20,7 +20,8 @@ import { atLevel } from "../shared/round.js";
 import { newFire, turn, pass, spend, zone, nearGreen } from "./heat.rules.js";
 import { newHelp, acted, rush, pass as helpPass } from "../shared/kit/help.rules.js";
 import { stepMoment } from "./moment.rules.js";
-import { dishCheck } from "../shared/kit/wrong-order.rules.js";
+import { dishCheck, playOf } from "../shared/kit/wrong-order.rules.js";
+import { ruling } from "../shared/kit/mistakes.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
 
@@ -138,11 +139,17 @@ export function cookRules({ game, settings, kitchen, kit }) {
 
   const setVessel = (s, v, patch) => ({ ...s, vessels: s.vessels.map((x, i) => (i === v ? { ...x, ...patch } : x)) });
 
+  /**
+   * Another vessel is chosen. The one left may close (a glass holding what was asked is final once left): it closes as
+   * every glass does, seen and heard, never silently.
+   */
   function choose(s, v, events) {
     if (v === s.chosen) return s;
     const from = s.chosen;
     events.push({ type: "chosen", vessel: v, from });
-    return { ...setVessel(s, from, { dish: G.setAside(s.vessels[from].dish) }), chosen: v };
+    const left = G.setAside(s.vessels[from].dish, ctxOf(s, from));
+    if (left.closed && !s.vessels[from].dish.closed) events.push({ type: "closed", vessel: from });
+    return { ...setVessel(s, from, { dish: left }), chosen: v };
   }
 
   /** After every move: the step may have changed, and the scene may be over. */
@@ -158,6 +165,9 @@ export function cookRules({ game, settings, kitchen, kit }) {
       events.push(...r.events.map((e) => ({ ...e, step: next.step })));
     }
     if (!busyNow(next) && next.vessels.every((x, v) => G.served(x.dish, ctxOf(next, v)))) {
+      // every glass is final as the dishes are looked at: one still open closes now, seen as every glass closes
+      next.vessels.forEach((x, v) => !x.dish.closed && events.push({ type: "closed", vessel: v }));
+      next = { ...next, vessels: next.vessels.map((x) => ({ ...x, dish: G.close(x.dish) })) };
       const checks = next.vessels.map((x, v) => checkOf(next, v));
       // a row that is wrong at any look stays "not right first time", however the dish ends
       const vessels = next.vessels.map((x, v) => ({ ...x, missed: [...new Set(x.missed.concat(Object.keys(checks[v].byRow).filter((r) => !checks[v].byRow[r])))] }));
@@ -184,6 +194,19 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const how = settings.row.how[mv.id] || settings.row.how.other;
           if (busyNow(s) && how === "pour") return { state: s, events: [] };
           if (refused) return settle(setVessel(s, v, { dish: out.dish }), [{ type: "wiggle", item: mv.id, why: refused.why }]);
+          // the level's rule for mistakes, every game's (the kit's): a wrong thing or amount refused with the wiggle and
+          // Nani's "no" where the level refuses it; a thing that has all it can take refused with the wiggle alone
+          const ctx = ctxOf(s, v);
+          const said = ruling({ kit, level: s.level, wrong: G.wrongNow(x.dish, mv.id, ctx), n: G.howMany(x.dish, mv.id, ctx), once: settings.row.once.includes(mv.id) });
+          if (said === "full") return settle(s, [{ type: "wiggle", item: mv.id }]);
+          if (said === "no") {
+            // one more of an asked thing than was asked costs that row its first try (a thing nobody asked for costs none)
+            const row = x.items.find((i) => i.word === mv.id && !i.no);
+            const next = row && !x.missed.includes(row.id) ? setVessel(s, v, { missed: x.missed.concat(row.id) }) : s;
+            // (said again only after a beat: a run of taps queues one "no", not one each)
+            const again = s.clock - s.noAt >= kitchen.noEveryMs;
+            return settle(again ? { ...next, noAt: s.clock } : next, [{ type: "wiggle", item: mv.id }].concat(again ? { type: "no" } : []));
+          }
           const went = out.events.find((e) => e.type === "in");
           let next = setVessel(s, v, { dish: out.dish });
           if (went) next = moving(next, how === "pour" ? pourMs : spoonMs, how === "pour");
@@ -223,11 +246,13 @@ export function cookRules({ game, settings, kitchen, kit }) {
           if (busyNow(s)) return { state: s, events: [] };
           const v = mv.vessel;
           const events = [];
-          let next = choose(s, v, events);
+          // a tap on a vessel (or its glass) not chosen only chooses it, ready or not: a second tap pours. Choosing another
+          // is a move, so the stuck help's wait starts again (as the old game's pan tap)
+          if (v !== s.chosen) return settle(choose(s, v, events), events, { rightMove: true });
+          let next = s;
           const x = next.vessels[v];
-          // nothing is taken before the green: a vessel that is not ready, or served, is only chosen; choosing another is a
-          // move, so the stuck help's wait starts again (as the old game's pan tap)
-          if (x.fire.fire !== "ready") return settle(next, events, { rightMove: v !== s.chosen });
+          // nothing is taken before the green
+          if (x.fire.fire !== "ready") return settle(next, events);
           const out = G.take(x.dish, ctxOf(next, v));
           if (out.events.some((e) => e.type === "refused")) return settle(next, events.concat({ type: "wiggle", vessel: v }));
           next = setVessel(next, v, { dish: out.dish, fire: out.left ? x.fire : spend(x.fire) });
@@ -277,7 +302,8 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const ended = s.moves.filter((m) => m.until <= clock);
           let next = { ...s, clock, moves: s.moves.filter((m) => m.until > clock), vessels, stillAt: Math.max(s.stillAt, ...ended.map((m) => m.until)) };
           if (ended.length) next = { ...next, help: acted(next.help) };
-          // no stuck-help time passes while the step's moment is still to come (the moment starts its wait again)
+          // the level's wait runs from the step's start, but its clock stands still while the step's moment (its first light)
+          // is still to come, so help never lands on the moment the light shows
           const h = helpPass(next.help, next.moment ? 0 : mv.ms, helped(next) ? atLevel(kit.levels.hintS, s.level) * 1000 : 0);
           next = { ...next, help: h.help };
           events.push(...h.events.map((e) => ({ ...e, step: next.step })));
@@ -291,8 +317,13 @@ export function cookRules({ game, settings, kitchen, kit }) {
           if (!wrong.length) return { state: { ...s, name: "done", away: [] }, events: [{ type: "all-right" }] };
           let next = s;
           for (const v of wrong) next = setVessel(next, v, { tries: next.vessels[v].tries + 1 });
-          // each wrong card's rows, as the card shows them: right, missed, too few, too many or extra
-          const cards = wrong.map((v) => ({ vessel: v, who: s.vessels[v].who, faults: s.checks[v].faults }));
+          // each wrong card's rows (right, missed, too few, too many or extra), and what it plays: the dish as made onto the
+          // card until it is the order as asked
+          const cards = wrong.map((v) => {
+            const ctx = ctxOf(s, v);
+            const play = playOf(s.vessels[v].items, s.checks[v].faults, G.made(s.vessels[v].dish, ctx), (word, n) => G.thing(word, n, ctx));
+            return { vessel: v, who: s.vessels[v].who, faults: s.checks[v].faults, play };
+          });
           // the orders still on screen that are right go first; the ones already gone stay gone
           const right = s.checks.map((c, v) => v).filter((v) => s.checks[v].right && !s.away.includes(v));
           return { state: { ...next, name: "wrong-order", wrong }, events: [{ type: "wrong-order", right, wrong: cards }] };
@@ -331,6 +362,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
         moves: [],
         stillAt: 0,
         notYetAt: -1e9,
+        noAt: -1e9,
         row: rowFor(round, chance),
         lit: [],
         metLit: round.met.lit || [],

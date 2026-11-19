@@ -12,7 +12,8 @@
  * A word with no recording is read by the device voice (the test path only), which the voice module provides.
  *
  *   const P = webAudioPlayer({ settings, synth })
- *   P.play(url, { onStart? }) -> Promise<played>   onStart: the clip has really started (loaded, decoded, the sound awake)
+ *   P.play(url, { onStart? }) -> Promise<played>   onStart({ ms }): the clip has really started (loaded, decoded, the sound
+ *       awake); ms: how long the part of it that plays lasts
  *   P.stop()   P.load(url) -> Promise<buffer | null>   P.hold(on)   P.synth(text) -> Promise
  */
 import { stamp } from "./env.js";
@@ -155,7 +156,7 @@ export function webAudioPlayer({ settings, synth = null }) {
         ctx.removeEventListener("statechange", hear);
         hearing.delete(hear);
         try {
-          onStart();
+          onStart({ ms: span.dur * 1000 });
         } catch (e) {
           /* the caller's problem */
         }

@@ -2,13 +2,14 @@
  * The order cards in the side panel, one per person: their face, their order as one line, and a row of item cards,
  * each one of the thing in the shelf's own picture. Nothing of an order shows before it is said: a slot is a dashed
  * outline until its card lands. A card ticks the moment its thing is done, in any order; a served card folds to its
- * top line with a gold tick. The same word card is used here, in the big pop-up and in Nani's helper. Each card's row
+ * top line with a gold tick, which gives one pop at the well done. The same word card is used here, in the big pop-up and in Nani's helper. Each card's row
  * is ./order-row.js (its rule: ./row.rules.js); the big card is ./big-card.js.
  *
  *   const cards = createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds })
  *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.focus(seat)  cards.slot(seat, id) -> rectangle
  *   cards.land(seat, ids)  cards.landAll()  cards.ticks(seat, ids)  the rules' ticked rows, in the order ticked
  *   cards.served(seat)  cards.reopen(seat)  cards.lineOf(seat, id)  cards.headOf(seat)
+ *   cards.cheer(seat)   a served card's tick gives one pop (the well done)
  *   cards.lead(seat, ids)  the order: the row glides so these cards land whole, the place before them at the left
  *   cards.pop(seat, id | null, dish?) -> the big card: { fly() -> Promise, out() -> Promise, lesson() -> Promise, el }
  *   cards.bigPlace(heads, bubble, { again? }) -> where the big card sits for this order, in the play area's px (kept for the
@@ -18,15 +19,21 @@
  *   cards.copy(seat) -> { top, rows: [{ id, el, line, word, no, said, pic }] }   a copy of the card's top line (its face
  *       and order, nothing on it to press) and of its item cards, nothing ticked, in the order asked (the wrong-order card
  *       shows it); pic: the item's picture's file          cards.boxOf(seat) -> its top line's rectangle on the page
+ *   cards.make(seat, { word, meaning }, { plain? }) -> { el, line }   an item card for a thing as it was made (a count, an
+ *       amount, a thing nobody asked for), in this person's cards' own look, nothing on it to press (the wrong-order card
+ *       shows it); plain: its picture whole and its English written, whatever the level
  *   cards.away(seats, top?)   these cards leave the list (orders done right while another is remade), `top` first of the
  *       rest; with none away, every card is back in the order they ordered
  */
 import { lineHtml } from "./nani-box.js";
 import { wordCardHtml, wirePeeks, wireSpeaker, spaceWords } from "./word-card.js";
-import { atLevel } from "../round.js";
+import { atLevel, pictureHidden } from "../round.js";
 import { panelOf } from "./order-panel.js";
 import { createRow } from "./order-row.js";
 import { createBigCard } from "./big-card.js";
+
+// (a copy is only shown: nothing on it is a button to press)
+const still = (el) => el.querySelectorAll("button").forEach((b) => b.replaceWith(Object.assign(document.createElement("span"), { className: b.className, innerHTML: b.innerHTML })));
 
 export function createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds }) {
   const host = stage.el.cards;
@@ -37,9 +44,8 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
   const showEnglish = atLevel(kit.levels.cardEnglish, round.level);
   const itemWords = new Set(round.order.for.flatMap((p) => p.items.map((i) => say.entry(i.word).id)));
 
-  const showPicture = atLevel(kit.levels.cardPicture, round.level);
   /** One word card's inside. The level hides the English; it hides the picture only of a word the child has earned. */
-  const wordCard = (line, pic, word, o = {}) => wordCardHtml({ file: stage.art.file, line, pic, kit, english: showEnglish, blurred: !showPicture && !!round.earned[word], ...o });
+  const wordCard = (line, pic, word, o = {}) => wordCardHtml({ file: stage.art.file, line, pic, kit, english: showEnglish, blurred: pictureHidden(kit, round, word), ...o });
   const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds });
 
   const seats = round.order.for.map((p, seat) => {
@@ -95,8 +101,9 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       seats[seat].row.served();
       seats[seat].el.classList.add("served");
     },
+    cheer: (seat) => seats[seat].el.classList.add("cheered"),
     reopen(seat) {
-      seats[seat].el.classList.remove("served");
+      seats[seat].el.classList.remove("served", "cheered");
       setOpen(seat, true);
       seats[seat].row.reopen();
     },
@@ -113,10 +120,16 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       top.querySelector(".facebtn").replaceWith(...top.querySelector(".facebtn").childNodes);
       const asked = new Map(seats[seat].person.items.map((it) => [it.id, it]));
       const rows = [...seats[seat].items.values()].map((it) => ({ id: it.id, line: it.line, word: it.word, no: it.no, said: asked.get(it.id).said, pic: stage.art.file(it.pic), el: it.el.cloneNode(true) }));
-      // (a copy is only shown: nothing on it is a button to press)
-      const still = (el) => el.querySelectorAll("button").forEach((b) => b.replaceWith(Object.assign(document.createElement("span"), { className: b.className, innerHTML: b.innerHTML })));
       rows.forEach((r) => (r.el.classList.remove("done", "cross", "waiting"), still(r.el)));
       return { top, rows };
+    },
+    make(seat, { word, meaning }, { plain = false } = {}) {
+      const line = say.line(meaning, { row: true });
+      const el = document.createElement("div");
+      el.className = "icard";
+      el.innerHTML = `${wordCard(line, picOf({ word }, seats[seat].person), word, plain ? { english: true, blurred: false } : {})}<span class="tick"></span>`;
+      still(el);
+      return { el, line };
     },
     boxOf: (seat) => seats[seat].el.querySelector(".ocard-top").getBoundingClientRect(),
     away(list, top = null) {

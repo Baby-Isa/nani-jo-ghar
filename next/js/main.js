@@ -9,7 +9,7 @@ import { createStage } from "./shared/stage.js";
 import { createFrame, setLook } from "./shared/frame.js";
 import { createRunner } from "./shared/runner.js";
 import { newRound, levelsOf } from "./shared/round.js";
-import { loadProgress, saveRound, newPlayer, playerName, OWN_PLAYER } from "./shared/progress.js";
+import { loadProgress, saveRound, meetNow, newPlayer, playerName, triedOf, OWN_PLAYER } from "./shared/progress.js";
 import { loadJSON as json } from "./core/env.js";
 
 const ask = new URLSearchParams(location.search);
@@ -56,8 +56,8 @@ async function start() {
   let offTick = null;
   async function play() {
     const seed = Number(ask.get("seed")) || Math.floor(Math.random() * 2 ** 31);
-    const round = newRound({ game: id, settings, people: people.people, level, seed, player: progress.player, ladder: progress.ladder, met: progress.met, today: new Date().toDateString(), best: progress.best, earned: progress.earned, card: game.rules.card });
-    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, player };
+    const round = newRound({ game: id, settings, people: people.people, level, seed, player: progress.player, ladder: progress.ladder, met: progress.met, today: new Date().toDateString(), best: progress.best, earned: progress.earned, tried: triedOf(progress), card: game.rules.card });
+    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, player, meet: (key) => meetNow(progress, key) };
     let run = null;
     const scenes = await familyCode.scenesWithViews({ ...parts, send: (move) => run.send(move), tree: () => run.tree() });
     run = createRunner({

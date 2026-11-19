@@ -2,12 +2,13 @@
  * The one word card: a picture, the Kutchi word and its English small beneath. The same card is the order row's item
  * card and the big card that pops as a thing is said. Its support follows the level: the English may be dots and the
  * picture blurred behind an eye; one tap shows either for a moment (a peek, which never counts against the child).
- * The first time a child meets a card with a hidden part, a short lesson lights each part in turn for a tap.
+ * The first time a child meets a card that hides its picture, a short lesson lights each hidden part in turn for a tap.
  *
  *   wordCardHtml({ file, line, pic, english, blurred, kit, rule = true }) -> the card's inside: its picture, its words,
  *       the divider over its speaker (rule) and the speaker
- *   wireSpeaker(card, { say, line }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said; a
- *       tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would
+ *   wireSpeaker(card, { say, line, now? }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said;
+ *       a tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would. now: it never
+ *       waits behind another line either (Nani's helper card: her line is already said, the child asked for the word)
  *   spaceWords(cards, kit)   every word card (the row's, the big card, the word moment's; one card or an order row) spaced
  *       as the old game's card (below): its words fitted to the card, one size each per row, and on the row's card only, the
  *       divider's gap to the English's ink. Run now, once the faces are in, and when the card's width or the panel's scale
@@ -30,7 +31,7 @@ export function wordCardHtml({ file, line, pic, english, blurred, kit, rule = tr
     <div class="en${english ? "" : " dots"}"><span class="w">${esc(line.en)}</span><button class="d" aria-label="Show">${dots(nEn)}</button></div>${rule ? `<div class="rule"></div>` : ""}<button class="speaker" aria-label="Say it"></button>`;
 }
 
-export function wireSpeaker(card, { say, line }) {
+export function wireSpeaker(card, { say, line, now = false }) {
   const spk = card.querySelector(".speaker");
   // (a speaker's tap is its own: the play area must not read it as "a tap on the room", which skips the order)
   spk.setAttribute("data-own-taps", "");
@@ -40,7 +41,7 @@ export function wireSpeaker(card, { say, line }) {
     const mine = ++turn;
     spk.classList.add("on");
     // (its own word again replaces itself; anything else said now is not cut short, the word waits its turn)
-    const done = say.speak(line, { queue: !saying });
+    const done = say.speak(line, { queue: !saying && !now });
     saying = true;
     await done;
     if (mine !== turn) return;
@@ -270,15 +271,15 @@ function partBox(part, K) {
   return i ? { x: i.x, y: i.y, w: i.w, h: i.h } : rectOf(part);
 }
 
-/** The lesson on a big card: everything hidden, then each part lit in turn; a tap on the lit part shows it. */
+/** The lesson on a big card: each part the card hides (its blurred picture, its dotted English) lit in turn; a tap on the lit part shows it. */
 export async function revealLesson(card, { kit, light, sounds }) {
   const K = kit.cards;
   card.classList.add("lesson");
-  const parts = [".well", ".ku", ".en"].map((sel) => card.querySelector(sel)).filter((p) => p && p.getBoundingClientRect().height >= K.lessonMinPx);
+  const parts = [".well.blur", ".en.dots"].map((sel) => card.querySelector(sel)).filter((p) => p && p.getBoundingClientRect().height >= K.lessonMinPx);
   // the lesson's light holds each part's ink in one box (a hidden word and every one of its dots: old js/cook/ui.js blurLesson), with the same room
-  // on all four sides, kept clear of the other parts' ink: the kit's one light, its margin and its least room as every
+  // on all four sides, kept clear of the card's other parts' ink: the kit's one light, its margin and its least room as every
   // light's (js/shared/kit/light.js litBox; Zafar, 19 Nov: "equal padding all around")
-  const near = [...parts, card.querySelector(".speaker")].filter(Boolean);
+  const near = [".well", ".ku", ".en", ".speaker"].map((sel) => card.querySelector(sel)).filter(Boolean);
   // each step's boxes are measured once, and again only when the card has moved or changed size (the screen turned) or a
   // part has opened (its dots become letters, so its light follows the word)
   let at = null;

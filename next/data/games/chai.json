@@ -168,7 +168,8 @@
   "mode": "auto"
  },
  "heat": {
-  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share.",
+  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share. foamShare: past the green, milky chai foams up for this share of the way to boiling over, then spills (black tea spills straight away).",
+  "foamShare": 0.5,
   "byLevel": [
    {
     "rate": 0.09,
@@ -193,7 +194,7 @@
   ]
  },
  "row": {
-  "_about": "The bottom row: two fixed groups, then the spices (what was asked for, with the level's decoys from the pool, shuffled). The lookalike stands beside the sugar's own jar at the levels that have one. always: the things every dish needs, asked for or not. spoon: which of the game's spoons a kind of thing travels on.",
+  "_about": "The bottom row: two fixed groups, then the spices (what was asked for, with the level's decoys from the pool, shuffled). The lookalike stands beside the sugar's own jar at the levels that have one. always: the things every dish needs, asked for or not. once: the things that go into a pan once, the water, the milk and the tea (Zafar, 19 Nov); every other thing goes in up to the kit's most of one (data/kit.json levels.mostOfOne). spoon: which of the game's spoons a kind of thing travels on.",
   "groups": [
    [
     "cook-paani",
@@ -222,15 +223,17 @@
    "cook-paani",
    "cook-chai"
   ],
+  "once": [
+   "cook-paani",
+   "cook-dudh",
+   "cook-chai"
+  ],
   "spoon": {
    "sugar": "sugar",
    "lookalike": "sugar",
    "back": "clean",
    "other": "clean"
   }
- },
- "rules": {
-  "sugarMax": 6
  },
  "motion": {
   "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge.",
@@ -376,6 +379,24 @@
     "id": "num.3",
     "role": "primary",
     "level": 2
+   },
+   {
+    "id": "num.4",
+    "role": "tertiary",
+    "level": 2,
+    "why": "the wrong-order card counts what went in, up to six of one thing"
+   },
+   {
+    "id": "num.5",
+    "role": "tertiary",
+    "level": 2,
+    "why": "the wrong-order card counts what went in, up to six of one thing"
+   },
+   {
+    "id": "num.6",
+    "role": "tertiary",
+    "level": 2,
+    "why": "the wrong-order card counts what went in, up to six of one thing"
    },
    {
     "id": "neg.not",
@@ -622,26 +643,27 @@
   ]
  },
  "art": {
-  "_about": "Chai's pictures, by art id. pan: one pan from above in six looks, placed by its rim. over: pictures laid over the pan's contents. emptying, filling: the six frames of a pour, pan and glass, milky and black. amountCard: the half glass of black tea has no picture on the art list yet, so the half glass of chai stands in for it. A ref ending \"#*\" is every state of the piece, in order (the frames).",
+  "_about": "Chai's pictures, by art id. pan: one pan from exactly above in its looks, all painted on one base (art run C1), so each is placed by the same rim; over-milky and over-black are the pan boiling over. over: pictures laid over the pan's contents (none now: each boil is a whole look of the pan). onSurface: a spoonful's mark in the pan, by what went in: the thing's own close-up, small, lying on the tea until the boil takes it. emptying, filling: the six frames of a pour, pan and glass, milky and black, made by the cutter from the full and emptied pictures (Zafar, 19 Nov). dishCard: the dish's own card, one plain glass of chai for every order, so it never gives away milk or none (Zafar, 19 Nov). amountCard: the side-on glass for half and full, milky or black. A ref ending \"#*\" is every state of the piece, in order (the frames).",
   "pan": {
-   "empty": "chai.pan#empty",
-   "water": "chai.pan@s14#water",
-   "leaves": "chai.pan-leaves@s14",
-   "milk": "chai.pan-milk",
-   "boil": "chai.pan-boil-milky@s14",
-   "black": "chai.pan-black"
+   "empty": "chai.pan-c2#empty",
+   "water": "chai.pan-c2#water",
+   "leaves": "chai.pan-c2#leaves",
+   "milk": "chai.pan-c2#milk",
+   "boil": "chai.pan-c2#boil",
+   "black": "chai.pan-c2#black",
+   "boil-tea": "chai.pan-c2#boil-tea",
+   "foam": "chai.pan-c2#foam",
+   "over-milky": "chai.pan-c2#over-milky",
+   "over-black": "chai.pan-c2#over-black"
   },
-  "over": {
-   "boil-tea": "chai.pan-boil-tea",
-   "foam": "chai.pan-foam"
-  },
+  "over": {},
   "emptying": {
-   "milky": "chai.pan-empty-milky#*",
-   "black": "chai.pan-empty-black#*"
+   "milky": "chai.pan-c2-empty-milky#*",
+   "black": "chai.pan-c2-empty-black#*"
   },
   "filling": {
-   "milky": "chai.glass-fill-milky#*",
-   "black": "chai.glass-fill-black#*"
+   "milky": "chai.glass-c2-fill-milky#*",
+   "black": "chai.glass-c2-fill-black#*"
   },
   "spoon": {
    "sugar": "chai.teaspoon-sugar",
@@ -649,30 +671,32 @@
    "wet": "chai.teaspoon-chai"
   },
   "onSurface": {
-   "spi-10": "chai.elchi",
-   "veg-14": "chai.ginger-slices"
+   "cook-khun": "kit.closeup-sugar",
+   "spi-10": "kit.closeup-cardamom",
+   "veg-14": "kit.closeup-ginger",
+   "veg-13": "kit.closeup-garlic",
+   "spi-16": "kit.closeup-salt",
+   "spi-02": "kit.closeup-cumin-seeds",
+   "spi-05": "kit.closeup-mustard-seeds"
   },
   "served": "served.chai",
-  "dishCard": {
-   "milky": "shared.word-moment.card-full-chai",
-   "black": "shared.word-moment.card-full-tea"
-  },
+  "dishCard": "chai.card-full-chai",
   "amountCard": {
    "ph-half": {
-    "milky": "shared.word-moment.card-half-chai",
-    "black": "shared.word-moment.card-half-chai"
+    "milky": "chai.card-half-chai",
+    "black": "chai.card-half-tea"
    },
    "ph-full": {
-    "milky": "shared.word-moment.card-full-chai",
-    "black": "shared.word-moment.card-full-tea"
+    "milky": "chai.card-full-chai",
+    "black": "chai.card-full-tea"
    }
   }
  },
  "vessel": {
-  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. dip: the small settle when something lands.",
-  "reach": 1.9633,
-  "rimSrc": 158,
-  "innerSrc": 140,
+  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: a spoonful's mark, its width a share of the contents' radius (size), on a spiral reaching this share of it (reach) when most marks lie there (more go on outward), and how strongly it shows on the tea (alpha); it fades as the boil takes it. dip: the small settle when something lands.",
+  "reach": 1.9676,
+  "rimSrc": 200,
+  "innerSrc": 187.4,
   "mirror": true,
   "box": {
    "w": 4.3,
@@ -683,6 +707,12 @@
    "size": 2.15
   },
   "overlay": 1.03,
+  "marks": {
+   "size": 0.3,
+   "reach": 0.62,
+   "most": 12,
+   "alpha": 0.92
+  },
   "dip": {
    "to": 0.982,
    "downMs": 75,
@@ -690,10 +720,10 @@
   }
  },
  "serving": {
-  "_about": "The serving spot: the wooden tray with a well for each glass. wells: each well's middle as shares of the tray; wellD: a well's width as a share of the tray's; aspect: the tray picture's height over its width. A resting half glass is filling frame 4, a full one frame 6. art: the tray (base) and a dish before anything is in it (empty).",
+  "_about": "The serving spot: the wooden tray with a well for each glass. wells: each well's middle as shares of the tray; wellD: a well's width as a share of the tray's; aspect: the tray picture's height over its width. halves: the pours a glass takes to be full, a half being one. A resting half glass is filling frame 4, a full one frame 6. art: the tray (base) and a dish before anything is in it (empty).",
   "art": {
    "base": "chai.tray-4-cutout",
-   "empty": "chai.glass-empty#top"
+   "empty": "chai.glass-c2#empty"
   },
   "wells": [
    [
@@ -715,6 +745,7 @@
   ],
   "wellD": 0.33,
   "aspect": 0.98177,
+  "halves": 2,
   "rest": {
    "1": 4,
    "2": 6

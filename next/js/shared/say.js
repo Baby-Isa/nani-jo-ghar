@@ -7,12 +7,15 @@
  *       wait(ms): the round's clock (the stage's, which stands still while the round is held), for the pause between words
  *       voice: data/kit.json `voice`; in a page with sound, the family's clips play through the Web Audio player with it
  *   say.line(meaning, { register?, voice?, elder?, row? }) -> Line
- *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning }
+ *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning, tokens }
+ *       tokens: the engine's words and marks in order, [{ t, word, mark }], as the plan's clips count them
  *       guess: the word's form is a guess (a defaulted gender), so no recording of a longer stretch may say it
  *       row: true gives the line as a card's row: lower case, no final mark, its English without notes in brackets
  *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status } | null
- *   say.speak(line, { queue?, ifIdle?, onPiece?, onHeard? }) -> Promise<{ done }>     never holds up a tap
+ *   say.speak(line, { queue?, ifIdle?, onPiece?, onHeard?, onWord? }) -> Promise<{ done }>     never holds up a tap
  *       onPiece: a piece is next; onHeard: a piece is really heard (its clip started, or the device voice began)
+ *       onWord: { word, then() }: then() as that word (the engine's id) starts being heard, once; inside a clip that says
+ *       more than it (Mum's whole-line take) its start is reckoned from the clip's length, by the letters said before it
  *   say.stop()      say.busy()      say.gaps() -> every gap met so far      say.path
  *   say.hold(on)    the voice pauses where it is (the round held behind the turn card) and goes on from there
  *   say.warm(meaning)   a line's clips fetched and decoded now, for a line said later
@@ -47,6 +50,7 @@ export async function createSay({ voice: settings = null, player = null, path = 
   const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, { ...o, times: settings.device }) }) : null);
   const voice = createVoice({ player: P, path: thePath, gapMs: (settings && settings.wordGapMs) || 0, wait });
   const met = new Map(); // gap key -> gap
+  const pause = wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
 
   const note = (gaps) => gaps.forEach((g) => met.has(g.key || g.what) || met.set(g.key || g.what, g));
 
@@ -86,7 +90,8 @@ export async function createSay({ voice: settings = null, player = null, path = 
     // every clip of a line is fetched and decoded as soon as the line is built, long before it is said
     if (P && P.load) plan.forEach((c) => c.file && (c.source === "family-ok" || thePath === "test") && P.load(c.file));
     // (a line as a card's row is a card's English, as a word on its own is)
-    return { ok: result.ok, text, en: row ? short(result.en) : result.en, pieces, plan, gaps: result.gaps, key: result.key || null, meaning };
+    const tokens = result.tokens.map((tk) => ({ t: tk.t, word: tk.lex || null, mark: !!tk.punct }));
+    return { ok: result.ok, text, en: row ? short(result.en) : result.en, pieces, plan, gaps: result.gaps, key: result.key || null, meaning, tokens };
   }
 
   return {
@@ -105,8 +110,20 @@ export async function createSay({ voice: settings = null, player = null, path = 
       if (!e) return null;
       return { id: e.id, kutchi: engine.word(id).text, english: englishOf(e), gender: e.gender || null, status: e.status };
     },
-    speak(line, { queue = true, ifIdle = false, onPiece = null, onHeard = null } = {}) {
-      return voice.say({ clipPlan: line.plan }, { queue, ifIdle, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard ? (tokens, item) => onHeard(item) : undefined });
+    speak(line, { queue = true, ifIdle = false, onPiece = null, onHeard = null, onWord = null } = {}) {
+      const at = onWord && line.tokens ? line.tokens.findIndex((tk) => tk.word === onWord.word) : -1;
+      let fired = false;
+      const fire = () => fired || ((fired = true), onWord.then());
+      // the letters said from one token up to (not including) another: a clip's share of its length before the word
+      const letters = (from, to) => line.tokens.slice(from, to).reduce((n, tk) => n + (tk.mark ? 0 : tk.t.length), 0);
+      const started = (tokens, item, info) => {
+        if (onHeard) onHeard(item);
+        if (at < 0 || fired || !tokens || at < tokens[0] || at > tokens[1]) return;
+        const ms = info && info.ms ? (info.ms * letters(tokens[0], at)) / Math.max(1, letters(tokens[0], tokens[1] + 1)) : 0;
+        if (ms > 0) pause(ms).then(fire);
+        else fire();
+      };
+      return voice.say({ clipPlan: line.plan }, { queue, ifIdle, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard || at >= 0 ? started : undefined });
     },
     stop: () => voice.stop(),
     hold: (on) => P && P.hold && P.hold(on),

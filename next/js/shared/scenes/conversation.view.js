@@ -15,7 +15,9 @@ export function wellDoneView({ stage, say, kit, ui, send }) {
     const line = say.line(meaning);
     await wait(T.wellDoneAfter);
     if (ui.serving) ui.serving.praise(line.text);
-    ui.cards.seats.forEach((s, i) => (ui.cards.served(i), ui.cards.fold(i)));
+    // every card's tick gives one pop, with its sound, as Nani says well done
+    ui.cards.seats.forEach((s, i) => (ui.cards.served(i), ui.cards.cheer(i), ui.cards.fold(i)));
+    ui.sounds.play("stamp");
     await Promise.race([ui.nani.line(line, { speak: true }), wait(T.wellDoneCap)]);
     await wait(T.wellDoneHold);
     send({ type: "said" });

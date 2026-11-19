@@ -35,7 +35,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   const lookOf = (s, v) => {
     const k = heatK();
     const f = s.vessels[v].fire;
-    return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k) });
+    return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k) }, ctxOf(s, v));
   };
 
   /** Nani's line for a step: the game's own line for a thing where it has one, else the family's. */
@@ -70,10 +70,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   }
   const itemRow = (v, item) => (ui.round.order.for[v].items.find((i) => i.word === item && !i.no) || {}).id;
 
-  function helperCard(step) {
-    const e = say.entry(step.item);
-    return { pic: kit.wordArt[step.item].art, kutchi: e.kutchi, english: e.english, line: lineFor(step) };
-  }
+  /** Her helper card: the thing to use now as its own word card, its speaker saying that word alone. */
+  const helperCard = (step) => ({ pic: kit.wordArt[step.item].art, line: say.word(step.item) });
 
   const handlers = {
     in(e, s) {
@@ -123,6 +121,11 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     },
     "not-yet"() {
       say.speak(say.line(kit.lines.notYet));
+    },
+    // a wrong thing refused (where the level refuses it): Nani's "no", after any line being said, as a tapped word waits
+    // its turn, never dropped
+    no() {
+      say.speak(say.line(kit.lines.no));
     },
     green() {
       ui.sounds.play("green");
@@ -209,7 +212,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     },
     closed(e, s) {
       const v = e.vessel;
-      const full = s.vessels[v].dish.poured >= 2;
+      // (a pan poured to its last is spent: its fire goes off)
+      const full = s.vessels[v].fire.fire === "spent";
       chain = chain.then(async () => {
         ui.cards.served(v);
         if (full) D.hob.fire(v, "off");
@@ -250,6 +254,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       for (const k of Object.keys(kitchen.lines).concat(Object.keys(settings.lines))) if (k !== "use" && !k.startsWith("_")) lineFor({ line: k });
       row.flat().forEach((item) => lineFor({ line: "use", item }));
       say.warm(kit.lines.notYet);
+      say.warm(kit.lines.no);
       stage.clear("worktop");
       stage.show("worktop");
       const view = { s: stage.scaleOf("worktop"), top: stage.topOf("worktop"), left: 0, right: stage.sheet.w };

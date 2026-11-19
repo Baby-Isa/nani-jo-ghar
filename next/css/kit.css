@@ -68,20 +68,26 @@ button { padding: 0; cursor: pointer; }
 .chevron.open { transform: rotate(180deg); }
 .chevron[hidden] { display: none; }
 /* her helper opens to its card's own height (grid rows 0fr to 1fr) and shows the whole card: its clip keeps room round the
-   card for the card's shadow, so no corner is cut hard */
-.helper { --room: calc(var(--helper-room) * var(--p)); display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--helper-open-ms) cubic-bezier(.3, .7, .2, 1); }
+   card for the card's shadow, so no corner is cut hard, never more room than her box's own padding, so the card is never
+   seen below her box */
+.helper { --room: calc(min(var(--helper-room), var(--nani-pad)) * var(--p)); display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--helper-open-ms) cubic-bezier(.3, .7, .2, 1); }
 .helper.open { grid-template-rows: 1fr; }
 .helper:not(.open) { transition-duration: var(--helper-shut-ms); transition-timing-function: cubic-bezier(.45, 0, .25, 1); }
-.helper-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--room)) calc(-1 * var(--room)); padding: 0 var(--room) var(--room); }
-/* shut, nothing of it shows (its shadow's room would show a sliver of the card): hidden once it has folded */
-.helper:not(.open) .helper-in { visibility: hidden; transition: visibility 0s var(--helper-shut-ms); }
+.helper-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--room)) calc(-1 * var(--room)); padding: 0 var(--room) var(--room); transition: opacity var(--helper-fade-ms) ease-out; }
+/* shutting, the card fades out early in the shut, so nothing of it lingers in the shut's slow tail; then it is hidden */
+.helper:not(.open) .helper-in { opacity: 0; visibility: hidden; transition: opacity var(--helper-fade-ms) ease-in, visibility 0s var(--helper-shut-ms); }
 /* the helper card: the picture a short strip at the left, the Kutchi above its English in the middle, the speaker at the right */
 .helper-card { margin-top: calc(var(--helper-top) * var(--p)); container-type: inline-size; display: grid; grid-template-columns: var(--helper-pic) minmax(0, 1fr) auto; align-items: center; column-gap: var(--helper-gap); background: var(--pop-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--helper-shadow); padding: var(--helper-pad); }
 .helper-card .well { width: 100%; aspect-ratio: var(--item-pic-phone); border-radius: calc(var(--helper-pic-radius) * var(--p)); }
 /* on a phone, the standard's flatter strip: the helper takes as little of the short panel as old chai's did */
 :root.phone .helper-card { padding: var(--helper-pad-phone); column-gap: var(--helper-gap-phone); }
 :root.phone .helper-card .well { aspect-ratio: var(--helper-pic-phone); }
-.helper-card .hwords { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--helper-words-gap); }
+/* the item cards' own word card, laid as a strip: the picture down the left, the Kutchi over its English, the speaker at the right */
+.helper-card { grid-template-rows: auto auto; grid-template-areas: "pic ku spk" "pic en spk"; row-gap: var(--helper-words-gap); }
+.helper-card .well { grid-area: pic; }
+.helper-card .ku { grid-area: ku; align-self: end; min-width: 0; }
+.helper-card .en { grid-area: en; align-self: start; min-width: 0; }
+.helper-card .speaker { grid-area: spk; }
 .helper-card .ku { margin: 0; text-align: left; font-size: clamp(max(var(--item-font-min), calc(var(--helper-ku-min) * var(--p))), var(--helper-ku), calc(var(--helper-ku-max) * var(--p))); line-height: 1.08; }
 .helper-card .en { margin: 0; text-align: left; font-size: clamp(max(var(--item-en), calc(var(--helper-en-min) * var(--p))), var(--helper-en), calc(var(--helper-en-max) * var(--p))); }
 /* its speaker drawn as the standard's (never under its least size), its tap the full size round it (.speaker::before) */
@@ -108,12 +114,11 @@ button { padding: 0; cursor: pointer; }
 .ocard-top .tick { display: none; width: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); height: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); }
 .ocard.served .ocard-top .tick, .wo-line.ticked .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
 @keyframes tick-in { from { scale: 0; } }
-/* a served card wears the served stamp in its tick's place, taking no more room than the tick (Zafar, 13 Nov: "a served card's
-   stamp replaces its tick"); the stamp is old chai's own, drawn as it drew it (old css/shared/order-card.css:130-141) */
-:root { --served-stamp: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E"); }
-.ocard.served .ocard-top .tick { background: var(--served-stamp) center / contain no-repeat; box-shadow: none; scale: 1.5; rotate: -12deg; opacity: .9; animation: stamp-in 350ms cubic-bezier(.2, 1.4, .4, 1); }
-.ocard.served .ocard-top .tick::after { display: none; }
-@keyframes stamp-in { from { scale: 2.4; opacity: 0; } }
+/* a served card keeps its gold tick: there is no separate served mark, the folded card already says the person is done (Zafar,
+   19 Nov: "is there any real point to having a served symbol? It's basically the same as the tick"); at the well done, and as a
+   right order leaves the wrong-order card, the tick gives one pop with its sound */
+.ocard.cheered .ocard-top .tick { animation: tick-cheer 350ms cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes tick-cheer { 50% { scale: 1.35; } }
 /* a card opens to its row's own height and folds to nothing (grid rows 0fr to 1fr: no height to measure, none to go stale) */
 /* (its row's padding sits inside .ocard-in, which folds to nothing; the times are data/kit.json's, and the panel waits them out) */
 .ocard-body { display: grid; grid-template-rows: 1fr; overflow: hidden; transition: grid-template-rows var(--fold-ms) var(--fold-ease), opacity var(--fold-fade-ms); }
@@ -176,8 +181,8 @@ button { padding: 0; cursor: pointer; }
 .en.dots .d { display: flex; }
 .en.dots.peek .w { visibility: visible; }
 .en.dots.peek .d { display: none; }
-.well .eye { display: none; position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 48px; height: 37.4px; border-radius: 999px; background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(80, 50, 20, .12); color: #6f6660; place-items: center; }
-.well .eye svg { width: 21.2px; height: 21.2px; }
+.well .eye { display: none; position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: var(--eye-w); height: var(--eye-h); border-radius: 999px; background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(80, 50, 20, .12); color: #6f6660; place-items: center; }
+.well .eye svg { width: var(--eye-icon); height: var(--eye-icon); }
 .well .eye::before { content: ""; position: absolute; left: 50%; top: 50%; width: 48px; height: 48px; translate: -50% -50%; }
 .well.blur { overflow: hidden; }
 .well.blur img { filter: blur(calc(16px * var(--p))) saturate(.55) brightness(1.06); scale: 1.12; }
@@ -193,17 +198,13 @@ button { padding: 0; cursor: pointer; }
 .icard.no .well::before, .icard.no .well::after, .pop.no .well::before, .pop.no .well::after { content: ""; position: absolute; top: calc(var(--no-inset) * 100cqi); right: calc(var(--no-inset) * 100cqi); z-index: 1; width: calc(var(--no-sign) * 100cqi); aspect-ratio: 1; border-radius: 50%; pointer-events: none; }
 .icard.no .well::before, .pop.no .well::before { background: #fff; box-shadow: 0 1px 3px rgba(80, 50, 20, .25); }
 .icard.no .well::after, .pop.no .well::after { background: var(--kutchi); -webkit-mask: var(--no-mark) center / 100% 100% no-repeat; mask: var(--no-mark) center / 100% 100% no-repeat; }
-/* the first-time lesson on a big card: every part hidden, each lit in turn for a tap */
+/* the first-time lesson on a big card: only what the card itself hides, each hidden part lit in turn for a tap */
 .pop.lesson { pointer-events: auto !important; z-index: 900; }
-.pop.lesson .well { overflow: hidden; }
-.pop.lesson .well img { filter: blur(16px) saturate(.55) brightness(1.06); scale: 1.12; }
-.pop.lesson .well .eye { display: grid; }
-.pop.lesson .well.shown img { filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); scale: 1; }
-.pop.lesson .well.shown .eye { display: none; }
-.pop.lesson .ku .w, .pop.lesson .en .w { visibility: hidden; }
-.pop.lesson .ku .kdots, .pop.lesson .en .d { display: flex; pointer-events: none; }
-.pop.lesson .ku.shown .w, .pop.lesson .en.shown .w { visibility: visible; }
-.pop.lesson .ku.shown .kdots, .pop.lesson .en.shown .d { display: none; }
+.pop.lesson .en .d { pointer-events: none; }
+.pop.lesson .well.blur.shown img { filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); scale: 1; }
+.pop.lesson .well.blur.shown .eye { display: none; }
+.pop.lesson .en.dots.shown .w { visibility: visible; }
+.pop.lesson .en.dots.shown .d { display: none; }
 .pop.lesson .lit { cursor: pointer; }
 /* a big card's speaker says its word (the card itself takes no tap), except in the lesson */
 .pop .speaker { pointer-events: auto !important; }
@@ -224,9 +225,11 @@ button { padding: 0; cursor: pointer; }
 .pop.big .en { font-size: max(var(--item-en), calc(var(--pw) * var(--big-en))); }
 /* (never under a tap: old css/shared/word-card.css:176, clamp(tap, 25cqi, ...)) */
 .pop.big .speaker { width: max(var(--tap), calc(var(--pw) * var(--big-spk))); height: max(var(--tap), calc(var(--pw) * var(--big-spk))); margin: calc(var(--pw) * var(--big-spk-top)) 0 calc(var(--pw) * var(--big-spk-foot)); box-shadow: 0 0 0 calc(var(--pw) * var(--big-ring)) var(--ring), 0 0 0 calc(var(--pw) * var(--big-ring-edge)) var(--ring-edge), 0 calc(var(--pw) * var(--big-spk-drop)) calc(var(--pw) * var(--big-spk-blur)) var(--spk-shadow); }
-/* its eye, over a hidden picture, a third of the picture's width (the standard's), never past the picture */
-.pop.big .well .eye { width: var(--big-eye); min-width: var(--tap); height: auto; aspect-ratio: var(--big-eye-shape); max-height: calc(100% - 2 * var(--big-eye-room)); }
-.pop.big .well .eye svg { width: var(--big-eye-icon); max-width: var(--big-eye-icon-max); height: auto; opacity: .7; }
+/* its eye the row card's own, the same size on the screen and the same strength: the side panel is grown by the screen's
+   scale (--s) and the play area is not, so the big card's eye is grown by it here (Zafar, 19 Nov: "make the bigger item card
+   match the smaller one") */
+.pop.big .well .eye { width: calc(var(--eye-w) * var(--s, 1)); height: calc(var(--eye-h) * var(--s, 1)); }
+.pop.big .well .eye svg { width: calc(var(--eye-icon) * var(--s, 1)); height: calc(var(--eye-icon) * var(--s, 1)); }
 .pop.in { animation: pop-in 380ms cubic-bezier(.2, .8, .2, 1); }
 .pop.out { transition: opacity 240ms ease-in; opacity: 0; }
 @keyframes pop-in { from { opacity: 0; scale: .6; } 70% { scale: 1.04; } to { opacity: 1; scale: 1; } }
@@ -310,34 +313,20 @@ button { padding: 0; cursor: pointer; }
 /* what is wrong is shown plainly, in the Kutchi's maroon with a cross (Zafar, 19 Nov: "I don't see any maroon or crosses - I know
    the rules don't like crosses or red but it's essential from user testing for clarity of understanding") */
 .wo-card.wrong { z-index: 1; box-shadow: 0 0 0 3px var(--kutchi), var(--pop-shadow); }
+.wo-open { position: absolute; }
 .wo-open .ocard-top { margin-bottom: 8px; }
-/* its item cards side by side, each the row's own card; in two rows only past the least word (never scrolled) */
-.wo-row { display: flex; gap: 8px; padding: 2px; }
-.wo-row.two { flex-wrap: wrap; justify-content: center; width: calc(var(--wo-per) * var(--wo-iw) + (var(--wo-per) - 1) * 8px); }
+/* its item cards side by side, each the row's own card, centred in the room kept for the most it holds; in two rows only
+   past the least word (never scrolled) */
+.wo-row { display: flex; justify-content: center; align-items: flex-start; gap: var(--wo-gap); padding: 2px; box-sizing: content-box; }
+.wo-row.two { flex-wrap: wrap; justify-content: center; width: calc(var(--wo-per) * var(--wo-iw) + (var(--wo-per) - 1) * var(--wo-gap)); }
 .wo-row .icard { flex: 0 0 var(--wo-iw); --pad: max(var(--item-pad-min), var(--wo-pad)); }
 .wo-row .icard.done { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold), var(--item-shadow); }
 .wo-row .icard.wrong { border-color: var(--kutchi); box-shadow: 0 0 0 2px var(--kutchi), var(--item-shadow); }
 .wo-row .icard.wrong > .tick { transform: scale(1); background: var(--kutchi); }
 .wo-row .icard.wrong > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
-.wo-row .icard.hollow { background: transparent; box-shadow: none; border: 2px dashed var(--kutchi); }
-.wo-row .icard.hollow .well img { opacity: .5; }
-.wo-row .icard.pulse { animation: wo-pulse var(--wo-pulse) ease-in-out 3; }
-.wo-row .icard.shake { animation: shake var(--wo-shake); }
-@keyframes wo-pulse { 50% { scale: 1.06; box-shadow: 0 0 0 3px var(--kutchi), 0 0 16px var(--kutchi); } }
-/* a count inside its card: a dot for each asked or put in, gold when it came, a hollow when it did not, red past the asked */
-.wo-pips { position: absolute; left: 50%; top: var(--wo-dot-gap); translate: -50% 0; z-index: 2; display: flex; gap: var(--wo-dot-gap); }
-.wo-pips i { width: var(--wo-dot); height: var(--wo-dot); border-radius: 50%; box-sizing: border-box; border: var(--wo-dot-ring) solid var(--kutchi); background: #fff; position: relative; box-shadow: 0 1px 2px rgba(80, 50, 20, .25); }
-.wo-pips i.on { background: var(--gold); border-color: var(--gold); }
-/* a dot missing from a count, or one past it, takes the cross */
-.wo-pips i.missing, .wo-pips i.over { background: var(--kutchi); border-color: var(--kutchi); }
-.wo-pips i.missing::after, .wo-pips i.over::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--cross-mark) center / 100% 100% no-repeat; mask: var(--cross-mark) center / 100% 100% no-repeat; }
-.wo-pips i.pulse { animation: wo-pulse var(--wo-pulse) ease-in-out 3; }
-/* what was made, flying up from its pan; one nobody asked for takes the one small cross */
-.wo-fly { position: fixed; z-index: 945; pointer-events: none; }
-.wo-fly img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(80, 50, 20, .25)); }
-.wo-fly .x { display: none; position: absolute; right: -6%; top: -6%; width: 32%; aspect-ratio: 1; border-radius: 50%; background: var(--kutchi); box-shadow: 0 0 0 2px #fff; }
-.wo-fly .x::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--cross-mark) center / 100% 100% no-repeat; mask: var(--cross-mark) center / 100% 100% no-repeat; }
-.wo-fly.cross .x { display: block; }
+/* what was short, rising onto its card, is drawn over it */
+.wo-row { position: relative; }
+.wo-row .icard.rising { position: absolute; z-index: 2; margin: 0; }
 
 /* the word moment: its own scene over the play area */
 .wm { position: absolute; inset: 0; overflow: hidden; z-index: 30; background: var(--stone); animation: fade 350ms ease-out; transition: opacity 350ms; pointer-events: none !important; }

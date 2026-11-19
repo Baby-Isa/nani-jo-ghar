@@ -1,14 +1,17 @@
 /*
  * What is kept for a child between rounds: the word ladder, the grammar ladder beside it, and what has been met
- * before. It is read as a round starts and written only after the round ends, so nothing changes mid-game.
+ * before. It is read as a round starts and written after the round ends, so nothing the round reads changes mid-game; only
+ * a first-time thing is kept as it is met (meetNow).
  *
  *   OWN_PLAYER: the child's own player, when the game's link names none        progressKey(player): where it is kept
  *   loadProgress(player) -> { id, player: { gender }, ladder: { wordId: stage }, grammar: { row: rung }, met: {…}, words: {…}, best: {…}, earned: { wordId: true } }
  *   saveRound(progress, round)        folds a finished round in and stores it
  *   afterRound(progress, round, ladderK) -> progress     the same without storing (pure); ladderK: the kit's ladder numbers
- *   knowing(progress, settings, ladderK) -> progress     a player who already knows the game's words (settings.words)
- *   wordStage(ladder, wordId, ladderK) -> "new" | "learning" | "known"
+ *   knowing(progress, settings, kit) -> progress     a player who already knows the game's words (settings.words)
+ *   triedOf(progress) -> { wordId: true }     the words picked right at least once
+ *   wordStage({ earned, tried }, wordId) -> "new" | "learning" | "known"     (a round carries both)
  *   storeProgress(progress)            keeps it for the player's next round
+ *   meetNow(progress, key)             something met for good the moment it is shown (the first-time lesson), kept at once
  *   newPlayer() -> id                  a fresh player; the last one made so is forgotten (one at a time), the child's never
  *   isNewPlayer(id) -> boolean         a player made by newPlayer, not the child's own
  *   playerName(id, words) -> who is playing, in the grown-ups' words (kit.cog.player: own, fresh)
@@ -40,10 +43,15 @@ export function loadProgress(id) {
 
 const stageOf = (w, ladderK) => Math.min(ladderK.top, 1 + Math.floor(w.right / ladderK.rightsPerStage));
 
-/** How far along the child is with a word, as the cards and the order's pace read it. */
-export function wordStage(ladder, id, ladderK) {
-  const n = ladder[id] || 0;
-  return n >= ladderK.knownFrom ? "known" : n >= ladderK.learningFrom ? "learning" : "new";
+/** The words the child has picked right at least once. */
+export const triedOf = (progress) => Object.fromEntries(Object.entries(progress.words || {}).filter(([, w]) => w.right > 0).map(([id]) => [id, true]));
+
+/**
+ * How well the child knows a word, as the order's pace reads it (the old game's: old js/shared/rules.js:154-158): known once
+ * its shelf pill is earned, learning from one right try, else new. Apart from the ladder, whose stages move only by twos.
+ */
+export function wordStage({ earned = {}, tried = {} }, id) {
+  return earned[id] ? "known" : tried[id] ? "learning" : "new";
 }
 
 /** A word's stage climbs with right first tries and never moves on a round in which it was helped. */
@@ -77,13 +85,14 @@ export function afterRound(progress, round, ladderK) {
 
 /**
  * Each of the game's words (the ids its settings name under `words`) as if picked right first time, running, often enough
- * to stand at the ladder's known stage with its shelf pill earned: support is off for it, as for a child who has learnt
+ * to stand past support on the ladder with its shelf pill earned: support is off for it, as for a child who has learnt
  * it. The same record a child's own rounds would leave; for a made-up player only: the child's own record is refused.
  */
-export function knowing(progress, settings, ladderK) {
+export function knowing(progress, settings, kit) {
   if (progress.id === OWN_PLAYER) throw new Error("knowing: the child's own record is never made up");
+  const ladderK = kit.ladder;
   const wordIds = Object.values(settings.words).flat();
-  const right = Math.max((ladderK.knownFrom - 1) * ladderK.rightsPerStage, ladderK.pillRun);
+  const right = Math.max((kit.help.pastSupportFrom - 1) * ladderK.rightsPerStage, ladderK.pillRun);
   const words = { ...progress.words };
   const ladder = { ...progress.ladder };
   const earned = { ...progress.earned };
@@ -101,6 +110,15 @@ export function storeProgress(p) {
   } catch (e) {
     /* a private window: the round was still played */
   }
+}
+
+/**
+ * Met for good the moment it is shown, not at the round's end: a round left early would show it again. Kept apart from
+ * the ladder, which still moves only between rounds.
+ */
+export function meetNow(progress, key) {
+  progress.met = { ...progress.met, [key]: true };
+  storeProgress(progress);
 }
 
 export function saveRound(progress, round, ladderK) {

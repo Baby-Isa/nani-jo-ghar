@@ -3,8 +3,8 @@
  * The runner has no list of its own; a caller such as story mode may pass a different one.
  *
  *   kitchenScenes({ game, settings, kitchen, kit, views? }) -> [{ id, rules, view? }]      the rules alone
- *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, player? }) -> the same list with its drawing
- *       player: { name, renew() } who is playing, for the cog
+ *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, player?, meet? }) -> the same list with its drawing
+ *       player: { name, renew() } who is playing, for the cog; meet(key): a first-time thing kept as it is shown
  */
 import { orderRules } from "../shared/scenes/order.rules.js";
 import { greetingRules } from "../shared/scenes/greeting.rules.js";

@@ -151,7 +151,8 @@ export function pourMoment({ stage, kit, kitchen, settings, sounds }) {
           await Promise.all([wait(K.startMs), Promise.race([soundIn, wait(K.soundWaitMs)])]);
           for (const s of slots) await pour(s);
           away();
-          await wait(K.moveMs);
+          // (the look begins as the kettle is still going, half its move: Zafar, 19 Nov)
+          await wait(K.awayMs);
         },
         stop: () => sounds.loop(settings.sounds.pouring, false),
       };

@@ -10,12 +10,15 @@
  *   const nani = createNaniBox({ stage, say, kit, face })
  *   nani.line(line | null, { speak?, arrow?, hide? }) -> Promise (resolves when said, at once if not spoken)
  *       hide: a word's id, shown as dots         nani.hide(id | null)   the same line, with that word hidden or shown
- *   nani.helper(card | null)       card: { pic, kutchi, english, line }   the word card of the thing to use now
+ *   nani.helper(card | null)       card: { pic, line }   the thing to use now, as its own word card (the item cards' one card:
+ *       its picture, its word and English, its speaker saying the word alone, lit while it says it)
  *   nani.onHint(fn)   a tap on her box but its speaker, or on the arrow        nani.box() -> its rectangle on the page
  *   lineHtml(line, itemWords?, hide?)   hide: { word, dots }: that word's pieces drawn as `dots` round dots, words hidden
  *       side by side drawn as one group, so the dots never tell how many words are hidden (old js/cook/lang.js:201-222)
  *   closedHtml(line, hide, { say, kit })   her line with `hide` (any of the word's names) as dots
  */
+import { wordCardHtml, wireSpeaker } from "./word-card.js";
+
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
 
 /** A line's pieces as page text: Kutchi words in the word colour, a missing line's English grey and italic, a hidden word dots. */
@@ -86,8 +89,9 @@ export function createNaniBox({ stage, say, kit, face }) {
         arrow.classList.remove("open");
         return;
       }
-      helper.innerHTML = `<div class="helper-in"><div class="helper-card"><div class="well"><img src="${stage.art.file(card.pic)}" alt=""></div><div class="hwords"><div class="ku">${esc(card.kutchi)}</div><div class="en">${esc(card.english)}</div></div><button class="speaker"></button></div></div>`;
-      helper.querySelector(".speaker").addEventListener("click", () => say.speak(card.line));
+      // (her hint shows the word whole: its picture and its English, never hidden)
+      helper.innerHTML = `<div class="helper-in"><div class="helper-card">${wordCardHtml({ file: stage.art.file, line: card.line, pic: card.pic, english: true, blurred: false, kit, rule: false })}</div></div>`;
+      wireSpeaker(helper.querySelector(".helper-card"), { say, line: card.line, now: true });
       helper.classList.add("open");
       arrow.classList.add("open");
     },
