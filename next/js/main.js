@@ -8,6 +8,7 @@ import { createSay } from "./shared/say.js";
 import { createStage } from "./shared/stage.js";
 import { createFrame, setLook } from "./shared/frame.js";
 import { createRunner } from "./shared/runner.js";
+import { listStill } from "./shared/kit/order-panel.js";
 import { newRound, levelsOf } from "./shared/round.js";
 import { loadProgress, saveRound, meetNow, newPlayer, playerName, triedOf, OWN_PLAYER } from "./shared/progress.js";
 import { loadJSON as json } from "./core/env.js";
@@ -70,7 +71,7 @@ async function start() {
         if (ended.choice === "again") play();
       },
     });
-    globalThis.njg = { run, stage, say, scenes, frame }; // for the checks, which play the page as a child would and read where it is
+    globalThis.njg = { run, stage, say, scenes, frame, listStill: () => listStill(stage.el.cards) }; // for the checks, which play the page as a child would and read where it is
     if (offTick) offTick();
     // (behind the turn card the stage is held, so no time passes and nothing boils over)
     offTick = stage.onTick((ms) => !stage.held() && run.send({ type: "time", ms }));

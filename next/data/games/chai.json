@@ -236,7 +236,7 @@
   }
  },
  "motion": {
-  "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge.",
+  "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge. calmMs: the boil settling to calm tea as the heat is turned down (Zafar, 20 Nov: about 0.2-0.3 s; old chai's went calm at once).",
   "row": {
    "fly": 380,
    "tip": 220,
@@ -263,6 +263,7 @@
    "end": 320
   },
   "takeBackMs": 610,
+  "calmMs": 300,
   "carry": {
    "lift": 1.07,
    "gap": 0.12,

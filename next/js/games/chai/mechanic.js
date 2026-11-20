@@ -65,6 +65,7 @@ export function drawPan(box, { art, vessel, rim }) {
     layer.name = name;
   }
 
+  let bShown = false; // a look laid over the base one is showing (a boil over the calm tea)
   return {
     show(look, fadeMs = 0) {
       if (pouring) return;
@@ -73,6 +74,7 @@ export function drawPan(box, { art, vessel, rim }) {
       if (fadeMs && A.name !== look.a && !look.b && !fading) {
         // a new look lands: the old one stays while the new one comes in over it
         fading = true;
+        bShown = false;
         dress(B, look.a);
         B.pan.set({ alpha: 0 });
         B.pan.to({ alpha: 1 }, fadeMs, "linear").then(() => {
@@ -83,10 +85,20 @@ export function drawPan(box, { art, vessel, rim }) {
         });
         return;
       }
+      if (fadeMs && A.name === look.a && !look.b && bShown && !fading) {
+        // the look laid over it goes (a boil settling as the heat is turned down): it fades out over the one beneath
+        fading = true;
+        const out = [B.pan.to({ alpha: 0 }, fadeMs, "linear")];
+        if (B.over) out.push(B.over.to({ alpha: 0 }, fadeMs, "linear"));
+        bShown = false;
+        Promise.all(out).then(() => (fading = false));
+        return;
+      }
       if (fading) return;
       dress(A, look.a);
       A.pan.set({ alpha: 1 });
       if (A.over) A.over.set({ alpha: 1 });
+      bShown = !!look.b && look.u > 0;
       if (look.b) {
         dress(B, look.b);
         B.pan.set({ alpha: look.u });

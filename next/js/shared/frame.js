@@ -72,8 +72,10 @@ export function createFrame({ kit }) {
     const dpr = globalThis.devicePixelRatio || 1;
     root.style.setProperty("--dpx", `${1 / dpr}px`);
     frame.now = { ff, scale, w, h, sideW, dpr };
-    fitSide();
+    // (fitted once what listens has laid itself out again at the new size: fitted before, it measured the cards at the old
+    // size and could leave the panel stepped down, the reviewer's find of 20 Nov)
     listeners.forEach((fn) => fn(frame.now));
+    fitSide(true);
   }
 
   // the side panel's own sizes step down while what it holds would not fit: Nani's box and the card being looked at
@@ -81,8 +83,19 @@ export function createFrame({ kit }) {
   const side = document.getElementById("side");
   const cards = document.getElementById("cards");
   let fitting = false;
-  function fitSide() {
+  // Nani's helper opening or shutting never changes the panel's sizes: the list below gives up the room and scrolls (Zafar,
+  // 20 Nov: as it opened, "the text seemed to shrink a little bit, and the arrow ... and all the elements kind of just jiggled
+  // around"); the panel is fitted with her helper shut, and while it is open or sliding only a new size of the screen fits it
+  // again, then only so her box shows whole
+  const helper = () => side && side.querySelector("#nani .helper");
+  const helperOut = () => {
+    const h = helper();
+    return !!h && (h.classList.contains("open") || (h.getAnimations?.() || []).some((a) => a.playState === "running"));
+  };
+  function fitSide(resized = false) {
     if (!side || !frame.now) return;
+    const out = helperOut();
+    if (out && !resized) return;
     fitting = true;
     const base = F.panel[frame.now.ff];
     // a card's words and buttons must fit above the list's soft foot (its own empty foot may lie in the fade); the room the
@@ -90,7 +103,7 @@ export function createFrame({ kit }) {
     const inner = (c) => Math.max(0, ...[c.querySelector(".ocard-top"), ...(c.classList.contains("folded") ? [] : c.querySelectorAll(".icard"))].filter(Boolean).map((el) => boxIn(el, cards).bottom - boxIn(c, cards).top));
     const view = () => cards.clientHeight - (parseFloat(getComputedStyle(cards).paddingBottom) - (parseFloat(cards.style.getPropertyValue("--room")) || 0));
     const tallest = () => Math.max(0, ...[...cards.children].filter((c) => !c.hidden).map(inner));
-    const over = () => side.scrollHeight > side.clientHeight + 1 || tallest() > view() + 1;
+    const over = () => side.scrollHeight > side.clientHeight + 1 || (!out && tallest() > view() + 1);
     let f = 1;
     // (the item cards are sized by the row's width, not by --p: their pictures flatten by the same step, --fit; the style sheet's)
     const step = (k) => (side.style.setProperty("--p", String(base * k)), side.style.setProperty("--fit", String(k)), (side.dataset.fit = String(k)));

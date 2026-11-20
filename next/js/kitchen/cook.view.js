@@ -130,10 +130,14 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     green() {
       ui.sounds.play("green");
     },
-    "turned-down"(e) {
+    "turned-down"(e, s) {
       D.hob.fire(e.vessel, "low");
       D.hob.ring(e.vessel, null);
       D.hob.steam(e.vessel, false);
+      // the boil settles to calm tea at once, so the tea poured is the tea the child sees (Zafar, 20 Nov: "does it rapidly, like
+      // within the space of like 0.2 seconds ... go from boiling tea ... back to calm tea"); the pan is drawn every frame only
+      // while it heats
+      D.vessels[e.vessel].pan.show(lookOf(s, e.vessel), M.calmMs);
       D.serving.undim();
       ui.sounds.play("knob");
     },

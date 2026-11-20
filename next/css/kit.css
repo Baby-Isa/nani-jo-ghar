@@ -17,9 +17,9 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--page);
 #page { display: flex; width: 100%; height: 100vh; height: 100dvh; height: var(--page-h, 100dvh); overflow: hidden; }
 /* on a tablet the panel and the page's own buttons grow by the screen's scale (--s is 1 on a phone and a laptop) */
 #side, .bubble, .replies, .cog-rail { zoom: var(--s); }
-#side { width: calc(var(--side-w) / var(--s)); flex: none; box-sizing: border-box; background-color: var(--stone); background-size: 256px; padding: calc(var(--pad) * var(--p) * 0.8 + var(--pad) * 0.2 * (1 - (1 - var(--p)) * 5 / 1.7)); display: flex; flex-direction: column; gap: calc(var(--pad) * var(--p) * 0.8); overflow: hidden; }
-:root:not(.phone) #side { padding: var(--pad); gap: var(--pad); }
-:root.phone #side { padding: calc(var(--pad) * 0.528); gap: calc(var(--pad) * 0.53); }
+#side { --side-pad: calc(var(--pad) * var(--p) * 0.8 + var(--pad) * 0.2 * (1 - (1 - var(--p)) * 5 / 1.7)); width: calc(var(--side-w) / var(--s)); flex: none; box-sizing: border-box; background-color: var(--stone); background-size: 256px; padding: var(--side-pad); display: flex; flex-direction: column; gap: calc(var(--pad) * var(--p) * 0.8); overflow: hidden; }
+:root:not(.phone) #side { --side-pad: var(--pad); gap: var(--pad); }
+:root.phone #side { --side-pad: calc(var(--pad) * 0.528); gap: calc(var(--pad) * 0.53); }
 #play { position: relative; flex: 1; min-width: 0; overflow: hidden; background: var(--stone); }
 #canvas, #over { position: absolute; inset: 0; }
 #canvas canvas { display: block; }
@@ -96,10 +96,13 @@ button { padding: 0; cursor: pointer; }
 /* order cards */
 #cards { margin-top: var(--cards-top); }
 :root.phone #cards { margin-top: var(--cards-top-phone); }
+/* (the list reaches the panel's own edges, its cards kept in by the panel's padding: a list that scrolls clips, and its edge then
+   lies on the panel's, so a card's shadow is never cut short at an edge nobody sees) */
+#cards { margin-left: calc(-1 * var(--side-pad)); margin-right: calc(-1 * var(--side-pad)); padding-left: var(--side-pad); padding-right: var(--side-pad); }
 #cards { flex: 1; min-height: 0; overflow-y: auto; overflow-anchor: none; display: flex; flex-direction: column; gap: calc(var(--cards-gap) * var(--p)); scrollbar-width: none; }
 /* the list's soft foot (the standard's): a card running off the panel's foot fades rather than being cut hard; the list keeps
    that much room below its last card, and more (--room, js/shared/kit/order-panel.js) where it must rest at a card's top */
-#cards { --fade: calc(var(--panel-fade) * var(--p)); padding-bottom: calc(var(--fade) + var(--room, 0px)); -webkit-mask-image: linear-gradient(black calc(100% - var(--fade)), transparent); mask-image: linear-gradient(black calc(100% - var(--fade)), transparent); }
+#cards { --fade: calc(var(--panel-fade) * var(--p)); padding-bottom: calc(var(--fade) + var(--room, 0px)); -webkit-mask-image: linear-gradient(rgb(0 0 0 / calc(1 - var(--fade-t, 0))), black var(--rest, 0px), black calc(100% - var(--fade)), transparent); mask-image: linear-gradient(rgb(0 0 0 / calc(1 - var(--fade-t, 0))), black var(--rest, 0px), black calc(100% - var(--fade)), transparent); }
 /* folded, a card is as tall as its top line and padding, never under a tap's height, its line in the middle */
 .ocard { flex: none; box-sizing: border-box; min-height: var(--tap); display: flex; flex-direction: column; justify-content: center; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--card-shadow); padding: calc(var(--card-pad) * var(--p) * 0.75 + var(--card-pad) * 0.25 * (var(--p) - 0.66) / 0.34); }
 .ocard[hidden] { display: none; }
@@ -320,8 +323,8 @@ button { padding: 0; cursor: pointer; }
 .wo-row { display: flex; justify-content: center; align-items: flex-start; gap: var(--wo-gap); padding: 2px; box-sizing: content-box; }
 .wo-row.two { flex-wrap: wrap; justify-content: center; width: calc(var(--wo-per) * var(--wo-iw) + (var(--wo-per) - 1) * var(--wo-gap)); }
 .wo-row .icard { flex: 0 0 var(--wo-iw); --pad: max(var(--item-pad-min), var(--wo-pad)); }
-.wo-row .icard.done { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold), var(--item-shadow); }
-.wo-row .icard.wrong { border-color: var(--kutchi); box-shadow: 0 0 0 2px var(--kutchi), var(--item-shadow); }
+.wo-row .icard.done { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold), var(--item-shadow); }
+.wo-row .icard.wrong { border-color: var(--kutchi); box-shadow: inset 0 0 0 2px var(--kutchi), var(--item-shadow); }
 .wo-row .icard.wrong > .tick { transform: scale(1); background: var(--kutchi); }
 .wo-row .icard.wrong > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
 /* what was short, rising onto its card, is drawn over it */
@@ -354,6 +357,9 @@ button { padding: 0; cursor: pointer; }
 .pop.wm-card .speaker { width: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); height: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); margin: calc(var(--pw) * var(--wm-gap)) 0; box-shadow: none; cursor: pointer; }
 /* a speaker lit while its word is said */
 .speaker.on { animation: speaker-on var(--speaker-pulse-ms) ease-out infinite; }
+/* in the side panel a lit speaker is old chai's: a steady ring, no pulse, drawn inside its own tap room (every box there clips,
+   so nothing in it may reach further than the room round it) */
+#side .speaker.on { animation: none; outline: calc(var(--speaker-on-ring) * var(--p)) solid var(--speaker-on-color); outline-offset: calc(-1 * var(--b, 0px)); }
 @keyframes speaker-on { from { box-shadow: 0 0 0 0 var(--speaker-pulse); } to { box-shadow: 0 0 0 var(--speaker-pulse-r) transparent; } }
 
 /* the end screen */

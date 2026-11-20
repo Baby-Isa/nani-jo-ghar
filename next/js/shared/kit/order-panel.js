@@ -9,16 +9,20 @@
  *   - it is measured only once every card opening or folding and Nani's helper sliding has ended (their times are
  *     data/kit.json's, read from the transitions themselves), and then glides there in one move; meanwhile the card in focus
  *     keeps its place on screen as cards above it open or fold, and one cut at the top as it comes into focus is led into
- *     view at once.
+ *     view at once;
+ *   - scrolled, its top fades over that rest, so the shadow of a card out of view above never shows a hard edge.
  * The child may still scroll the list by hand; nothing here fights a finger.
  *
- *   const panel = panelOf(host, { kit })     one per list, kept across rounds
+ *   const panel = panelOf(host, { kit })     one per list, kept across rounds      listStill(host) -> Promise
  *   panel.reset()  panel.track(el)  panel.watchRow(row, fn)  panel.focus(el | null)  panel.changed(ms?)
  *   panel.still() -> Promise (nothing moving, nothing due)
  */
 import { boxIn } from "../frame.js";
 
 const panels = new WeakMap();
+
+/** Resolves once the list on this host is at rest (at once if it has none): the checks measure only a resting list. */
+export const listStill = (host) => (panels.has(host) ? panels.get(host).still() : Promise.resolve());
 
 export function panelOf(host, { kit }) {
   if (!panels.has(host)) panels.set(host, createPanel(host, kit));
@@ -84,6 +88,17 @@ function createPanel(host, kit) {
 
   // a rest a little above a card's top, never as far as the gap: the card above stays wholly out by edgeKeep px at least
   const restAbove = () => Math.min(P.edge, Math.max(0, px(getComputedStyle(host).rowGap) - P.edgeKeep));
+  // scrolled, the list's top fades over that rest: a card wholly out of view above still casts its shadow down into it, and
+  // the list's edge would cut that shadow hard, a square at the next card's corner (Zafar, 20 Nov); like a row's sides, it
+  // fades only while there is more that way
+  // (written only as it changes: a change of style wakes the panel's fit, which would re-measure mid-glide)
+  const fadeTop = () => {
+    const rest = restAbove();
+    const t = `${rest > 0 ? Math.max(0, Math.min(1, host.scrollTop / rest)) : 0}`;
+    if (host.style.getPropertyValue("--rest") !== `${rest}px`) host.style.setProperty("--rest", `${rest}px`);
+    if (host.style.getPropertyValue("--fade-t") !== t) host.style.setProperty("--fade-t", t);
+  };
+  host.addEventListener("scroll", fadeTop, { passive: true });
 
   function changed(ms = 0) {
     busyUntil = Math.max(busyUntil, now() + ms);
@@ -164,6 +179,7 @@ function createPanel(host, kit) {
       if (ro) ro.observe(host);
       setRoom(0);
       host.scrollTop = 0;
+      fadeTop();
     },
     track: (el) => ro && ro.observe(el),
     /** fn() whenever a card's row, or any card in it, changes size (its scroll's length with it); let go of at reset. */
