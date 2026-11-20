@@ -696,7 +696,7 @@
   "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: a spoonful's mark, its width a share of the contents' radius (size), on a spiral reaching this share of it (reach) when most marks lie there (more go on outward), and how strongly it shows on the tea (alpha); it fades as the boil takes it. dip: the small settle when something lands.",
   "reach": 1.9676,
   "rimSrc": 200,
-  "innerSrc": 187.4,
+  "innerSrc": 182.8,
   "mirror": true,
   "box": {
    "w": 4.3,
