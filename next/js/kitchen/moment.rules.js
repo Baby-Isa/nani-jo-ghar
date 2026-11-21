@@ -7,9 +7,11 @@
  * time). The stuck help's wait runs from the step's opening (Zafar, 19 Nov), its clock standing still until the moment, so
  * help never lands on a first light; the end of each movement restarts it, as a tap does.
  *
- *   stepMoment({ settings, kit, kitchen }) -> { opening(s, step, events) -> s, opened(s, events) -> s, keyOf(step) }
+ *   stepMoment({ settings, kit, kitchen }) -> { opening(s, step, events) -> s, opened(s, events) -> s, keyOf(step), asking, drop }
  *       keyOf: a step's identity (a step whose key changes has opened anew)
+ *       asking(s, key, data) -> s: a first-time light of its own (not a step's), shown at the next stillness; drop(s, key) -> s
  *   events: step {step} as a step opens | open {step, first?} at its moment: its first-time light and its call (step.spoken)
+ *   | light {first, ...data}: a first-time light of its own, at its moment
  */
 import { stepped } from "../shared/kit/help.rules.js";
 
@@ -57,13 +59,31 @@ export function stepMoment({ settings, kit, kitchen }) {
     if (st) events.push({ type: "step", step: st });
     return { ...s, step: st, help: stepped(s.help), moment: st && st.kind !== "wait" ? { wait: st.wait, from: s.clock, first } : null };
   }
+  /**
+   * A first-time light of its own, not a step's (a count pill, the first time a spoonful thing goes past what was asked):
+   * asked for now, once ever per child; shown, and only then spent, at the kitchen's next stillness after a breath, as a
+   * thing's first light is. Asked again while it waits, it waits on; `drop` lets it go unshown (what it was for is undone).
+   */
+  function asking(s, key, data) {
+    if (s.lit.includes(key) || s.metLit.includes(key) || (s.aside && s.aside.key === key)) return s;
+    return { ...s, aside: { key, data, from: s.clock } };
+  }
+  const drop = (s, key) => (s.aside && s.aside.key === key ? { ...s, aside: null } : s);
+  const asideDue = (s) => Math.min(Math.max(s.aside.from, s.stillAt, ...s.moves.map((m) => m.until)) + L.breathMs, s.aside.from + L.breathMaxMs);
+
   /** The moment has come: the light is shown (and so spent) and the call said; the stuck help's wait runs on. */
   function opened(s, events) {
-    if (!s.moment || s.clock < dueAt(s)) return s;
-    const { first } = s.moment;
-    events.push({ type: "open", step: s.step, first });
-    return { ...s, moment: null, lit: first && !s.lit.includes(first) ? s.lit.concat(first) : s.lit };
+    let next = s;
+    if (next.aside && next.clock >= asideDue(next)) {
+      const { key, data } = next.aside;
+      events.push({ type: "light", first: key, ...data });
+      next = { ...next, aside: null, lit: next.lit.concat(key) };
+    }
+    if (!next.moment || next.clock < dueAt(next)) return next;
+    const { first } = next.moment;
+    events.push({ type: "open", step: next.step, first });
+    return { ...next, moment: null, lit: first && !next.lit.includes(first) ? next.lit.concat(first) : next.lit };
   }
 
-  return { opening, opened, keyOf };
+  return { opening, opened, keyOf, asking, drop };
 }

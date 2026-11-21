@@ -83,6 +83,10 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   const helperCard = (step) => ({ pic: kit.wordArt[step.item].art, line: say.word(step.item) });
 
   const handlers = {
+    // a first-time light of its own, at its moment: the count pill, the first time a spoonful thing goes past what was asked
+    light(e) {
+      if (e.first === "takeBack") lights.pill(e.item);
+    },
     in(e, s) {
       const v = e.vessel;
       const at = D.plan.vessels[v];
@@ -106,6 +110,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       }
     },
     out(e, s) {
+      lights.clear();
       ui.sounds.play("pop");
       ticks(s, e.vessel);
       counts(s);

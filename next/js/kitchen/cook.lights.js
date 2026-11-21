@@ -9,6 +9,7 @@
  *   lights.help(step)            the stuck light: soft, with the thing's glow
  * A thing on the worktop is lit with its neighbours of the same kind kept dark (the shelf's things and their pills, the knobs,
  * the pans, the glasses), by the kit's one light rule.
+ *   lights.pill(item)            a count pill lit once, softly: a tap there takes a spoonful out; it goes with the next move
  *   lights.clear()
  *   lights.every() -> [{ what, box }]   the box a light round each thing on the worktop would show (every shelf thing, knob,
  *       pan and glass), shown or not, on the page: for the checks, which measure each against what is drawn
@@ -75,6 +76,23 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
         glowing = step.item;
         drawn().shelf.glow(step.item, true);
       }
+    },
+    /** A count pill lit, softly, once (its moment is the cook rules'): a tap there takes a spoonful out; it goes with the next move. */
+    pill(item) {
+      token += 1;
+      const rect = (el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left, y: r.top, w: r.width, h: r.height };
+      };
+      const pills = () => [...stage.el.over.querySelectorAll(".count")];
+      const box = () => {
+        const el = pills().find((p) => p.dataset.item === item);
+        return el ? rect(el) : null;
+      };
+      if (!box()) return;
+      // (the pills beside it stay dark, as every light keeps its neighbours of the same kind)
+      ui.light.show(box, { hard: false, avoid: () => pills().filter((p) => p.dataset.item !== item).map(rect) });
+      ui.sounds.play("pop", { volume: L.popVolume });
     },
     clear() {
       token += 1;

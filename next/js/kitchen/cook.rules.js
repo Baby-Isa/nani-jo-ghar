@@ -16,6 +16,8 @@
  *   state.vessels[v].placed: the rows that keep their place in the order card's row: the ticked ones, and one gone past
  *       what was asked (unticked, but no more can put it right, so the row does not slide back to it)
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
+ *   | light {first: "takeBack", vessel, item} (./moment.rules.js): the first time ever a spoonful thing goes past what was
+ *   asked, its count pill is lit once, at the kitchen's next stillness
  */
 import { machine } from "../shared/machine.js";
 import { atLevel } from "../shared/round.js";
@@ -27,6 +29,8 @@ import { ruling } from "../shared/kit/mistakes.rules.js";
 import { labDishes, LAB_WRONG_ORDER } from "./lab.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
+// what the child has met once a count pill has been lit as the way to take a spoonful out (kept with the other first-time lights)
+const TAKE_BACK = "takeBack";
 
 /** Every thing a round's row may hold at a level: its fixed groups, the pool its asks and decoys are drawn from, the lookalike. */
 const lookalikeAt = (settings, kit, level) => (atLevel(kit.levels.lookalike, level) ? [settings.row.lookalike] : []);
@@ -225,6 +229,11 @@ export function cookRules({ game, settings, kitchen, kit }) {
           let next = setVessel(s, v, { dish: out.dish });
           if (went) next = moving(next, how === "pour" ? pourMs : spoonMs, how === "pour");
           events.push(...out.events.map((e) => ({ ...e, vessel: v, how })));
+          // the first time ever a child puts in more of a spoonful thing than was asked, or one nobody asked for, its count
+          // pill is lit once: a tap there takes one out (Zafar, 21 Nov: "nothing shows the pills can be tapped ... a short
+          // first-time light on a pill the first time a child puts in too many")
+          const over = went && out.dish.spoons.includes(mv.id) && checkOf(next, v).faults.some((f) => f.word === mv.id && (f.kind === "many" || f.kind === "extra"));
+          if (over) next = moment.asking(next, TAKE_BACK, { vessel: v, item: mv.id });
           return settle(next, events, { rightMove: !!went });
         },
         knob(s, mv) {
@@ -299,7 +308,8 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const v = s.chosen;
           const out = G.takeBack(s.vessels[v].dish, mv.item, ctxOf(s, v));
           if (out.events.some((e) => e.type === "refused")) return { state: s, events: [] };
-          const next = moving(setVessel(s, v, { dish: out.dish }), settings.motion.takeBackMs, true);
+          // (a spoonful taken out before its pill was lit: the light it waited for is not needed)
+          const next = moving(moment.drop(setVessel(s, v, { dish: out.dish }), TAKE_BACK), settings.motion.takeBackMs, true);
           return settle(next, out.events.map((e) => ({ ...e, vessel: v })), { rightMove: true });
         },
         time(s, mv) {
@@ -387,6 +397,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
         row: rowFor(round, chance),
         lit: [],
         metLit: round.met.lit || [],
+        aside: null,
         vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, items: p.items, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [], placed: [] })),
         help: newHelp(),
         // the words asked for that the child's ladder has past support as the round starts
