@@ -24,7 +24,9 @@
  *       row's card is behind it) | unsays { slot, row, says } (a thing in a "no" order: crossed, it fades into its "no" card
  *       behind it as the big no sign shows and shrinks into the card's own sign: Zafar, 21 Nov) | rises { slot, row, says } (its row's card rises into its dotted card) | drops { slot,
  *       says } (the thing nobody asked for falls, its slot left empty), then closes { slots } (that slot goes, the cards
- *       closing the gap); a correction's says: the person's own, a meaning for the language engine, natural and about that
+ *       closing the gap); each step's saysAt, when the person speaks (Zafar, 21 Nov: "say it when it's the correct item
+ *       card shows ... if there's not a correct item card ... say it when the item is getting crossed"): "shown" as the right
+ *       card shows (a right card's own word, a correction), "cross" with the cross (a thing nobody asked for); a correction's says: the person's own, a meaning for the language engine, natural and about that
  *       one thing, never the order again (Zafar, 20 Nov: "only two sugars", "I don't want ginger"): of a wrong amount
  *       fixOf(row, kind, word); of a thing nobody asked for, notWanted(thing) "I don't want cumin."; missed, wanted(row)
  *       "I'd like cardamom." (his "don't forget the milk" is not in the grammar yet: a line for Mum)
@@ -78,10 +80,11 @@ export function playOf(items, faults, made) {
   const steps = [];
   const madeOf = (s) => made.find((m) => m.word === s.made.word && !m.row);
   slots.forEach((s, slot) => {
-    if (s.holds === "asked") steps.push({ do: "keeps", slot, row: s.row });
-    else if (s.holds === null) steps.push({ do: "rises", slot, row: s.row, says: wanted(itemOf(s.row)) });
-    else if (s.row) steps.push({ do: itemOf(s.row).no ? "unsays" : "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word) });
-    else steps.push({ do: "drops", slot, says: notWanted(madeOf(s).meaning) }, { do: "closes", slots: [slot] });
+    // (saysAt: the person's words as the right card shows, where there is one; with the cross where there is none: Zafar, 21 Nov)
+    if (s.holds === "asked") steps.push({ do: "keeps", slot, row: s.row, saysAt: "shown" });
+    else if (s.holds === null) steps.push({ do: "rises", slot, row: s.row, says: wanted(itemOf(s.row)), saysAt: "shown" });
+    else if (s.row) steps.push({ do: itemOf(s.row).no ? "unsays" : "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word), saysAt: "shown" });
+    else steps.push({ do: "drops", slot, says: notWanted(madeOf(s).meaning), saysAt: "cross" }, { do: "closes", slots: [slot] });
   });
   return { shown, slots, steps };
 }

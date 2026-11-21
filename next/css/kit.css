@@ -346,6 +346,12 @@ button { padding: 0; cursor: pointer; }
    none reaches the face's badge above (Zafar, 21 Nov, the third time) */
 .ocard.lifted .icard > .tick { display: none; }
 .ocard.lifted .icard.wrong { border-color: var(--kutchi); }
+/* the person's face a little bigger while their card is up, growing up from its badge's foot (so the badge comes no
+   nearer the item cards), and bobbing up while they speak: it is them telling what they wanted (Zafar, 21 Nov) */
+.ocard.lifted .ocard-top .face { transform-origin: 50% calc((1 + var(--badge-hang)) * 100%); transition: scale var(--wo-marks); }
+.ocard.lifted.telling .ocard-top .face { scale: var(--wo-face-grow); }
+.ocard.lifted .ocard-top .face.talking { animation: wo-bob var(--wo-bob-ms) ease-in-out infinite; }
+@keyframes wo-bob { 50% { translate: 0 calc(-1 * var(--wo-bob)); } }
 .ocard.lifted .icard.no.signing .well::before, .ocard.lifted .icard.no.signing .well::after { opacity: 0; }
 .wo-stamp { position: absolute; grid-column: auto; z-index: 4; border-radius: 50%; background: var(--gold); box-shadow: 0 2px 8px rgba(80, 50, 20, .28); pointer-events: none; }
 .wo-stamp::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
