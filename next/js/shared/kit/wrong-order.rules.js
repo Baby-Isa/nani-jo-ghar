@@ -4,7 +4,7 @@
  * 20 Nov, the redesign spec, wrong-order-redesign.md): the card opens with what went into the pan
  * already on it, one slot for each thing, a missing thing's slot a dotted empty card; then one pass, left to right, every
  * card in its turn (Zafar, 21 Nov, replacing his 20 Nov order by kind): a right one kept (its tick stamped), a wrong amount
- * crossed and falling to show the right amount behind it, a thing asked and missing rising into its slot, a thing nobody
+ * crossed and turning over to show the right amount on its back, a thing asked and missing rising into its slot, a thing nobody
  * asked for crossed and falling, its slot going and the cards closing the gap straight after (they stand last).
  *
  *   faultsOf(items, tally) -> [{ id, word, kind, want, got }]
@@ -20,8 +20,8 @@
  *       the card opens: holds "asked" (its row's own card, right), "made" (a card of the thing as it went in,
  *       { word, meaning }: a wrong amount in its row's slot, or a thing nobody asked for, row null) or null (missing)
  *       steps, one for each slot in its order, the view playing each as it comes: keeps { slot, row } (a right card
- *       confirmed, its own word said as its speaker says it) | reveals { slot, row, says } (the wrong amount falls; its
- *       row's card is behind it) | unsays { slot, row, says } (a thing in a "no" order: crossed, it fades into its "no" card
+ *       confirmed, its own word said as its speaker says it) | reveals { slot, row, says } (the wrong amount turns over,
+ *       its row's card on its back: Zafar, 21 Nov) | unsays { slot, row, says } (a thing in a "no" order: crossed, it fades into its "no" card
  *       behind it as the big no sign shows and shrinks into the card's own sign: Zafar, 21 Nov) | rises { slot, row, says } (its row's card rises into its dotted card) | drops { slot,
  *       says } (the thing nobody asked for falls, its slot left empty), then closes { slots } (that slot goes, the cards
  *       closing the gap); each step's saysAt, when the person speaks (Zafar, 21 Nov: "say it when it's the correct item

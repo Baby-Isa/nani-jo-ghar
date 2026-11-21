@@ -12,7 +12,7 @@
  *   spaceWords(cards, kit, { again? })   every word card (the row's, the big card, the word moment's; one card or an order row: the
  *       cards given together are one row, wherever each stands) spaced
  *       as the old game's card (below): its words fitted to the card, one size each per row, and on the row's card only, the
- *       divider's gap to the row's lowest English ink, the row's Kutchi ending on one line (again: spaced anew now, the
+ *       divider's gap to the row's lowest English ink, each card's words centred in their own room (again: spaced anew now, the
  *       row being these cards alone). Run now, once the faces are in, and when the card's width or the panel's scale
  *       changes; never on a change of form.
  *   wirePeeks(card, { kit, onPeek })            onPeek("english" | "picture")
@@ -186,15 +186,9 @@ function spaceRow(cards, kit) {
   // should be at the same heights"): a tail measured per card moved its words and dots, even with the word hidden under dots
   const set = gives.filter((g) => g != null);
   const row = set.length ? Math.min(...set) : 0;
-  // and the row's Kutchi end on one line: a word on fewer lines takes the room of the row's tallest above it, so the last
-  // lines, the English and the dots line up across the row (Zafar, 21 Nov), each card's pair still centred on the row's
-  const kuH = parts(".ku").map((p) => parseFloat(getComputedStyle(p).height) || 0);
-  const tallest = Math.max(...kuH);
-  cards.forEach((c, i) => {
-    if (gives[i] == null) return;
-    c.style.setProperty("--en-ink", `${row.toFixed(2)}px`);
-    c.style.setProperty("--ku-room", `${(tallest - kuH[i]).toFixed(2)}px`);
-  });
+  // (only the divider's gap is the row's: each card's words stay centred in their own room, so a card's words read as one
+  // balanced pair beside a card of two lines; Zafar, 21 Nov, "Row A")
+  cards.forEach((c, i) => gives[i] != null && c.style.setProperty("--en-ink", `${row.toFixed(2)}px`));
 }
 
 // every card known by its kit, its row (the cards it was given with) and the width and panel scale it was spaced at; a

@@ -145,9 +145,9 @@ button { padding: 0; cursor: pointer; }
    under the spare), its English (item-en-top under it), spare, the divider, the speaker; the pair centred between the picture and
    the divider. One gap, item-step (7% of the card), three times at the foot; the divider's gap measured to the English's ink, the
    English's box giving back what runs below it (--en-ink: js/shared/kit/word-card.js, old js/shared/word-card.js fit14's row pass),
-   one for the row; a Kutchi word on fewer lines than the row's tallest takes the difference above it (--ku-room), so the row's
-   words, English and dots line up (Zafar, 21 Nov) */
-.icard > .ku { grid-row: 3; align-self: end; margin-top: calc(var(--item-ku-top) + var(--ku-room, 0px)); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
+   one for the row; each card's pair centred in its own room, so it reads as one balanced pair beside a card of two lines
+   (Zafar, 21 Nov: "Row A") */
+.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--item-ku-top); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
 .icard > .en { grid-row: 4; align-self: start; margin-top: var(--item-en-top); margin-bottom: calc(-1 * var(--en-ink, 0px)); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
 .icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--item-step); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
 /* the speaker drawn as the standard's (smaller on a phone), its own box a full tap: a clear border round the disc, taken back by

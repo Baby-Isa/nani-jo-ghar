@@ -20,7 +20,7 @@
  *      big, in the middle of the picture, none staying (Zafar, 21 Nov: "simply keep the big middle tick or cross ... the
  *      item card just remains as it is"); one sound for each meaning, the game's own: the ding a right card, the warm low
  *      note a cross, the pop the right thing arriving. A right card: the gold tick and its own word, the tick going again.
- *      A wrong amount: the cross, and it falls, the right amount behind it showing with the pop and the person's words. A
+ *      A wrong amount: the cross, and the card turns over, the right amount on its back showing with the pop and the person's words. A
  *      thing nobody asked for (they stand last): the cross with the person's words, it falls, its gap closing, the row's
  *      height and words gliding with it. A thing in a "no" order (milk in a "no milk"): the cross, then the milk fading
  *      into the "no milk" card as a big no sign shows with the person's words, held as long as the cross, then shrinking
@@ -31,7 +31,7 @@
  *      clipped as the panel's is), open and unticked, ready to make again, and becomes the panel's card in the same frame;
  *      the veil lifts, the cog comes back.
  * Every change of place or size is the kit's one move (./move.js), so nothing snaps (Zafar, 21 Nov); a mark's pop, a
- * card's fall or rise and a face's bob are moments of their own, timed here from data/kit.json wrongOrder.
+ * card's turn, fall or rise and a face's bob are moments of their own, timed here from data/kit.json wrongOrder.
  * A tap on the veil skips the card showing to its last frame, a second ends it; a speaker's tap is only the speaker's.
  * What it plays is the kit's rule (./wrong-order.rules.js playOf); the cards are the order card's own; this file only
  * times it.
@@ -129,7 +129,10 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     l.classList.add("marked", "cheered", "gold");
     sounds.play("bing");
     await Promise.all([speak(say.line(kit.lines.wellDone)), wait(W.tick)]);
-    await move(l, [{ transform: "none", opacity: 1 }, { transform: `translateY(${-W.flyBy * 100}%)`, opacity: 0 }], W.flyOff);
+    // (all the way up off the screen as it fades, by the kit's one move, so it never seems to fade into the line above it:
+    // Zafar, 21 Nov)
+    const at = l.getBoundingClientRect();
+    await Promise.all([mv.fly(l, { left: at.left, top: -at.height, width: at.width, height: at.height }), move(l, [{ opacity: 1 }, { opacity: 0 }], mv.ms)]);
     l.style.visibility = "hidden";
     done.add(l);
   }
@@ -244,8 +247,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
 
   /**
    * One card's turn: lit by the light's edge, then its big mark in the middle of its picture and its words said; no mark
-   * stays: a right card kept (the gold tick, then gone); a wrong card crossed and falling (a wrong amount shows its row's
-   * card behind it; a thing nobody asked for leaves its slot empty, to close next); a thing in a "no" order crossed, then
+   * stays: a right card kept (the gold tick, then gone); a wrong amount crossed and turning over, its row's card on its
+   * back; a thing nobody asked for crossed and falling, its slot left empty, to close next; a thing in a "no" order crossed, then
    * fading into the "no" card behind it as the big no sign shows and shrinks into the card's own corner sign; a missing
    * thing's card rising into its dotted card.
    */
@@ -287,14 +290,11 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       await pop(mark);
       await wait(W.cross);
       if (st.do === "unsays") await unsay(slot, mark, () => talk(cards.lineIn(seat, st.says)));
+      else if (st.do === "reveals") await turn(slot, () => (sound("pop"), talk(cards.lineIn(seat, st.says))));
       else {
-        // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card; a wrong
-        // amount's right card behind it shows as it goes)
-        const fall = move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
-        const shown = st.saysAt === "shown" ? wait(W.fall * W.shownAt).then(() => (sound("pop"), talk(cards.lineIn(seat, st.says)))) : null;
-        await fall;
+        // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card)
+        await move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
         slot.made.remove();
-        await shown;
       }
       await said;
     }
@@ -320,6 +320,23 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     await mv.fly(sign, cornerOf(own));
     own.classList.remove("signing");
     sign.remove();
+  }
+  /**
+   * A wrong amount put right: the card turns over, its cross with it, and the right amount is on its back (Zafar, 21 Nov: "the
+   * card turns over (tactile, solid, real)"): half a turn to its edge, then the right card turns in from its edge, the pop and
+   * the person's words as it shows.
+   */
+  async function turn(slot, shown) {
+    const depth = `perspective(${slot.el.offsetWidth * W.turnDepth}px)`;
+    slot.own.style.visibility = "hidden";
+    await move(slot.made, [{ transform: `${depth} rotateY(0deg)` }, { transform: `${depth} rotateY(90deg)` }], W.turn / 2);
+    slot.made.remove();
+    slot.own.style.visibility = "";
+    const said = shown();
+    await move(slot.own, [{ transform: `${depth} rotateY(-90deg)` }, { transform: `${depth} rotateY(0deg)` }], W.turn / 2);
+    // (flat again, it lets its turn go, so it is drawn as the other cards are, its words as sharp)
+    slot.own.getAnimations().forEach((a) => a.cancel());
+    await said;
   }
   /** Where a "no" card's own sign stands on its picture (the style sheet's --no-sign and --no-inset, shares of its width). */
   function cornerOf(card) {
