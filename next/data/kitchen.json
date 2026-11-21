@@ -1,14 +1,15 @@
 {
  "_about": "The stove-top kitchen's own numbers, the same for every kitchen game. notYetEveryMs, noEveryMs: Nani's 'not yet' (a knob before the green) and her 'no' (a wrong thing refused) are not said again within this long; a 'no' asked for while she speaks is said straight after, never dropped.",
  "heat": {
-  "_about": "greenRate: from the green on, the heat climbs at this share of the level's rate. overResetMs: how long a spoiled vessel shows before it starts again. holdAt: where in the green a first-time player's heat waits (share of the band). bubbleLead: the boil shows this many seconds before the green, never under bubbleMin. near: the knob is the step from this far below the green.",
+  "_about": "greenRate: from the green on, the heat climbs at this share of the level's rate. overResetMs: how long a spoiled vessel shows before it starts again. holdAt: where in the green a first-time player's heat waits (share of the band). bubbleLead: the boil shows this many seconds before the green, never under bubbleMin. near: the knob is the step from this far below the green. calmMs: a boil settling to calm as the heat is turned down, through half, its heat ring and its sound going with it, never in the way of a tap (Zafar, 21 Nov: \"from boiling to semi-boiling to calm ... slow enough that you can see the transition\").",
   "greenRate": 0.5,
   "overResetMs": 1100,
   "holdAt": 0.5,
   "bubbleLead": 2,
   "bubbleMin": 0.3,
   "near": 0.14,
-  "firstTimeHold": true
+  "firstTimeHold": true,
+  "calmMs": 400
  },
  "notYetEveryMs": 1500,
  "noEveryMs": 1500,

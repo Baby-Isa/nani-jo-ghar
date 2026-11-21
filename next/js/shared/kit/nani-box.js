@@ -17,7 +17,7 @@
  *       side by side drawn as one group, so the dots never tell how many words are hidden (old js/cook/lang.js:201-222)
  *   closedHtml(line, hide, { say, kit })   her line with `hide` (any of the word's names) as dots
  */
-import { wordCardHtml, wireSpeaker } from "./word-card.js";
+import { wordCardHtml, wireSpeaker, dots } from "./word-card.js";
 
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
 
@@ -26,7 +26,7 @@ export const lineHtml = (line, itemWords = null, hide = null) => {
   const hid = (p) => !!(hide && p && p.word && p.word === hide.word);
   return line.pieces
     .map((p, i, all) => {
-      if (hid(p)) return hid(all[i - 2]) && all[i - 1] && !all[i - 1].kind && !all[i - 1].t.trim() ? "" : `<span class="hid">${"<i></i>".repeat(hide.dots)}</span>`;
+      if (hid(p)) return hid(all[i - 2]) && all[i - 1] && !all[i - 1].kind && !all[i - 1].t.trim() ? "" : `<span class="hid">${dots(hide.dots, hide.gap)}</span>`;
       // (a space between two hidden words goes into their one group of dots)
       if (!p.kind && !p.t.trim() && hid(all[i - 1]) && hid(all[i + 1])) return "";
       return p.kind === "k" ? `<span class="k${itemWords && itemWords.has(p.word) ? " item" : ""}">${esc(p.t)}</span>` : p.kind === "e" ? `<span class="gap">${esc(p.t)}</span>` : esc(p.t);
@@ -37,7 +37,7 @@ export const lineHtml = (line, itemWords = null, hide = null) => {
 /** Nani's line as her box shows it while her helper card is shut: `hide` (a word's id, by any of its names) as dots. */
 export const closedHtml = (line, hide, { say, kit }) => {
   const e = hide ? say.entry(hide) : null;
-  return lineHtml(line, null, e ? { word: e.id, dots: kit.help.hintDots } : null);
+  return lineHtml(line, null, e ? { word: e.id, dots: kit.help.hintDots, gap: kit.help.hintDotGap } : null);
 };
 
 export function createNaniBox({ stage, say, kit, face }) {

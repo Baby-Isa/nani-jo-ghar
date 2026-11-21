@@ -68,9 +68,7 @@ export function createFrame({ kit }) {
     root.style.setProperty("--s", String(scale));
     root.style.setProperty("--side-w", `${sideW}px`);
     root.style.setProperty("--p", String(F.panel[ff]));
-    // the screen's own pixel ratio, the page's one answer to "one screen pixel" (--dpx: one of them, in css px)
     const dpr = globalThis.devicePixelRatio || 1;
-    root.style.setProperty("--dpx", `${1 / dpr}px`);
     frame.now = { ff, scale, w, h, sideW, dpr };
     // (fitted once what listens has laid itself out again at the new size: fitted before, it measured the cards at the old
     // size and could leave the panel stepped down)

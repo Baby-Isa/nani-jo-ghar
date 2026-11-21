@@ -6,7 +6,8 @@
  *   const sounds = createSounds({ kit, say, stage })     (stage: so the sounds wait while the round is held)
  *   sounds.ready(names) -> Promise (in)     sounds.play(name, { under?, volume? })     sounds.loop(name, on)
  *   sounds.rise(name, k)    a loop's pitch rising as a thing fills (k: how full, 0 to 1)
- *   sounds.simmer(heat, k, bubbleAt)    the boil's loop: louder as the hottest vessel heats (-1: none heating)
+ *   sounds.simmer(heat, k, bubbleAt, fadeMs?)    the boil's loop: louder as the hottest vessel heats (-1: none heating,
+ *       dying away over fadeMs)
  */
 // One sound for the page, whatever the number of rounds: a browser allows only a few, and each round's own would pile up.
 let ctx = null;
@@ -117,12 +118,15 @@ export function createSounds({ kit, say, stage }) {
     loops.set(name, l);
     return l;
   }
-  function stopLoop(name) {
+  // (over `ms` when given: the boil dying away as the heat goes down, heard with the pan settling; a ramp toward the floor
+  // is under a hundredth of the way from it after this many of its time constants, so it stops with no click)
+  const RAMP_SPAN = 5;
+  function stopLoop(name, ms = 0) {
     const l = loops.get(name);
     if (!l) return;
     loops.delete(name);
-    l.g.gain.setTargetAtTime(Q.floor, ctx.currentTime, Q.loopFade);
-    l.src.stop(ctx.currentTime + Q.loopStop);
+    l.g.gain.setTargetAtTime(Q.floor, ctx.currentTime, ms ? ms / 1000 / RAMP_SPAN : Q.loopFade);
+    l.src.stop(ctx.currentTime + Math.max(Q.loopStop, ms / 1000));
   }
 
   return {
@@ -171,9 +175,9 @@ export function createSounds({ kit, say, stage }) {
       l.src.playbackRate.setTargetAtTime(from + (to - from) * Math.max(0, Math.min(1, k)), ctx.currentTime, Q.duck);
     },
     /** The boil rises in loudness only, evenly in dB, with no join heard; it is silent under a voice. */
-    simmer(heat, k, bubbling) {
+    simmer(heat, k, bubbling, fadeMs = 0) {
       if (!ctx || ctx.state !== "running") return;
-      if (heat < 0) return stopLoop("simmer");
+      if (heat < 0) return stopLoop("simmer", fadeMs);
       const l = loops.get("simmer") || startLoop("simmer");
       if (!l) return;
       const m = S.simmer;

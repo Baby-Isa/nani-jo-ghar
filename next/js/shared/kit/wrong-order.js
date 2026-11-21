@@ -3,19 +3,27 @@
  * spec, wrong-order-redesign.md, with his answers on its stills). One thing moves at a time and nothing shakes.
  *   a. Under the first-time light's dim over the whole screen (its tone and fade; the cog hidden), every served order's
  *      folded line leaves the side panel for the middle of the room it is given, stacked; nothing is said.
- *   b. The right ones, one at a time: the tick pops again with a ding and a short gold glow, and the line flies off; they
- *      do not come back (their cards wait in the panel as served).
+ *   b. The right ones, one at a time: the tick pops again with a ding, a short gold glow and the family's well done (kit.lines.wellDone; Zafar,
+ *      21 Nov: "the correct ones should get the [well done] ... you need more reassurance"), and the line flies off; they do
+ *      not come back (their cards wait in the panel as served).
  *   c. Each wrong one in turn: its tick turns to a maroon cross and its edge flashes maroon, with Nani's "oho" (a fond "oh
- *      dear", never a buzzer; once, however many are wrong: Zafar, 20 Nov); then its line opens into its own order card,
- *      lifted (./order-card.js lift: the panel's card and its item cards, grown by one zoom; every line came to the middle
- *      at the first card's width and growth, so nothing re-wraps), with what went into the pan already on it and a missing
- *      thing's place a dotted card; the person says the order.
- *   d. What is wrong, left to right: crossed, its picture faded, held, falling out (solid until it is clear of the card);
- *      a wrong amount shows the right amount behind it, glowing. e. Straight after, the gaps the fallen extras left close,
- *      the cards sliding together. f. Then each missing thing rises into its dotted card and glows. The person says each
- *      correction as it happens, in their own words about that one thing (the rule's `says`: "only one sugar").
- *   g. The last frame holds (a speaker's word starts the hold again). h. The card shrinks back into its own place in the
- *      panel, open and unticked, ready to make again, its marks fading as it lands; the veil lifts, the cog comes back.
+ *      dear", never a buzzer; once, however many are wrong: Zafar, 20 Nov); then its line glides to where its card's top
+ *      will stand and the card opens down from it, as the panel's card opens (Zafar, 21 Nov: "like the order card does on
+ *      the left-hand side, it should expand down nicely"): the card lifted (./order-card.js lift: the panel's card and its
+ *      item cards, grown by one zoom; every line came to the middle at the first card's width and growth, so nothing
+ *      re-wraps), with what went into the pan already on it and a missing thing's place a dotted card. Nothing more is
+ *      said (Zafar, 21 Nov: "we shouldn't repeat the entire order ... the voiceover should just directly relate to what's
+ *      happening").
+ *   d. What is wrong, left to right: the card spoken about lit, the rest of the row dimmed a little (Zafar, 21 Nov: "so you
+ *      know which card is being referred to"), then crossed, its picture faded, held, falling out (solid until it is clear
+ *      of the card); a wrong amount shows the right amount behind it, glowing. e. Straight after, the gaps the fallen extras
+ *      left close, the cards sliding together and the card narrowing with them. f. Then each missing thing, lit, rises into
+ *      its dotted card and glows. The person says each correction as it happens, in their own words about that one thing
+ *      (the rule's `says`: "only one sugar").
+ *   g. The last frame holds (a speaker's word starts the hold again). h. The card narrows to its panel card's width (its
+ *      row clipped as the panel's is), then glides into its own place in the panel, open and unticked, ready to make again,
+ *      its marks fading as it lands, and becomes the panel's card in the same frame; the veil lifts, the cog comes back.
+ * Every move is the kit's one move (./move.js), so nothing snaps (Zafar, 21 Nov).
  * A tap on the veil skips the card showing to its last frame, a second ends it; a speaker's tap is only the speaker's.
  * What it plays is the kit's rule (./wrong-order.rules.js playOf); the cards are the order card's own; this file only
  * times it.
@@ -24,9 +32,11 @@
  *       right: the seats whose orders are right; wrong: [{ vessel, play }] (./wrong-order.rules.js playOf)
  *       room() -> { left, top, right, bottom }: where on the page the cards may stand (the family's)
  */
+import { createMove, zoomOf } from "./move.js";
+import { spaceWords } from "./word-card.js";
+
 const make = (cls) => Object.assign(document.createElement("div"), { className: cls });
 const box = (el) => el.getBoundingClientRect();
-const zoomOf = (el) => parseFloat(getComputedStyle(el).zoom) || 1;
 
 export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room }) {
   const W = kit.wrongOrder;
@@ -38,37 +48,17 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   const moves = new Set();
   const calm = () => {
     hurried = false;
-    hurrying = new Promise((r) => (hurry = r)).then(() => ((hurried = true), moves.forEach((a) => a.finish())));
+    hurrying = new Promise((r) => (hurry = r)).then(() => ((hurried = true), moves.forEach((a) => a.finish()), veil.getAnimations({ subtree: true }).forEach((a) => a.finish())));
   };
   calm();
   const wait = (ms) => (hurried ? Promise.resolve() : Promise.race([stage.wait(ms), hurrying])); // (stands still while the round is held)
   const speak = (line) => (hurried ? Promise.resolve() : Promise.race([say.speak(line), stage.wait(W.sayCap), hurrying]));
+  const mv = createMove(kit, { now: () => hurried, track: (a) => (moves.add(a), a.finished.catch(() => {}).then(() => moves.delete(a))) });
   const move = (el, frames, ms) => {
-    const a = el.animate(frames, { duration: hurried ? 0 : ms, easing: W.ease, fill: "both" });
+    const a = el.animate(frames, { duration: hurried ? 0 : ms, easing: kit.move.ease, fill: "both" });
     moves.add(a);
     return a.finished.catch(() => {}).then(() => moves.delete(a));
   };
-  /**
-   * A change among `els` (cards in or out): each that stays slides from where it stood to its new place, together; one
-   * inside the zoomed `card` moves in its px and by what the card itself does not already move it.
-   */
-  async function glide(els, change, card = null) {
-    const before = new Map(els.map((el) => [el, box(el)]));
-    const was = card ? box(card) : null;
-    change();
-    const carried = card ? [was.left - box(card).left, was.top - box(card).top] : [0, 0];
-    await Promise.all(
-      els
-        .filter((el) => el.isConnected)
-        .map((el) => {
-          const inCard = card && el !== card;
-          const [a, b, z] = [before.get(el), box(el), zoomOf(inCard ? card : el)];
-          const [dx, dy] = [(a.left - b.left - (inCard ? carried[0] : 0)) / z, (a.top - b.top - (inCard ? carried[1] : 0)) / z];
-          return Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 ? null : move(el, [{ translate: `${dx}px ${dy}px` }, { translate: "0 0" }], W.close);
-        })
-    );
-  }
-
   const veil = make("wo");
   veil.dataset.ownTaps = "1";
   const shade = make("wo-veil");
@@ -112,16 +102,16 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   };
   fit = fitLines;
   fitLines();
-  await Promise.all([move(shade, [{ opacity: 0 }, { opacity: 1 }], W.veilIn), ...seats.map((seat) => move(lines.get(seat).el, [over(lines.get(seat).el, cards.boxOf(seat)), { transform: "none" }], W.lift))]);
+  await Promise.all([move(shade, [{ opacity: 0 }, { opacity: 1 }], W.veilIn), ...seats.map((seat) => mv.fly(lines.get(seat).el, cards.boxOf(seat), { from: true }))]);
 
-  // b. the right ones, one at a time: the tick pops again with a ding and a gold glow, and the line flies off
+  // b. the right ones, one at a time: the tick pops again with a ding, a gold glow and the family's well done, and the line flies off
   for (const seat of right) {
     const l = lines.get(seat).el;
     l.classList.add("cheered", "gold");
     sounds.play("bing");
-    await wait(W.tick);
+    await Promise.all([speak(say.line(kit.lines.wellDone)), wait(W.tick)]);
     await move(l, [{ transform: "none", opacity: 1 }, { transform: `translateY(${-W.flyBy * 100}%)`, opacity: 0 }], W.flyOff);
-    await glide(
+    await mv.slide(
       [...stack.children].filter((x) => x !== l),
       () => (l.remove(), fitLines())
     );
@@ -139,18 +129,29 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     line.classList.remove("flash");
     const card = first || cards.lift(seat, w.play.slots, veil, { english: W.english });
     first = null;
-    fit = () => fitCard(card);
+    card.el.style.visibility = "hidden";
+    // (measured open, wherever it stands in its opening: a new size of the screen mid-opening ends the opening first)
+    const opened = () => card.el.getAnimations({ subtree: true }).forEach((a) => a.finish());
+    fit = () => (opened(), card.el.classList.remove("folded"), fitCard(card));
     fit();
-    card.el.style.visibility = "";
-    const from = box(line);
+    // the card where it will stand, folded to its top line: the line, at the card's own width (a later card may be wider
+    // or narrower than the first, which the lines took), glides onto it, becomes it in the same frame, and the card opens
+    // down from there
+    card.el.style.setProperty("--fold-ms", `${mv.ms}ms`);
+    card.el.style.setProperty("--fold-fade-ms", `${mv.ms}ms`);
+    card.el.classList.add("folded", "still", "opening");
+    void card.el.offsetWidth;
+    card.el.classList.remove("still");
     others.forEach((x) => (x.hidden = true));
     line.classList.add("opening");
-    await Promise.all([move(line, [{ opacity: 1 }, { opacity: 0 }], W.lift), move(card.el, [{ ...over(card.el, from), opacity: 0 }, { opacity: 1, offset: 0.3 }, { transform: "none", opacity: 1 }], W.lift)]);
+    if (Math.abs(line.offsetWidth - card.el.offsetWidth) > 0.5) await mv.reshape(line, () => (line.style.width = `${card.el.offsetWidth}px`));
+    await mv.fly(line, box(card.el));
+    card.el.style.visibility = "";
     line.remove();
-    const face = card.el.querySelector(".face");
-    face.classList.add("replaying");
-    await speak(cards.headOf(seat));
-    face.classList.remove("replaying");
+    card.el.classList.remove("folded");
+    await wait(mv.ms);
+    opened();
+    card.el.classList.remove("opening");
     // d, e, f. the rule's steps, played as they come: what is wrong out, left to right; the gaps the fallen extras left
     // closing (a missing thing's dotted card keeps its width all along, so nothing grows back); what is missing rising in
     for (const st of w.play.steps) await (st.do === "closes" ? close(card, st.slots) : step(seat, card.slots[st.slot], st));
@@ -163,21 +164,33 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
         stage.wait(W.hold).then(() => mine === turn && res());
       };
       holdAgain();
-      // (the panel's card opens behind the veil meanwhile, unseen, the list keeping it in view, so its place is ready)
+      // (the panel's card opens behind the veil meanwhile, the list keeping it in view and its row showing the cards this one
+      // starts with, so its place is ready and the same shape)
       cards.reopen(seat);
       cards.focus(seat);
+      cards.lead(seat, w.play.slots.filter((sl) => sl.row).map((sl) => sl.row));
     });
     [ending, holdAgain] = [null, null];
     // (whether or not it was hurried, it goes back with its own move)
     calm();
     going = true;
-    // h. back into its own place in the panel, open and unticked, its marks fading as it lands
+    // h. back into its own place in the panel, open and unticked, its marks fading as it lands: first it narrows to its
+    // panel card's width, its row clipped as the panel's is, so it is that card's shape; then it glides onto it, one even
+    // scale, and becomes it in the same frame (Zafar, 21 Nov: "it just snaps in ... It should smoothly go in the same way
+    // that the pop-up item card during the order goes back into the sidebar")
     await cards.still();
-    card.el.classList.add("landing");
+    card.el.classList.add("landing", "homing");
     const last = i === wrong.length - 1;
     fit = () => {};
-    await Promise.all([last ? move(shade, [{ opacity: 1 }, { opacity: 0 }], W.veilIn) : null, move(card.el, [{ transform: "none" }, over(card.el, cards.boxOf(seat))], W.lift)]);
+    // (its row spaced again as it now stands, the fallen cards gone, so its words sit as the panel's do)
+    spaceWords(card.slots.map((sl) => sl.own).filter((el) => el && el.isConnected), kit, { again: true });
+    await mv.reshape(card.el, () => ((card.el.style.width = `${cards.widthOf(seat)}px`), place(card)));
+    // (a new size of the screen on the way: it lands at once, and the panel's card takes its place)
+    const offHome = stage.onResize(() => moves.forEach((a) => a.finish()));
+    await Promise.all([last ? move(shade, [{ opacity: 1 }, { opacity: 0 }], mv.ms) : null, mv.fly(card.el, cards.boxOf(seat))]);
+    offHome();
     card.land();
+    cards.lead(seat, null);
     going = false;
     others.forEach((x) => (x.hidden = false));
     if (!last) (fit = fitLines), fitLines();
@@ -191,7 +204,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   /** The slots whose things fell go, and the cards slide together over the gaps. */
   async function close(card, slots) {
     const gone = slots.map((i) => card.slots[i].el);
-    await glide([card.el, ...card.slots.map((s) => s.el).filter((el) => !gone.includes(el))], () => (gone.forEach((el) => el.remove()), place(card)), card.el);
+    await mv.slide([card.el, ...card.slots.map((s) => s.el).filter((el) => !gone.includes(el))], () => (gone.forEach((el) => el.remove()), place(card)), card.el);
     await wait(W.beat);
   }
 
@@ -201,6 +214,10 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
    * dotted card, glowing. Its word said as it happens.
    */
   async function step(seat, slot, st) {
+    // (the card spoken about lit, the rest of the row dimmed a little, from just before it changes to the beat after)
+    const lit = (on) => (slot.el.closest(".ocard").classList.toggle("focusing", on), slot.el.classList.toggle("focus", on));
+    lit(true);
+    await wait(W.lit);
     if (st.do === "rises") {
       await wait(W.outline);
       const said = speak(cards.lineIn(seat, st.says));
@@ -222,6 +239,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       await said;
     }
     await wait(W.beat);
+    lit(false);
   }
 
   /**
@@ -250,15 +268,4 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     el.style.left = `${(r.left + (r.right - r.left - el.offsetWidth * k) / 2) / k}px`;
     el.style.top = `${(r.top + (r.bottom - r.top - el.offsetHeight * k) / 2) / k}px`;
   }
-}
-
-/** The frame that puts `el` (as it stands, with no move on it) over the rectangle `to`, in its own zoomed px. */
-function over(el, to) {
-  const from = el.getBoundingClientRect();
-  const z = zoomOf(el);
-  if (!to.width || !from.width) return { opacity: 0 };
-  const k = Math.min(to.width / from.width, to.height / from.height);
-  const dx = (to.left + to.width / 2 - (from.left + from.width / 2)) / z;
-  const dy = (to.top + to.height / 2 - (from.top + from.height / 2)) / z;
-  return { transform: `translate(${dx}px, ${dy}px) scale(${k})` };
 }

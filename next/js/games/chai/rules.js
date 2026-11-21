@@ -335,7 +335,7 @@ export function artList(art, asks) {
   const teas = [...new Set(asks.map(teaOf).concat("milky", "black"))];
   return {
     draw: [art.pan.empty],
-    then: [].concat(Object.values(art.pan), Object.values(art.over), Object.values(art.spoon), Object.values(art.onSurface), teas.flatMap((t) => [art.emptying[t], art.filling[t]])),
+    then: [].concat(Object.values(art.pan), Object.values(art.over), Object.values(art.spoon), Object.values(art.onSurface).flatMap((r) => [r, `${r}#milky`, `${r}#black`]), teas.flatMap((t) => [art.emptying[t], art.filling[t]])),
   };
 }
 

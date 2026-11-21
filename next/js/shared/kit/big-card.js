@@ -9,6 +9,7 @@
  *   big.pop(src, slotEl) -> { el, fly(), out(), lesson(), remove() }   src: { el?, line, pic, word }
  */
 import { revealLesson, wireSpeaker, spaceWords } from "./word-card.js";
+import { createMove } from "./move.js";
 
 export function createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds }) {
   const O = kit.order;
@@ -59,7 +60,7 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
     const aside = (b) => (bubble && bubble.y < b.y + b.h && bubble.y + bubble.h > b.y ? b.x + b.w + O.bubbleGap - bubble.x : 0);
     while (k > O.bigMinZoom && aside(box(k)) > bubble.w * O.bubbleShift) k -= O.zoomStep;
     kept = box(k);
-    if (again) showing.forEach((el) => el.style.transform || setBig(el, kept));
+    if (again) showing.forEach((el) => el.dataset.flying || setBig(el, kept));
     return kept;
   }
 
@@ -89,13 +90,13 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
         Object.assign(el.style, { position: "fixed", left: `${from.left}px`, top: `${from.top}px` });
         document.body.appendChild(el);
         void el.offsetWidth; // (its style there is settled first, so the move below is a move, not a jump)
-        const k = Math.min(to.width / from.width, to.height / from.height);
         el.classList.remove("in");
-        el.style.transition = `transform ${O.fly}ms ${O.flyEase}`;
-        el.style.transform = `translate(${to.left + to.width / 2 - (from.left + from.width / 2)}px, ${to.top + to.height / 2 - (from.top + from.height / 2)}px) scale(${k})`;
-        // a new size of the screen mid-flight (a phone turned): its slot is somewhere else now, so it lands there at once
-        let off = null;
-        await Promise.race([stage.wait(O.fly), new Promise((res) => (off = stage.onResize(res)))]);
+        // the kit's one move; a new size of the screen mid-flight (a phone turned): its slot is somewhere else now, so it
+        // lands there at once
+        let flight = null;
+        el.dataset.flying = "1";
+        const off = stage.onResize(() => flight && flight.finish());
+        await createMove(kit, { track: (a) => (flight = a) }).fly(el, to);
         off();
         src.el.classList.remove("waiting");
         gone();

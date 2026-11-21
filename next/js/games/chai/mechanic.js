@@ -1,6 +1,7 @@
 /*
  * The pan, drawn inside the box it is given: one pan from above in its stages, each picture placed by its rim so they
- * overlay exactly and cross-fade; every spoonful lying in the tea (the kit's box.lying) until the boil takes it; and,
+ * overlay exactly and cross-fade; every spoonful lying in the tea until the boil takes it (in milky chai or black tea its
+ * own picture painted lying in that tea; in water or a dry pan the kit's box.lying); and,
  * while it pours, its emptying frames. It draws what the rules' `look` says and decides nothing. It knows only its box,
  * its own settings and the measure of its rim.
  *
@@ -33,8 +34,8 @@ export function drawPan(box, { art, vessel, rim }) {
   let pouring = null;
   let fading = false;
   // the spoonfuls, one for each, in the order they went in: each at its own spot (a ring round the middle, so they never
-  // pile up there; past the last spot the list again, a little turned), lying in the tea (its wet ring under it, the tea
-  // over its lower part, in the colour of the tea it lies in), and fading as the boil takes them
+  // pile up there; past the last spot the list again, a little turned), lying in the tea, and fading as the boil takes
+  // them; as the tea changes (milk in, the leaves colouring it) each fades into its picture in the new tea
   const M = vessel.marks;
   const marks = [];
   const markAt = (i) => {
@@ -44,19 +45,42 @@ export function drawPan(box, { art, vessel, rim }) {
   };
   // (a spoonful in a dry pan lies on its floor: no tea over it; levels 2 to 4 let one in)
   const liquidOf = (look) => (look.wet ? M.wet.liquid[look.a] || M.wet.liquid.other : null);
-  function spoonfuls(look) {
+  // in milky chai or black tea, its own picture painted lying in that tea; in water or a dry pan, made lying by the kit
+  const teaOf = (look) => (look.wet && M.inTea.by[look.a]) || null;
+  const arriving = new Set(); // (fading in: left to its fade)
+  function spoonfuls(look, fadeMs = 0) {
     const want = look.spoons || [];
     while (marks.length > want.length) {
       const m = marks.pop();
       if (m) m.remove();
     }
+    const tea = teaOf(look);
+    const alpha = M.alpha * (1 - (look.sink || 0));
     want.forEach((id, i) => {
-      const ref = art.onSurface[id];
-      if (!ref) return;
-      if (marks[i] && marks[i].ref !== ref) marks.splice(i).forEach((m) => m && m.remove());
-      if (!marks[i]) marks[i] = box.lying(ref, { ...markAt(i), w: inner * M.size, alpha: 0, liquid: liquidOf(look), wet: M.wet });
+      const base = art.onSurface[id];
+      if (!base) return;
+      const ref = tea ? `${base}#${tea}` : base;
+      if (marks[i] && marks[i].ref !== ref) {
+        const old = marks[i];
+        marks[i] = null;
+        arriving.delete(old);
+        if (fadeMs && !pouring) old.to({ alpha: 0 }, fadeMs, "linear").then(() => old.remove());
+        else old.remove();
+      }
+      if (marks[i]) return;
+      const m = (marks[i] = tea
+        ? box.picture(ref, { ...markAt(i), w: inner * M.size * M.inTea.grow, alpha: 0 })
+        : box.lying(ref, { ...markAt(i), w: inner * M.size, alpha: 0, liquid: liquidOf(look), wet: M.wet }));
+      if (fadeMs && !pouring) {
+        arriving.add(m);
+        m.to({ alpha }, fadeMs, "linear").then(() => arriving.delete(m));
+      }
     });
-    marks.forEach((m) => m && (m.liquid(liquidOf(look)), m.set({ alpha: M.alpha * (1 - (look.sink || 0)), visible: !pouring })));
+    marks.forEach((m) => {
+      if (!m) return;
+      if (m.liquid) m.liquid(liquidOf(look));
+      if (!arriving.has(m)) m.set({ alpha, visible: !pouring });
+    });
   }
 
   // the pour's nth frame; a pan poured but not empty rests on one of them (its look's set and frame say which)
@@ -80,7 +104,7 @@ export function drawPan(box, { art, vessel, rim }) {
   return {
     show(look, fadeMs = 0) {
       if (pouring) return;
-      spoonfuls(look);
+      spoonfuls(look, fadeMs);
       const [A, B] = layers;
       const a = pictureOf(look.a, look);
       if (fadeMs && A.ref !== a.ref && !look.b && !fading) {

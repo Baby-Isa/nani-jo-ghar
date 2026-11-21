@@ -13,7 +13,7 @@
  *   - scrolled, its top fades over that rest, so the shadow of a card out of view above never shows a hard edge.
  * The child may still scroll the list by hand; nothing here fights a finger.
  *
- *   const panel = panelOf(host, { kit })     one per list, kept across rounds      listStill(host) -> Promise
+ *   const panel = panelOf(host, { kit })     one per list, kept across rounds
  *   panel.reset()  panel.track(el)  panel.watchRow(row, fn)  panel.focus(el | null)  panel.changed(ms?)
  *   panel.still() -> Promise (nothing moving, nothing due)
  */
@@ -22,7 +22,6 @@ import { boxIn } from "../frame.js";
 const panels = new WeakMap();
 
 /** Resolves once the list on this host is at rest (at once if it has none): the checks measure only a resting list. */
-export const listStill = (host) => (panels.has(host) ? panels.get(host).still() : Promise.resolve());
 
 export function panelOf(host, { kit }) {
   if (!panels.has(host)) panels.set(host, createPanel(host, kit));

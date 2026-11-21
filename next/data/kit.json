@@ -66,10 +66,11 @@
   ]
  },
  "help": {
-  "_about": "showTheWayAt: a dish wrong this many times is shown the right way. pastSupportFrom: an asked-for word the child's ladder has at this stage or above is past support: no stuck help comes for it, and Nani's line shows it as hintDots round dots until her helper card opens (old js/shared/onboard.js:518, a word supported to stage 2 of the old ladder, whose stage 3 is four right as this ladder's is; old js/cook/lang.js:201-222, the same dots whatever the word's length, so its length tells nothing).",
+  "_about": "showTheWayAt: a dish wrong this many times is shown the right way. pastSupportFrom: an asked-for word the child's ladder has at this stage or above is past support: no stuck help comes for it, and Nani's line shows it as hintDots round dots (hintDotGap dots apart) until her helper card opens (old js/shared/onboard.js:518, a word supported to stage 2 of the old ladder, whose stage 3 is four right as this ladder's is; old js/cook/lang.js:201-222, the same dots whatever the word's length, so its length tells nothing).",
   "showTheWayAt": 3,
   "pastSupportFrom": 3,
-  "hintDots": 3
+  "hintDots": 3,
+  "hintDotGap": 0.833
  },
  "words": {
   "_about": "holdMs: the least time a big card is held as its word is said, by how well the child knows the word, not by level (old chai's numbers and rule, old js/shared/rules.js:154-163; Zafar, 19 Nov): new; learning, from one right try; known, once its shelf pill is earned (js/shared/progress.js wordStage).",
@@ -605,7 +606,7 @@
   "clockMs": 50
  },
  "cards": {
-  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. kuLeast, enLeast: px; a word shrinks to fit its card no smaller than these, the Kutchi to two lines, the English to one, wrapping only below (old js/shared/word-card.js fit14: 11 and 10). dropShare: a letter's ink below its baseline counts as a tail past this share of its size (old dropOf14); fitSteps: the most px a word's lines are shrunk by, one at a time. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonCardMs: its light round the whole card first, then gliding to each part in lessonMoveMs; its light round each part's ink is every light's (the light block below: its margin and least room, even on all four sides; Zafar, 19 Nov), never a margin of its own; lessonMinPx: a part smaller than this is not asked for.",
+  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. kuLeast, enLeast: px; a word shrinks to fit its card no smaller than these, the Kutchi to two lines, the English to one, wrapping only below (old js/shared/word-card.js fit14: 11 and 10). dropShare: a letter's ink below its baseline counts as a tail past this share of its size (old dropOf14); fitSteps: the most px a word's lines are shrunk by, one at a time. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these; kuDotGap, enDotGap: the gap between two dots, in dots (the Kutchi's and the English's; their size is the style sheet's). lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonCardMs: its light round the whole card first, then gliding to each part in lessonMoveMs; its light round each part's ink is every light's (the light block below: its margin and least room, even on all four sides; Zafar, 19 Nov), never a margin of its own; lessonMinPx: a part smaller than this is not asked for.",
   "foldAfterMs": 1500,
   "foldMs": 420,
   "peekMs": 3000,
@@ -615,6 +616,8 @@
   "fitSteps": 60,
   "dotsMin": 3,
   "dotsMax": 6,
+  "kuDotGap": 0.6,
+  "enDotGap": 1.056,
   "lessonBeatMs": 450,
   "lessonEndMs": 700,
   "lessonCardMs": 700,
@@ -971,11 +974,14 @@
    "simmerDuck": 0.15
   }
  },
+ "move": {
+  "_about": "The kit's one move (js/shared/kit/move.js): every place or size changing in front of the child glides in ms with this easing, never a cut or a cross-fade (Zafar, 21 Nov, the second time a snap reached him; the order scene's big card flying into its slot, the way he holds up, sets it).",
+  "ms": 650,
+  "ease": "cubic-bezier(.45,.05,.2,1)"
+ },
  "order": {
-  "_about": "The order's timings, in milliseconds. pop: a big card appearing. fly: its flight into its slot, flyEase its easing (one even scale, centre to centre). partGap: between parts. cardOpen: a card opening. passAfter: before the next person. holdAlong: the beat after the last part. walkIn: people arriving, then walkWait before anyone speaks. dishCardOut: the dish's own card fading where it stands. bigW: the big card's widest, with its width's share of the play area's width (bigOfW) and height (bigWOfH); bigMaxOfH: never taller than this share of the play area's height (Zafar, 17 Nov, his red box), its width from the row card's shape (bigShape, height over width, if the row card cannot be measured). bigAt: the big card's corner beside the side panel. bigByPeople: the big card's place and size by how many people order. bigHeadGap: it never touches a head. bubbleGap: a bubble keeps this far off the big card. bubbleShift: the big card shrinks until the speaker's bubble need move aside by no more than this share of its own width. rowSlideMs, rowSlideEase: an order card's row, its cards sliding to their new places as one ticks (old js/shared/order-card.js:497); rowGlideAfterMs: then the row glides to its rest (old :534). focusPeek: a person's card brought into the panel's view shows at least this much of its top, the list scrolled no further. rowFadeRun: an order card's row fades at an edge while there is more to swipe that way, fully once this many px are left (its width: look.vars row-fade).",
+  "_about": "The order's timings, in milliseconds. pop: a big card appearing; its flight into its slot is the kit's one move (move). partGap: between parts. cardOpen: a card opening. passAfter: before the next person. holdAlong: the beat after the last part. walkIn: people arriving, then walkWait before anyone speaks. dishCardOut: the dish's own card fading where it stands. bigW: the big card's widest, with its width's share of the play area's width (bigOfW) and height (bigWOfH); bigMaxOfH: never taller than this share of the play area's height (Zafar, 17 Nov, his red box), its width from the row card's shape (bigShape, height over width, if the row card cannot be measured). bigAt: the big card's corner beside the side panel. bigByPeople: the big card's place and size by how many people order. bigHeadGap: it never touches a head. bubbleGap: a bubble keeps this far off the big card. bubbleShift: the big card shrinks until the speaker's bubble need move aside by no more than this share of its own width. rowSlideMs, rowSlideEase: an order card's row, its cards sliding to their new places as one ticks (old js/shared/order-card.js:497); rowGlideAfterMs: then the row glides to its rest (old :534). focusPeek: a person's card brought into the panel's view shows at least this much of its top, the list scrolled no further. rowFadeRun: an order card's row fades at an edge while there is more to swipe that way, fully once this many px are left (its width: look.vars row-fade).",
   "pop": 380,
-  "fly": 650,
-  "flyEase": "cubic-bezier(.45,.05,.2,1)",
   "partGap": 120,
   "cardOpen": 260,
   "passAfter": 450,
@@ -1159,30 +1165,28 @@
   }
  },
  "wrongOrder": {
-  "_about": "The wrong-order pop-up (js/shared/kit/wrong-order.js; Zafar's design, 20 Nov, and his answers on its stills: the redesign spec in the fifth play's feedback), in ms, px and shares. One thing moves at a time, nothing shakes. veilIn: the veil over the whole screen coming down (and lifting), as the first-time light's dim fades in, while every served order's line leaves the panel for the stack in the middle (lift); veil: its strength, a share of the light's own dim (--dim): 1 is the light's own (Zafar, 20 Nov: 'use the onboarding light viel'); tick: a right order's tick popping again with its ding and gold glow, before it flies off (flyOff, flyBy its height up); lift: the wrong order's line opening into its own card, grown into its room, and the card going back into the panel; sayCap: the most a line holds the next; cross: a wrong card crossed and faded, held before it falls; fall: it falling out of the card, fallBy its height; outline: the beat on a missing thing's dotted card before its card rises; rise: that card rising into it from riseBy its height below; beat: the pause after each correction's word; close: the cards sliding together over the gaps the fallen extras left (straight after they fall, before the missing rise: Zafar, 20 Nov), and the stack closing as a line goes; hold: the last frame, before the card goes back by itself (a speaker's word starts it again; a tap on the veil skips to the last frame, a second ends it). flash: the wrong line's maroon flash, its tick a cross, with Nani's 'oho', before it opens; itemK: the lifted card's most growth, its item cards this many times the panel's; the stacked lines take the first wrong card's width and growth (Zafar, 20 Nov: nothing changes size as it opens); both stand in the room the family gives them (the kitchen's: the white marble, the play area above the bottom row: Zafar, 20 Nov), centred there, the card clear of the cog's place, edgeX, edgeY px clear of the room's sides and of its top and bottom, as big as fits; minText: the lifted card's Kutchi words never under this many px (the check measures it); english: every help is open on the lifted card, whatever the level (each picture whole, each word written: Zafar, 20 Nov, 'unblur everything for the pop up wrong card'), and with this its English is written out under each word as the panel's card writes it, without it there is none (English only ever supports the Kutchi and the pictures: Zafar, 20 Nov). ease: every move's easing. vars: the style sheet's for the pop-up (as --wo-*); the lifted card is the panel's card grown by one zoom, with no sizes of its own (Zafar, 20 Nov: 'we should be using the exact same item cards and scaling'), but: dash, dash-w a missing thing's dotted card, its colour and width (stronger than the panel's, to be seen on the white card: Zafar, 20 Nov, 'E0 has a clearer outline'); line-gap the stacked lines' gap; flash-w the wrong line's maroon edge as it flashes; marks the marks fading as the card lands; mark the least size of its gold tick and maroon cross on the screen (the spec's bigger mark, so it reads on the phone); faded the picture's share left on a crossed card; glow the soft gold round a card that was corrected (no tick) and round a right order's line as it goes; extra the wider gap before the things nobody asked for, as times the row's gap.",
+  "_about": "The wrong-order pop-up (js/shared/kit/wrong-order.js; Zafar's design, 20 Nov, and his answers on its stills: the redesign spec in the fifth play's feedback), in ms, px and shares. One thing moves at a time, nothing shakes. veilIn: the veil over the whole screen coming down (and lifting), as the first-time light's dim fades in, while every served order's line leaves the panel for the stack in the middle (lift); veil: its strength, a share of the light's own dim (--dim): 1 is the light's own (Zafar, 20 Nov: 'use the onboarding light viel'); tick: a right order's tick popping again with its ding and gold glow, before it flies off (flyOff, flyBy its height up); every move (the lines leaving the panel, the wrong line gliding to its card's top, the card opening down, narrowing as gaps close and going home) is the kit's one move (move: Zafar, 21 Nov); sayCap: the most a line holds the next; cross: a wrong card crossed and faded, held before it falls; fall: it falling out of the card, fallBy its height; outline: the beat on a missing thing's dotted card before its card rises; rise: that card rising into it from riseBy its height below; beat: the pause after each correction's word; lit: the card spoken about lit (the light's edge, the rest of the row dimmed to vars.unlit) this long before it changes (Zafar, 21 Nov: \"it's still a bit rushed ... so you know which card is being referred to\"); the cards slide together over the gaps the fallen extras left straight after they fall, before the missing rise (Zafar, 20 Nov); hold: the last frame, before the card goes back by itself (a speaker's word starts it again; a tap on the veil skips to the last frame, a second ends it). flash: the wrong line's maroon flash, its tick a cross, with Nani's 'oho', before it opens; itemK: the lifted card's most growth, its item cards this many times the panel's; the stacked lines take the first wrong card's width and growth (Zafar, 20 Nov: nothing changes size as it opens); both stand in the room the family gives them (the kitchen's: the white marble, the play area above the bottom row: Zafar, 20 Nov), centred there, the card clear of the cog's place, edgeX, edgeY px clear of the room's sides and of its top and bottom, as big as fits; minText: the lifted card's Kutchi words never under this many px (the check measures it); english: every help is open on the lifted card, whatever the level (each picture whole, each word written: Zafar, 20 Nov, 'unblur everything for the pop up wrong card'), and with this its English is written out under each word as the panel's card writes it, without it there is none (English only ever supports the Kutchi and the pictures: Zafar, 20 Nov). vars: the style sheet's for the pop-up (as --wo-*); the lifted card is the panel's card grown by one zoom, with no sizes of its own (Zafar, 20 Nov: 'we should be using the exact same item cards and scaling'), but: dash, dash-w a missing thing's dotted card, its colour and width (stronger than the panel's, to be seen on the white card: Zafar, 20 Nov, 'E0 has a clearer outline'); line-gap the stacked lines' gap; flash-w the wrong line's maroon edge as it flashes; marks the marks fading as the card lands; mark the least size of its gold tick and maroon cross on the screen (the spec's bigger mark, so it reads on the phone); faded the picture's share left on a crossed card; glow the soft gold round a card that was corrected (no tick) and round a right order's line as it goes; extra the wider gap before the things nobody asked for, as times the row's gap.",
   "tick": 600,
   "veilIn": 300,
   "veil": 1,
-  "lift": 450,
   "sayCap": 2000,
-  "cross": 800,
-  "fall": 400,
+  "cross": 1000,
+  "fall": 550,
   "fallBy": 1.1,
   "outline": 500,
-  "rise": 450,
+  "rise": 600,
   "riseBy": 1.1,
-  "beat": 300,
-  "hold": 1000,
+  "beat": 600,
+  "lit": 400,
+  "hold": 1500,
   "flyOff": 450,
   "flyBy": 1.5,
-  "close": 350,
   "flash": 700,
   "itemK": 1.8,
   "edgeX": 12,
   "edgeY": 4,
   "minText": 14,
   "english": true,
-  "ease": "cubic-bezier(.3,.9,.4,1)",
   "vars": {
    "dash": "#c8b79c",
    "dash-w": "2.2px",
@@ -1192,7 +1196,9 @@
    "mark": "22px",
    "faded": "0.5",
    "glow": "0 0 0 2px rgba(201,150,46,.75), 0 0 16px 4px rgba(201,150,46,.45)",
-   "extra": "1.8"
+   "extra": "1.8",
+   "unlit": "0.45",
+   "lit-w": "3px"
   }
  },
 

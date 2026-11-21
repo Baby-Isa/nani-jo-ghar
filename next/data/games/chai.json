@@ -236,7 +236,7 @@
   }
  },
  "motion": {
-  "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge. calmMs: the boil settling to calm tea as the heat is turned down (Zafar, 20 Nov: about 0.2-0.3 s; old chai's went calm at once).",
+  "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge.",
   "row": {
    "fly": 380,
    "tip": 220,
@@ -263,7 +263,6 @@
    "end": 320
   },
   "takeBackMs": 610,
-  "calmMs": 300,
   "carry": {
    "lift": 1.07,
    "gap": 0.12,
@@ -650,7 +649,7 @@
   ]
  },
  "art": {
-  "_about": "Chai's pictures, by art id. pan: one pan from exactly above in its looks, all painted on one base (art run C1), so each is placed by the same rim; over-milky and over-black are the pan boiling over. over: pictures laid over the pan's contents (none now: each boil is a whole look of the pan). onSurface: a spoonful's mark in the pan, by what went in: a teaspoonful of the thing as it lies on the tea from straight above, with its wet contact, until the boil takes it (art run C5; Zafar, 20 Nov: \"The items going into the pan should be different, they should be made for the pan and look better\"). emptying, filling: the six frames of a pour, pan and glass, milky and black, made by the cutter from the full and emptied pictures (Zafar, 19 Nov). dishCard: the dish's own card, one plain glass of chai for every order, so it never gives away milk or none (Zafar, 19 Nov). amountCard: the side-on glass for half and full, milky or black. A ref ending \"#*\" is every state of the piece, in order (the frames).",
+  "_about": "Chai's pictures, by art id. pan: one pan from exactly above in its looks, all painted on one base (art run C1), so each is placed by the same rim; over-milky and over-black are the pan boiling over. over: pictures laid over the pan's contents (none now: each boil is a whole look of the pan). onSurface: a spoonful's mark in the pan, by what went in: a teaspoonful of the thing as it lies on the tea from straight above, with its wet contact, until the boil takes it; its states milky and black are it painted lying in that tea (art run C6), its default on its own (art run C5; Zafar, 20 Nov: \"The items going into the pan should be different, they should be made for the pan and look better\"). emptying, filling: the six frames of a pour, pan and glass, milky and black, made by the cutter from the full and emptied pictures (Zafar, 19 Nov). dishCard: the dish's own card, one plain glass of chai for every order, so it never gives away milk or none (Zafar, 19 Nov). amountCard: the side-on glass for half and full, milky or black. A ref ending \"#*\" is every state of the piece, in order (the frames).",
   "pan": {
    "empty": "chai.pan-c2#empty",
    "water": "chai.pan-c2#water",
@@ -700,7 +699,7 @@
   }
  },
  "vessel": {
-  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: the spoonfuls lying on the tea: each one's width a share of the contents' radius (size; the pictures are all cut at one scale, sources/art/chai-c5/cut_c5.py, so one size: 0.7, the square about a third of the tea's width, the spoonful in it 0.71 to 0.96 of that; the reviewer, 21 Nov: 0.45 read too small at a phone's size); spots: where each lies, in the order they go in, [a share of the contents' radius from the middle, degrees round], a ring at half the radius with every next one across the pan from the last, so they never pile up in the middle and the outermost square reaches 0.85 of the radius, inside the tea; past the last spot the list again, turned by again degrees; alpha: how strongly they show; wet: how each lies in the tea rather than on it (the reviewer, 21 Nov: 'stuck on top'), made by the kit (js/shared/made-pictures.js wet): its own soft dark ring under it (ring: blur, dx, dy as shares of its picture's width, alpha) and the tea's colour over its lower part (tint: from this share of the thing's own height down to its foot, up to alpha), liquid the colour for each look of the pan (sampled from the pan's pictures; other: the black tea's), texture the working copy's size in px. They fade as the boil takes them. dip: the small settle when something lands.",
+  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: the spoonfuls lying on the tea: each one's width a share of the contents' radius (size; the pictures are all cut at one scale, sources/art/chai-c5/cut_c5.py, so one size: 0.7, the square about a third of the tea's width, the spoonful in it 0.71 to 0.96 of that; the reviewer, 21 Nov: 0.45 read too small at a phone's size); spots: where each lies, in the order they go in, [a share of the contents' radius from the middle, degrees round], a ring at half the radius with every next one across the pan from the last, so they never pile up in the middle and the outermost square reaches 0.85 of the radius, inside the tea (an in-tea picture's square is wider, its ring of tea fading out well inside it); past the last spot the list again, turned by again degrees; alpha: how strongly they show; wet: how each lies in the tea rather than on it (the reviewer, 21 Nov: 'stuck on top'), made by the kit (js/shared/made-pictures.js wet): its own soft dark ring under it (ring: blur, dx, dy as shares of its picture's width, alpha) and the tea's colour over its lower part (tint: from this share of the thing's own height down to its foot, up to alpha), liquid the colour for each look of the pan (sampled from the pan's pictures; other: the black tea's), texture the working copy's size in px; inTea: in milky chai or black tea (by: the pan's look, which tea; water with the leaves only colouring it keeps the made ring) a spoonful is its own picture painted lying in that tea, with a soft ring of it (art run C6; Zafar, 21 Nov: \"having them in the tea would make them look better\"), drawn grow times as wide (its square has room for the ring; the thing itself the same size), the made wet ring and tint only in water or a dry pan. They fade as the boil takes them. dip: the small settle when something lands.",
   "reach": 1.9676,
   "rimSrc": 200,
   "innerSrc": 182.8,
@@ -771,6 +770,10 @@
     ]
    ],
    "again": 17,
+   "inTea": {
+    "grow": 1.5,
+    "by": { "milky": "milky", "boil-milky": "milky", "foam": "milky", "over-milky": "milky", "tea": "black", "boil-tea": "black", "over-black": "black" }
+   },
    "alpha": 1,
    "wet": {
     "texture": 192,

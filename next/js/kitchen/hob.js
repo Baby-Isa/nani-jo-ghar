@@ -3,7 +3,7 @@
  * that shows the heat on the vessel itself (never a separate timer). It draws what the heat rule says; it decides nothing.
  *
  *   const hob = createHob({ stage, kitchen, plan, people, onKnob, onFace })
- *   hob.fire(v, "off" | "high" | "low")      hob.ring(v, heat | null, k)      hob.wiggleKnob(v)
+ *   hob.fire(v, "off" | "high" | "low")      hob.ring(v, heat | null, k)      hob.ringOut(v, ms)      hob.wiggleKnob(v)
  *   hob.steam(v, on)      hob.puffs(v)      hob.overflow(v, u | null)      hob.chosen(v | null)      hob.stepBack()      hob.knobBox(v) / hob.vesselBox(v)
  *   hobRefs({ kitchen, steamArt, people }) -> { draw, then }: the pictures it draws with, and the steam it shows later
  */
@@ -105,6 +105,10 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
     ring(i, heat, hk) {
       const b = burners[i];
       const g = b.ring;
+      // (fading out as the heat goes down: left to fade, unless the heat comes back)
+      if (heat == null && b.ringOut) return;
+      b.ringOut = null;
+      g.alpha = 1;
       g.clear();
       if (heat == null) return;
       const R = plan.rimR;
@@ -118,6 +122,14 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
       const hy = b.v.y + Math.sin(a(heat)) * R;
       g.fillStyle(0xffffff, 1).fillCircle(hx, hy, RING.dot);
       g.lineStyle(RING.dotLine[0], hex(RING.dotLine[1]), RING.dotLine[2]).strokeCircle(hx, hy, RING.dot);
+    },
+    /** The ring fades away over `ms` as the heat goes down (the pan settling with it), then is gone. */
+    ringOut(i, ms) {
+      const b = burners[i];
+      const mine = (b.ringOut = {});
+      // (the fade moves the ring only while it is still this fade's: heat coming back takes the ring at once)
+      const fade = { get alpha() { return b.ring.alpha; }, set alpha(v) { if (b.ringOut === mine) b.ring.alpha = v; } };
+      stage.tween(fade, { alpha: 0 }, ms, "linear").then(() => b.ringOut === mine && ((b.ringOut = null), b.ring.clear(), (b.ring.alpha = 1)));
     },
     /** "Not yet": the knob shakes as one piece, both its pictures together (old kitchen-kit.js:390-393), so the shake shows lit or not. */
     async wiggleKnob(i) {

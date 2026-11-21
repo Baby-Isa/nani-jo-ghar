@@ -9,10 +9,11 @@
  *   wireSpeaker(card, { say, line, now? }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said;
  *       a tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would. now: it never
  *       waits behind another line either (Nani's helper card: her line is already said, the child asked for the word)
- *   spaceWords(cards, kit)   every word card (the row's, the big card, the word moment's; one card or an order row: the
+ *   spaceWords(cards, kit, { again? })   every word card (the row's, the big card, the word moment's; one card or an order row: the
  *       cards given together are one row, wherever each stands) spaced
  *       as the old game's card (below): its words fitted to the card, one size each per row, and on the row's card only, the
- *       divider's gap to the English's ink. Run now, once the faces are in, and when the card's width or the panel's scale
+ *       divider's gap to the row's lowest English ink, the row's Kutchi ending on one line (again: spaced anew now, the
+ *       row being these cards alone). Run now, once the faces are in, and when the card's width or the panel's scale
  *       changes; never on a change of form.
  *   wirePeeks(card, { kit, onPeek })            onPeek("english" | "picture")
  *   revealLesson(card, { kit, light, sounds }) -> Promise      resolves when every part has been tapped open
@@ -20,7 +21,15 @@
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
-const dots = (n) => "<i></i>".repeat(n);
+// a row of dots, one picture: n circles of one diameter, `gap` diameters apart, drawn in one go, so every dot is the same
+// however the row falls on the screen's pixels (a box for each dot is snapped to the pixels on its own: one comes out a
+// pixel narrower; Zafar, 21 Nov). Its size is the style sheet's (--dot: the diameter, in em), its width follows (--n, --gap);
+// every hidden word's dots are drawn by it (the word card's, Nani's line's)
+export const dots = (n, gap) => {
+  const w = n + (n - 1) * gap;
+  const c = Array.from({ length: n }, (_, i) => `<circle cx="${(0.5 + i * (1 + gap)).toFixed(3)}" cy=".5" r=".5"/>`).join("");
+  return `<svg viewBox="0 0 ${w.toFixed(3)} 1" style="--n:${n};--gap:${gap}" aria-hidden="true">${c}</svg>`;
+};
 
 export function wordCardHtml({ file, line, pic, english, blurred, kit, rule = true }) {
   const K = kit.cards;
@@ -28,8 +37,8 @@ export function wordCardHtml({ file, line, pic, english, blurred, kit, rule = tr
   const nEn = Math.max(K.dotsMin, Math.min(K.dotsMax, letters - 1));
   const nKu = Math.max(K.dotsMin, Math.min(K.dotsMax, line.text.replace(/\s/g, "").length - 1));
   return `<div class="well${blurred ? " blur" : ""}"><img src="${file(pic)}" alt=""><button class="eye" aria-label="Look">${EYE}</button></div>
-    <div class="ku"><span class="w">${esc(line.text)}</span><span class="kdots">${dots(nKu)}</span></div>
-    <div class="en${english ? "" : " dots"}"><span class="w">${esc(line.en)}</span><button class="d" aria-label="Show">${dots(nEn)}</button></div>${rule ? `<div class="rule"></div>` : ""}<button class="speaker" aria-label="Say it"></button>`;
+    <div class="ku"><span class="w">${esc(line.text)}</span><span class="kdots">${dots(nKu, K.kuDotGap)}</span></div>
+    <div class="en${english ? "" : " dots"}"><span class="w">${esc(line.en)}</span><button class="d" aria-label="Show">${dots(nEn, K.enDotGap)}</button></div>${rule ? `<div class="rule"></div>` : ""}<button class="speaker" aria-label="Say it"></button>`;
 }
 
 export function wireSpeaker(card, { say, line, now = false }) {
@@ -173,7 +182,19 @@ function spaceRow(cards, kit) {
     const i = ink(words.querySelector(".w"), K.dropShare, rr.left, rr.right);
     return i ? (e.getBoundingClientRect().bottom - i.foot) / i.zoom : 0;
   });
-  cards.forEach((c, i) => gives[i] != null && c.style.setProperty("--en-ink", `${gives[i].toFixed(2)}px`));
+  // one gap for the row, its lowest ink's (Zafar, 21 Nov: the dots "at different heights ... At least the ginger and the milk ...
+  // should be at the same heights"): a tail measured per card moved its words and dots, even with the word hidden under dots
+  const set = gives.filter((g) => g != null);
+  const row = set.length ? Math.min(...set) : 0;
+  // and the row's Kutchi end on one line: a word on fewer lines takes the room of the row's tallest above it, so the last
+  // lines, the English and the dots line up across the row (Zafar, 21 Nov), each card's pair still centred on the row's
+  const kuH = parts(".ku").map((p) => parseFloat(getComputedStyle(p).height) || 0);
+  const tallest = Math.max(...kuH);
+  cards.forEach((c, i) => {
+    if (gives[i] == null) return;
+    c.style.setProperty("--en-ink", `${row.toFixed(2)}px`);
+    c.style.setProperty("--ku-room", `${(tallest - kuH[i]).toFixed(2)}px`);
+  });
 }
 
 // every card known by its kit, its row (the cards it was given with) and the width and panel scale it was spaced at; a
@@ -200,10 +221,10 @@ const afterFonts = (card) => {
   waiting.add(card);
 };
 
-export function spaceWords(cards, kit) {
+export function spaceWords(cards, kit, { again = false } = {}) {
   const list = [].concat(cards);
   const fresh = list.filter((c) => !known.has(c));
-  list.forEach((c) => known.set(c, { kit, key: fresh.includes(c) ? null : known.get(c).key, row: list }));
+  list.forEach((c) => known.set(c, { kit, key: fresh.includes(c) || again ? null : known.get(c).key, row: list }));
   spaceAll(list.filter(stale));
   fresh.forEach((c) => (sized && sized.observe(c), afterFonts(c)));
 }

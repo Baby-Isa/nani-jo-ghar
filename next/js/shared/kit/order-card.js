@@ -24,6 +24,7 @@
  *   cards.make(seat, { word, meaning }) -> { el, line }   an item card for a thing as it was made (a count, an amount, a
  *       thing nobody asked for), in this person's cards' own look, its picture whole and its English written (the lifted
  *       card shows it, every help open), nothing on it to press          cards.boxOf(seat) -> the card's rectangle in the panel
+ *   cards.widthOf(seat) -> the card's width in its own px (a lifted card narrows to it before it goes home)
  *   cards.away(seats, top?)   these cards leave the list (orders done right while another is remade), `top` first of the
  *       rest; with none away, every card is back in the order they ordered
  */
@@ -146,6 +147,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     lineIn: (seat, meaning) => say.line(meaning, { register: seats[seat].person.headline.register }),
     make,
     boxOf: (seat) => seats[seat].el.getBoundingClientRect(),
+    widthOf: (seat) => seats[seat].el.offsetWidth,
     away(list, top = null) {
       seats.forEach((s, i) => ((s.el.hidden = list.includes(i)), host.appendChild(s.el)));
       if (top != null) (host.prepend(seats[top].el), panel.focus(seats[top].el));

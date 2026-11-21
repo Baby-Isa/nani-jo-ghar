@@ -141,12 +141,13 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     },
     "turned-down"(e, s) {
       D.hob.fire(e.vessel, "low");
-      D.hob.ring(e.vessel, null);
+      // the boil settles to calm tea, so the tea poured is the tea the child sees, seen going from boiling through half to calm
+      // (Zafar, 21 Nov: "from boiling to semi-boiling to calm ... slow enough that you can see the transition", never in the way
+      // of a tap): the pan, its ring and the boil's sound together over the kitchen's calmMs; the steam's last wisps drift away on their own.
+      // The pan is drawn every frame only while it heats
+      D.hob.ringOut(e.vessel, kitchen.heat.calmMs);
       D.hob.steam(e.vessel, false);
-      // the boil settles to calm tea at once, so the tea poured is the tea the child sees (Zafar, 20 Nov: "does it rapidly, like
-      // within the space of like 0.2 seconds ... go from boiling tea ... back to calm tea"); the pan is drawn every frame only
-      // while it heats
-      D.vessels[e.vessel].pan.show(lookOf(s, e.vessel), M.calmMs);
+      D.vessels[e.vessel].pan.show(lookOf(s, e.vessel), kitchen.heat.calmMs);
       D.serving.undim();
       ui.sounds.play("knob");
     },
@@ -335,7 +336,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
             hottest = Math.max(hottest, x.fire.heat);
           }
         });
-        ui.sounds.simmer(hottest, k, bubbleAt(k));
+        ui.sounds.simmer(hottest, k, bubbleAt(k), kitchen.heat.calmMs);
       });
     },
     on(events, state) {
