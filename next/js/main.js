@@ -1,7 +1,8 @@
 /*
  * The page's start. It names no game: the game comes from the address (?game=, ?level=), its settings name its
  * family, and the family hands the runner its list of scenes. ?moment=<id> plays one word moment by itself instead
- * (js/shared/moment-page.js), for the labs page.
+ * (js/shared/moment-page.js), for the labs page; ?lab=<id> starts the game's round at a lab its family offers (the
+ * kitchen's "wrong-order": js/kitchen/lab.rules.js).
  */
 import { createArt } from "./shared/art.js";
 import { createSay } from "./shared/say.js";
@@ -57,7 +58,12 @@ async function start() {
   async function play() {
     const seed = Number(ask.get("seed")) || Math.floor(Math.random() * 2 ** 31);
     const round = newRound({ game: id, settings, people: people.people, level, seed, player: progress.player, ladder: progress.ladder, met: progress.met, today: new Date().toDateString(), best: progress.best, earned: progress.earned, tried: triedOf(progress), card: game.rules.card });
-    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, player, meet: (key) => meetNow(progress, key) };
+    // a grown-up's lab from the labs page (?lab=wrong-order: the round opens on its dishes made, one wrong): never in a store
+    // build, and never kept in anyone's record (its dishes are made up); the family says which labs it offers
+    const lab = ask.get("lab");
+    if (lab && globalThis.NJG_BUILD === "store") throw new Error("labs are for testing only");
+    if (lab) round.lab = lab;
+    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, player, meet: (key) => !round.lab && meetNow(progress, key) };
     let run = null;
     const scenes = await familyCode.scenesWithViews({ ...parts, send: (move) => run.send(move), tree: () => run.tree() });
     run = createRunner({
@@ -66,7 +72,7 @@ async function start() {
       load: (ids) => stage.load(ids),
       onError: stopped,
       onEnd(ended) {
-        saveRound(progress, ended, kit.ladder);
+        if (!round.lab) saveRound(progress, ended, kit.ladder);
         if (ended.choice === "again") play();
       },
     });

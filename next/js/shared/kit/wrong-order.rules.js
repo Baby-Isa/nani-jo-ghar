@@ -2,11 +2,10 @@
  * What a wrong order's card shows, with no page: for each thing on the person's card, and each thing that went in that
  * nobody asked for, whether it is right, missed, too few, too many or extra; and what the card plays (Zafar's design,
  * 20 Nov, the redesign spec, wrong-order-redesign.md): the card opens with what went into the pan
- * already on it, one slot for each thing, a missing thing's slot a dotted empty card; then what is wrong goes, one at a
- * time, left to right (a wrong amount crossed and falling to show the right amount behind it, a thing nobody asked for
- * crossed and falling); then the closing step, the slots of the things nobody asked for going and the cards closing the
- * gap (a missing thing's dotted card keeps its width all along); then each thing asked and missing rises into its slot,
- * left to right (Zafar, 20 Nov).
+ * already on it, one slot for each thing, a missing thing's slot a dotted empty card; then one pass, left to right, every
+ * card in its turn (Zafar, 21 Nov, replacing his 20 Nov order by kind): a right one kept (its tick stamped), a wrong amount
+ * crossed and falling to show the right amount behind it, a thing asked and missing rising into its slot, a thing nobody
+ * asked for crossed and falling, its slot going and the cards closing the gap straight after (they stand last).
  *
  *   faultsOf(items, tally) -> [{ id, word, kind, want, got }]
  *       items: the card's rows as the order gives them ({ id, word, no, said }); tally: the game's count of the dish,
@@ -20,14 +19,14 @@
  *       slots: one for each row shown, in order, then one for each thing nobody asked for, each { row, holds, made? } as
  *       the card opens: holds "asked" (its row's own card, right: ticked), "made" (a card of the thing as it went in,
  *       { word, meaning }: a wrong amount in its row's slot, or a thing nobody asked for, row null) or null (missing)
- *       steps, in order, the view playing each as it comes: reveals { slot, row, says } (the wrong amount falls; its row's
- *       card is behind it) | drops { slot, says } (the thing nobody asked for falls, its slot left empty) | closes { slots }
- *       (once, after every reveal and drop, where any dropped: those slots go, the cards closing the gap) | rises { slot,
- *       row, says } (its row's card rises into its dotted card); says: the person's own correction, a meaning for the
- *       language engine, natural and about that one thing, never the order again (Zafar, 20 Nov: "only two sugars", "I
- *       don't want ginger"): of a wrong amount fixOf(row, kind, word); of a thing nobody asked for, notWanted(thing) "I
- *       don't want cumin."; missed, wanted(row) "I'd like cardamom." (his "don't forget the milk" is not in the grammar
- *       yet: a line for Mum)
+ *       steps, one for each slot in its order, the view playing each as it comes: keeps { slot, row } (a right card
+ *       confirmed, its own word said as its speaker says it) | reveals { slot, row, says } (the wrong amount falls; its
+ *       row's card is behind it) | rises { slot, row, says } (its row's card rises into its dotted card) | drops { slot,
+ *       says } (the thing nobody asked for falls, its slot left empty), then closes { slots } (that slot goes, the cards
+ *       closing the gap); a correction's says: the person's own, a meaning for the language engine, natural and about that
+ *       one thing, never the order again (Zafar, 20 Nov: "only two sugars", "I don't want ginger"): of a wrong amount
+ *       fixOf(row, kind, word); of a thing nobody asked for, notWanted(thing) "I don't want cumin."; missed, wanted(row)
+ *       "I'd like cardamom." (his "don't forget the milk" is not in the grammar yet: a line for Mum)
  *   fixOf(row, kind, word) -> what the person says of a wrong amount (kind: many | few; word: the thing as it went in):
  *       a "no" row's thing, notWanted; the other of a pair (half for whole), the row's own card's line "whole"; too many,
  *       onlyThis(row) "Only one sugar."; too few, wanted(row) "I'd like three sugars."
@@ -72,13 +71,17 @@ export function playOf(items, faults, made) {
     return m ? { row, holds: "made", made: card(m) } : { row, holds: null };
   });
   const slots = asked.concat(made.filter((m) => !m.row).map((m) => ({ row: null, holds: "made", made: card(m) })));
-  // what is wrong goes first, left to right as it stands; then the gaps close; then what is missing rises in, left to right
+  // one pass, left to right, every card in its turn (Zafar, 21 Nov: "fix the first card, fix the second card ... or like,
+  // confirm it's correct as it goes along"): a right one kept, a wrong amount revealed, a missing one risen in, a thing nobody
+  // asked for dropped and its gap closed straight after (those stand last, so the card narrows at its end)
   const steps = [];
   const madeOf = (s) => made.find((m) => m.word === s.made.word && !m.row);
-  slots.forEach((s, slot) => s.holds === "made" && steps.push(s.row ? { do: "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word) } : { do: "drops", slot, says: notWanted(madeOf(s).meaning) }));
-  const dropped = steps.filter((st) => st.do === "drops").map((st) => st.slot);
-  if (dropped.length) steps.push({ do: "closes", slots: dropped });
-  slots.forEach((s, slot) => s.holds === null && steps.push({ do: "rises", slot, row: s.row, says: wanted(itemOf(s.row)) }));
+  slots.forEach((s, slot) => {
+    if (s.holds === "asked") steps.push({ do: "keeps", slot, row: s.row });
+    else if (s.holds === null) steps.push({ do: "rises", slot, row: s.row, says: wanted(itemOf(s.row)) });
+    else if (s.row) steps.push({ do: "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word) });
+    else steps.push({ do: "drops", slot, says: notWanted(madeOf(s).meaning) }, { do: "closes", slots: [slot] });
+  });
   return { shown, slots, steps };
 }
 

@@ -70,6 +70,7 @@
     <label class="switch"><input type="checkbox" id="fresh"><i aria-hidden="true"></i><span><b>New player</b><small>A fresh player each time: every first-time light, lesson and greeting shows. Off: the child's own player.</small></span></label>
     <label class="switch"><input type="checkbox" id="known"><i aria-hidden="true"></i><span><b>Words known</b><small>With New player: the fresh player already knows the game's words, so the help for them is off.</small></span></label>
     <button class="go" id="go" type="button">Play</button>
+    <div class="row"><b>Start at</b><div class="seg" id="labs"></div></div>
     <p class="link" id="link"></p>
   </section>
   <section class="box">
@@ -137,7 +138,7 @@
   // a real child's record is never made up: the words are known only for a new player
   const knownNow = () => pick.fresh && pick.known;
   /** The game's link for these choices; a seed left empty is drawn by the game, a new one each round. */
-  const linkFor = (player) => `index.html?${new URLSearchParams({ game: pick.game, level: pick.level, ...(pick.seed ? { seed: pick.seed } : {}), ...(player !== OWN_PLAYER ? { player } : {}) })}`;
+  const linkFor = (player, lab = null) => `index.html?${new URLSearchParams({ game: pick.game, level: pick.level, ...(pick.seed ? { seed: pick.seed } : {}), ...(player !== OWN_PLAYER ? { player } : {}), ...(lab ? { lab } : {}) })}`;
 
   function show() {
     [...$("games").children].forEach((b, i) => b.setAttribute("aria-pressed", String(labs.games[i].id === pick.game)));
@@ -159,15 +160,25 @@
   show();
   document.querySelector("main").hidden = false;
 
-  $("go").addEventListener("click", async () => {
+  async function go(lab = null) {
     let player = OWN_PLAYER;
     if (pick.fresh) {
       // one new player at a time: the last one's record goes as the next is made
       player = newPlayer();
       if (pick.known) storeProgress(knowing(loadProgress(player), await json(`data/games/${pick.game}.json`), kit.ladder));
     }
-    location.href = linkFor(player);
-  });
+    location.href = linkFor(player, lab);
+  }
+  $("go").addEventListener("click", () => go());
+  // the game's round started at a lab, with the choices above (data/labs.json labs: the wrong order opens on its dishes
+  // made, one wrong, straight into the wrong-order pop-up; "Play again" at the end opens it again)
+  for (const l of labs.labs) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = l.name;
+    b.addEventListener("click", () => go(l.id));
+    $("labs").appendChild(b);
+  }
 </script>
 </body>
 </html>

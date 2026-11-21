@@ -14,12 +14,16 @@
  *      re-wraps), with what went into the pan already on it and a missing thing's place a dotted card. Nothing more is
  *      said (Zafar, 21 Nov: "we shouldn't repeat the entire order ... the voiceover should just directly relate to what's
  *      happening").
- *   d. What is wrong, left to right: the card spoken about lit, the rest of the row dimmed a little (Zafar, 21 Nov: "so you
- *      know which card is being referred to"), then crossed, its picture faded, held, falling out (solid until it is clear
- *      of the card); a wrong amount shows the right amount behind it, glowing. e. Straight after, the gaps the fallen extras
- *      left close, the cards sliding together and the card narrowing with them. f. Then each missing thing, lit, rises into
- *      its dotted card and glows. The person says each correction as it happens, in their own words about that one thing
- *      (the rule's `says`: "only one sugar").
+ *   d. Then one pass, left to right, every card in its turn (Zafar, 21 Nov: "fix the first card, fix the second card ... or
+ *      like, confirm it's correct as it goes along"), led by the light's edge travelling from card to card, nothing else
+ *      dimmed and nothing faded (his: the fade read as the "no milk" card's), the card opening with no marks: each card's
+ *      mark stamped big in the middle of its picture as its turn comes (Zafar, 21 Nov: "Maybe the tick and cross should be
+ *      big in the centre of each card"), one meaning each: a right one, a gold tick, with a ding and its own word said,
+ *      settling into the panel's corner tick; a wrong amount, a maroon cross, the person's correction, and it falls to show
+ *      the right amount behind it, marked with a hollow gold ring (the right answer put in its place); a missing one, its
+ *      card rising into the dotted card, the ring; a thing nobody asked for (they stand last), the cross, the person's
+ *      words, it falls, and the cards slide together over its gap. The person says each correction in their own words
+ *      about that one thing (the rule's `says`: "only one sugar").
  *   g. The last frame holds (a speaker's word starts the hold again). h. The card narrows to its panel card's width (its
  *      row clipped as the panel's is), then glides into its own place in the panel, open and unticked, ready to make again,
  *      its marks fading as it lands, and becomes the panel's card in the same frame; the veil lifts, the cog comes back.
@@ -152,8 +156,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     await wait(mv.ms);
     opened();
     card.el.classList.remove("opening");
-    // d, e, f. the rule's steps, played as they come: what is wrong out, left to right; the gaps the fallen extras left
-    // closing (a missing thing's dotted card keeps its width all along, so nothing grows back); what is missing rising in
+    // d. the rule's steps, one card at a time, left to right; a fallen extra's gap closing straight after it (a missing
+    // thing's dotted card keeps its width all along, so nothing grows back)
     for (const st of w.play.steps) await (st.do === "closes" ? close(card, st.slots) : step(seat, card.slots[st.slot], st));
     // g. the last frame, held (a speaker's word starts it again)
     await new Promise((res) => {
@@ -209,37 +213,72 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   }
 
   /**
-   * One correction: the wrong card crossed and faded, held, falling (a wrong amount shows its row's card behind it,
-   * glowing; a thing nobody asked for leaves its slot empty, to close later); or a missing thing's card rising into its
-   * dotted card, glowing. Its word said as it happens.
+   * One card's turn: lit by the light's edge, then its mark stamped big in the middle of its picture and its words said: a
+   * right card kept (the gold tick settling into its corner tick); a wrong card crossed and falling (a wrong amount shows
+   * its row's card behind it, ringed; a thing nobody asked for leaves its slot empty, to close next); a missing thing's card
+   * rising into its dotted card, ringed.
    */
   async function step(seat, slot, st) {
-    // (the card spoken about lit, the rest of the row dimmed a little, from just before it changes to the beat after)
-    const lit = (on) => (slot.el.closest(".ocard").classList.toggle("focusing", on), slot.el.classList.toggle("focus", on));
+    const lit = (on) => slot.el.classList.toggle("focus", on);
     lit(true);
     await wait(W.lit);
-    if (st.do === "rises") {
+    if (st.do === "keeps") {
+      slot.own.classList.add("stamping");
+      const mark = stamp(slot.own, "tick");
+      if (!hurried) sounds.play("bing");
+      const said = speak(cards.lineOf(seat, st.row));
+      await pop(mark);
+      await Promise.all([said, wait(W.keep)]);
+      await settle(mark, slot.own);
+    } else if (st.do === "rises") {
       await wait(W.outline);
       const said = speak(cards.lineIn(seat, st.says));
       slot.own.classList.remove("unseen");
-      slot.own.classList.add("glow");
       // (solid as it rises, on top of everything: it fades in only while it is still below the card)
       await move(slot.own, [{ transform: `translateY(${W.riseBy * 100}%)`, opacity: 0 }, { opacity: 1, offset: 0.4 }, { transform: "none", opacity: 1 }], W.rise);
       slot.outline.classList.add("unseen");
+      slot.own.classList.add("put");
       await said;
     } else {
-      slot.made.classList.add("cross");
-      sounds.play("soft");
+      slot.made.classList.add("wrong");
+      const mark = stamp(slot.made, "cross");
+      if (!hurried) sounds.play("soft");
+      await pop(mark);
       await wait(W.cross);
       const said = speak(cards.lineIn(seat, st.says));
-      if (slot.own) slot.own.classList.add("glow");
-      // (solid as it falls, on top of everything: it fades only once it is clear of the card)
+      // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card)
       await move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
       slot.made.remove();
+      if (slot.own) slot.own.classList.add("put");
       await said;
     }
     await wait(W.beat);
     lit(false);
+  }
+
+  /** A card's big mark (a gold tick or a maroon cross), centred on its picture, a share of the picture's width; unseen. */
+  function stamp(card, kind) {
+    const el = make(`wo-stamp ${kind === "cross" ? "cross" : ""}`);
+    const pic = card.querySelector(".well");
+    const d = pic.offsetWidth * parseFloat(W.vars.stamp);
+    Object.assign(el.style, { width: `${d}px`, height: `${d}px`, left: `${pic.offsetLeft + (pic.offsetWidth - d) / 2}px`, top: `${pic.offsetTop + (pic.offsetHeight - d) / 2}px`, opacity: "0" });
+    card.append(el);
+    return el;
+  }
+  /** The mark stamped: it pops in, a little past its size and back. */
+  function pop(el) {
+    return move(el, [{ transform: "scale(0)", opacity: 0 }, { transform: "scale(1.12)", opacity: 1, offset: 0.65 }, { transform: "scale(1)", opacity: 1 }], W.stamp);
+  }
+  /** A right card's big tick settles into its corner tick, by the kit's one move, and the corner tick shows. */
+  async function settle(el, card) {
+    const tick = card.querySelector(".tick");
+    await mv.fly(el, tick.getBoundingClientRect());
+    // (the corner tick takes its place in the same frame, with no fade of its own, and the gold edge with it)
+    tick.style.transition = "none";
+    card.classList.replace("stamping", "done");
+    void tick.offsetWidth;
+    el.remove();
+    tick.style.transition = "";
   }
 
   /**

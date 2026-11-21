@@ -18,7 +18,12 @@
  *   mv.over(el, to) -> the frame that puts el over the rectangle `to`, in its own zoomed px
  *   mv.ms, mv.ease
  */
-export const zoomOf = (el) => parseFloat(getComputedStyle(el).zoom) || 1;
+/** The zoom an element is drawn at: its own and every box's it stands in (a mark inside the zoomed wrong-order card moves in its px). */
+export const zoomOf = (el) => {
+  let z = 1;
+  for (let at = el; at && at.nodeType === 1; at = at.parentElement) z *= parseFloat(getComputedStyle(at).zoom) || 1;
+  return z;
+};
 const rectOf = (el) => el.getBoundingClientRect();
 
 /** The frame that puts `el` (as it stands, with no move on it) over the rectangle `to`, in its own zoomed px. */

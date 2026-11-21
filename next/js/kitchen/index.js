@@ -5,11 +5,13 @@
  *   kitchenScenes({ game, settings, kitchen, kit, views? }) -> [{ id, rules, view? }]      the rules alone
  *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, player?, meet? }) -> the same list with its drawing
  *       player: { name, renew() } who is playing, for the cog; meet(key): a first-time thing kept as it is shown
+ *       round.lab "wrong-order" (the labs page): the list from the cooking on, its dishes made (./lab.rules.js)
  */
 import { orderRules } from "../shared/scenes/order.rules.js";
 import { greetingRules } from "../shared/scenes/greeting.rules.js";
 import { checkRules, wordMomentRules, wellDoneRules, serveRules, endRules } from "../shared/scenes/conversation.rules.js";
 import { cookRules } from "./cook.rules.js";
+import { LAB_WRONG_ORDER } from "./lab.rules.js";
 
 export function kitchenScenes({ game, settings, kitchen, kit, views = () => null }) {
   const parts = { game, settings, kitchen, kit };
@@ -67,5 +69,8 @@ export async function scenesWithViews(parts) {
     end: (v) => conv.endView({ ...v, endArt: kit.art.end }),
   };
   const views = (id, rules) => (make[id] ? make[id]({ ...parts, ui, roomArt: kitchen.art.room, picOf, peek: peekFor(id) }, rules) : null);
-  return kitchenScenes({ game, settings, kitchen, kit, views });
+  if (round.lab && round.lab !== LAB_WRONG_ORDER) throw new Error(`which lab? the kitchen offers "${LAB_WRONG_ORDER}", not "${round.lab}"`);
+  const scenes = kitchenScenes({ game, settings, kitchen, kit, views });
+  // the labs page's wrong order starts at the cooking, its dishes already made (./lab.rules.js)
+  return round.lab === LAB_WRONG_ORDER ? scenes.slice(scenes.findIndex((x) => x.id === "cook")) : scenes;
 }

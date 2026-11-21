@@ -18,6 +18,7 @@
  *   next(dish, ctx) -> { use: item } | { fire: true } | { take: true } | null     the next right move
  *   reset() -> dish                                                 this pan starts again
  *   asAsked(ctx) -> dish                                            the dish as asked, shown after three wrong tries
+ *   asMade(ctx, { wrong?, row? }) -> dish   made and poured, not yet closed: as asked, or wrong (the labs page's wrong order)
  *   look(dish, heat, ctx) -> what the pan looks like     glass(dish, art, rest), pourFrames, glassFrame -> the glass's pictures
  *   cardArt, wordMomentArt, spoonArt -> which of the game's pictures a card or a spoon shows
  *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
@@ -273,10 +274,22 @@ export function counts(dish) {
 }
 
 /** The dish exactly as its person asked for it, made and poured: what the child is shown after three wrong tries. */
-export function asAsked(ctx) {
-  const ask = ctx.ask;
-  const spoons = Array(ask.sugar).fill(ctx.words.sugar).concat(ask.spice || []);
-  return { ...newDish(), water: 1, leaves: 1, milk: ask.milk ? 1 : 0, sugar: ask.sugar, spices: ask.spice ? [ask.spice] : [], spoons, poured: poursAsked(ctx), closed: true, empty: poursAsked(ctx) >= ctx.halves };
+export const asAsked = (ctx) => close(asMade(ctx));
+
+/**
+ * The dish made and poured, its glass not yet closed, as a child leaves it before it is served: as asked, or (wrong) as a
+ * child could have made it wrong, right and wrong side by side, for the labs page's wrong order (Zafar, 21 Nov): its milk
+ * the other way (a "no milk" order gets milk; a milky one none), one sugar too many where sugar is asked, a spice nobody
+ * asked for (the first of `row`, the bottom row's things, that is one), a half poured full; its asked spice and any other
+ * amount right.
+ */
+export function asMade(ctx, { wrong = false, row = [] } = {}) {
+  const { ask, words: w } = ctx;
+  const extra = wrong ? row.find((id) => kindOf(id, ctx) === "spice" && id !== ask.spice) : null;
+  const sugar = wrong && ask.sugar > 0 ? ask.sugar + 1 : ask.sugar;
+  const spices = (ask.spice ? [ask.spice] : []).concat(extra || []);
+  const poured = wrong && ask.amount === w.half ? ctx.halves : poursAsked(ctx);
+  return { ...newDish(), water: 1, leaves: 1, milk: (wrong ? !ask.milk : ask.milk) ? 1 : 0, sugar, spices, spoons: Array(sugar).fill(w.sugar).concat(spices), poured, empty: poured >= ctx.halves };
 }
 
 /** The finished dish as its person gets it, for the serve. */

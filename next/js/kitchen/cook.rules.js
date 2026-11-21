@@ -22,6 +22,7 @@ import { newHelp, acted, rush, pass as helpPass } from "../shared/kit/help.rules
 import { stepMoment } from "./moment.rules.js";
 import { dishCheck, playOf } from "../shared/kit/wrong-order.rules.js";
 import { ruling } from "../shared/kit/mistakes.rules.js";
+import { labDishes, LAB_WRONG_ORDER } from "./lab.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
 
@@ -341,6 +342,10 @@ export function cookRules({ game, settings, kitchen, kit }) {
           // cards disappear, and the people disappear, and you're just left with the person that got it wrong")
           const away = next.vessels.map((x, v) => v).filter((v) => !redo.includes(v));
           events.push({ type: "remake", vessels: redo, away });
+          // the first pan made again is chosen, the leftmost, its card the first, and the screen is told, so the pan lit is
+          // the pan a tap pours into (Zafar, 21 Nov: "You should only be able to pour into the highlighted pan ... it should
+          // select the leftmost pan or the one where the order card is first"); the light moves only on this event
+          if (redo[0] !== s.chosen) events.push({ type: "chosen", vessel: redo[0], from: s.chosen });
           next = { ...next, name: "cooking", chosen: redo[0], checks: null, wrong: null, away };
           next = opening(next, stepOf(next), events);
           return { state: next, events };
@@ -374,12 +379,21 @@ export function cookRules({ game, settings, kitchen, kit }) {
         moment: null,
         away: [],
       };
+      // the labs page's wrong order: every dish made and poured as the scene opens, the last pan chosen (as a child who
+      // poured last there), so it opens on every glass closing, the dishes looked at and the pop-up (./lab.rules.js)
+      if (round.lab === LAB_WRONG_ORDER) {
+        const dishes = labDishes({ G, vessels: s.vessels, ctxOf: (v) => ctxOf(s, v), row: s.row });
+        // (each pan poured, its fire spent, so no step opens: nothing is asked of the child before the review)
+        const made = { ...s, chosen: s.vessels.length - 1, vessels: s.vessels.map((x, v) => ({ ...x, dish: dishes[v], fire: spend(x.fire) })) };
+        const out = settle(ticking(made), []);
+        return { ...out.state, opens: out.events };
+      }
       // (its first step is told by first, as the scene is entered, so the step event opening makes here is not kept; its
       // moment comes with the scene's clock)
       return opening(s, stepOf(s), []);
     },
-    // the scene opens with its first step, as every later step is told
-    first: (round, s) => (s.step ? [{ type: "step", step: s.step }] : []),
+    // the scene opens with its first step, as every later step is told (the lab's with every glass closing and the review)
+    first: (round, s) => (s.opens ? s.opens : s.step ? [{ type: "step", step: s.step }] : []),
     move,
     stepOf,
     ctxOf,

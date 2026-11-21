@@ -307,6 +307,10 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       });
       D = { plan, hob, shelf, serving, vessels };
       ui.serving = serving;
+      // a dish already poured as the scene opens (the labs page's wrong order) is drawn as the state holds it: its pan and glass
+      state.vessels.forEach((x, v) => x.dish.poured && (vessels[v].pan.show(lookOf(state, v)), serving.set(v, G.glass(x.dish, A, settings.serving.rest))));
+      // (the first scene drawn lifts the page's cover, as the greeting and the order do: the lab's round starts here)
+      stage.uncover();
       hob.chosen(state.chosen);
       ui.cards.landAll();
       ui.cards.seats.forEach((x, i) => ui.cards.show(i));

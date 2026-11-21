@@ -7,8 +7,8 @@
  *   lift(seat, slots, host, { english }) -> { el, k, slots: [{ el, own, made, line, outline }], land() }
  *       the card, put in `host` (the pop-up places and grows it; k is the panel's own scale, the zoom that draws it at the
  *       panel's size), its row in slots, one for each of the rules' slots (./wrong-order.rules.js playOf), the ones nobody
- *       asked for after a wider gap; in each, own: its row's own card (ticked where the slot holds it, behind what was
- *       made, unseen where it is missing), made: a card of the thing as it went in, on top (line: its word), outline: the
+ *       asked for after a wider gap; in each, own: its row's own card (unmarked: the pop-up stamps each card's mark in its
+ *       turn; behind what was made, unseen where it is missing), made: a card of the thing as it went in, on top (line: its word), outline: the
  *       kit's dotted empty card where a thing is missing (Zafar, 20 Nov: shown from the opening). Every help is open on it,
  *       whatever the level: each picture whole, each word written, and its English written out where `english`, else none
  *       (Zafar, 20 Nov: "unblur everything for the pop up wrong card, because we should give all the assistance
@@ -57,7 +57,6 @@ export function createLift({ say, kit, seats, shell, itemCard, make, still }) {
       }
       if (sl.row) {
         at.own = own(sl.row);
-        at.own.classList.toggle("done", sl.holds === "asked");
         at.own.classList.toggle("unseen", sl.holds === null);
         slot.append(at.own);
       }

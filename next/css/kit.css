@@ -81,14 +81,17 @@ button { padding: 0; cursor: pointer; }
 /* on a phone, the standard's flatter strip: the helper takes as little of the short panel as old chai's did */
 :root.phone .helper-card { padding: var(--helper-pad-phone); column-gap: var(--helper-gap-phone); }
 :root.phone .helper-card .well { aspect-ratio: var(--helper-pic-phone); }
-/* the item cards' own word card, laid as a strip: the picture down the left, the Kutchi over its English, the speaker at the right */
-.helper-card { grid-template-rows: auto auto; grid-template-areas: "pic ku spk" "pic en spk"; row-gap: var(--helper-words-gap); }
+/* the item cards' own word card, laid as a strip: the picture down the left, the Kutchi over its English, the speaker at the
+   right. Its words are the item card's pair (Zafar, 21 Nov: "the kutchi and English seems spaced to far apart - can you compare
+   to the logic and principles of the main item card"): the English the item card's gap under its Kutchi (item-en-top of an item
+   card, a share of the row as the helper is the row's width), the pair centred in the spare above and below it */
+.helper-card { grid-template-rows: 1fr auto auto 1fr; grid-template-areas: "pic . spk" "pic ku spk" "pic en spk" "pic . spk"; }
 .helper-card .well { grid-area: pic; }
-.helper-card .ku { grid-area: ku; align-self: end; min-width: 0; }
-.helper-card .en { grid-area: en; align-self: start; min-width: 0; }
+.helper-card .ku { grid-area: ku; min-width: 0; }
+.helper-card .en { grid-area: en; min-width: 0; }
 .helper-card .speaker { grid-area: spk; }
 .helper-card .ku { margin: 0; text-align: left; font-size: clamp(max(var(--item-font-min), calc(var(--helper-ku-min) * var(--p))), var(--helper-ku), calc(var(--helper-ku-max) * var(--p))); line-height: 1.08; }
-.helper-card .en { margin: 0; text-align: left; font-size: clamp(max(var(--item-en), calc(var(--helper-en-min) * var(--p))), var(--helper-en), calc(var(--helper-en-max) * var(--p))); }
+.helper-card .en { margin: calc(var(--item-en-top) / var(--item-share)) 0 0; text-align: left; font-size: clamp(max(var(--item-en), calc(var(--helper-en-min) * var(--p))), var(--helper-en), calc(var(--helper-en-max) * var(--p))); }
 /* its speaker drawn as the standard's (never under its least size), its tap the full size round it (.speaker::before) */
 .helper-card .speaker { margin: 0 calc(var(--helper-spk-edge) * var(--p)) 0 0; width: clamp(max(var(--speaker-min), calc(var(--tap) * var(--p))), var(--helper-spk), max(var(--speaker-min), calc(var(--helper-spk-max) * var(--p)))); height: auto; aspect-ratio: 1; box-shadow: var(--helper-spk-ring); }
 
@@ -157,12 +160,6 @@ button { padding: 0; cursor: pointer; }
 /* the tick inside the card's corner, its white ring round it, never cut by the row */
 .icard > .tick { position: absolute; right: calc(var(--tick-inset) * var(--p)); top: calc(var(--tick-inset) * var(--p)); z-index: 3; }
 .icard.done > .tick { transform: scale(1); }
-.icard.cross > .tick { transform: scale(1); background: var(--kutchi); }
-.icard.cross > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
-/* a wrong thing: a maroon edge, its picture faded; a thing put right: a soft gold glow and no tick (the wrong-order card) */
-.icard.cross { border-color: var(--kutchi); }
-.icard.cross .well img { opacity: var(--wo-faded); }
-.icard.glow { box-shadow: var(--wo-glow), var(--item-shadow); }
 .well { position: relative; width: 100%; aspect-ratio: 6 / 5; border-radius: var(--item-radius); background: var(--well); flex: none; }
 .well img { position: absolute; inset: 2%; width: 96%; height: 96%; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); }
 .ku { font: 600 var(--item-font) / 1.08 var(--font-word); color: var(--kutchi); text-align: center; margin-top: 5px; }
@@ -338,25 +335,49 @@ button { padding: 0; cursor: pointer; }
    enough to be seen on the white card */
 .ocard.lifted.no-english .icard > .en { display: none; }
 .ocard.lifted .icard.waiting { border: var(--wo-dash-w) dashed var(--wo-dash); opacity: 1; }
-/* its marks, one meaning each as in the panel: right, the panel's gold edge and tick; wrong, a maroon edge and cross, the
-   picture faded (Zafar, 19 Nov: "it's essential from user testing for clarity of understanding"); corrected, a soft gold
-   glow and no tick. The one size the lifted card has of its own (all else is the panel card's, grown by its one zoom):
-   the tick and cross never under the mark's size on the screen, the spec's bigger mark, so it reads on the phone */
+/* its three marks, one meaning each, stamped in its turn (Zafar, 21 Nov: "one should mark that you got it correct, one should
+   mark that this is the correct answer, one needs to mark this is the incorrect answer"; "Maybe the tick and cross should be
+   big in the centre of each card"); nothing on it is faded (his: the fade "looks like ... the way the milk is a bit faded for
+   no milk"), and it opens with no mark at all:
+   right: a big gold tick stamped in the middle of its picture, settling into the panel's corner tick and gold edge (.done);
+   wrong: a big maroon cross, the tick's size, stamped the same way, and a maroon edge (.wrong; Zafar, 19 Nov: "it's essential
+   from user testing for clarity of understanding"), then it falls; the right answer put in its place: a hollow gold ring
+   where the tick sits, and no tick (.put). The one size the lifted card has of its own (all else is the panel card's, grown
+   by its one zoom): the corner mark never under the mark's size on the screen, so it reads on the phone; the stamp a share
+   of the picture's width (--wo-stamp). Every mark is drawn inside its card's edge, so none reaches the face's badge above
+   (Zafar, 21 Nov, the third time) */
 .ocard.lifted .icard > .tick { --mark: max(calc(var(--tick) * var(--p)), calc(var(--wo-mark) / var(--wo-k, 1))); width: var(--mark); height: var(--mark); }
+.ocard.lifted .icard.wrong { border-color: var(--kutchi); }
+.ocard.lifted .icard.put { border-color: var(--done-edge); }
+.ocard.lifted .icard.put > .tick { transform: scale(1); background: none; box-shadow: inset 0 0 0 calc(var(--wo-put-w) / var(--wo-k, 1)) var(--gold); }
+.ocard.lifted .icard.put > .tick::after { display: none; }
+.ocard.lifted .icard.stamping > .tick { opacity: 0; transition: none; }
+.wo-stamp { position: absolute; grid-column: auto; z-index: 4; border-radius: 50%; background: var(--gold); box-shadow: 0 2px 8px rgba(80, 50, 20, .28); pointer-events: none; }
+.wo-stamp::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
+.wo-stamp.cross { background: var(--kutchi); }
+.wo-stamp.cross::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+/* a right "no" card stands solid on the lifted card, only its sign saying "no" (Zafar, 21 Nov: the fade read as crossed out);
+   the panel's keeps its dashed edge and faded picture until he has seen this */
+.ocard.lifted .icard.no:not(.waiting) { background: var(--item-bg); box-shadow: var(--item-shadow); border: 1px solid transparent; }
+.ocard.lifted .icard.no .well img { opacity: 1; }
+.ocard.lifted .icard.no.done:not(.waiting), .ocard.lifted .icard.no.put:not(.waiting) { border-color: var(--done-edge); }
 /* and as it lands in the panel again, every mark fades */
-.ocard.lifted .icard { transition: box-shadow var(--wo-marks), border-color var(--wo-marks); }
+.ocard.lifted .icard { transition: box-shadow var(--wo-marks), border-color var(--wo-marks), background-color var(--wo-marks); }
+.ocard.lifted .icard .well img { transition: opacity var(--wo-marks); }
 .ocard.lifted .icard > .tick { transition: transform var(--wo-marks), opacity var(--wo-marks); }
-.ocard.lifted.landing .icard { box-shadow: var(--item-shadow); border-color: transparent; }
+.ocard.lifted.landing .icard, .ocard.lifted.landing .icard.no:not(.waiting) { box-shadow: var(--item-shadow); border-color: transparent; }
 .ocard.lifted.landing .icard > .tick { opacity: 0; }
+/* a right "no" card, solid on the lifted card, takes the panel's look again as it lands, so nothing jumps as the panel's
+   card takes its place */
+.ocard.lifted.landing .icard.no:not(.waiting) { background-color: transparent; box-shadow: none; border-style: dashed; border-color: var(--no-edge); }
+.ocard.lifted.landing .icard.no .well img { opacity: var(--no-pic); }
 /* the card opening down from its line, as the panel's opens (its fold's time the kit's one move: js/shared/kit/wrong-order.js);
    "still": set folded at once, with no move */
 .ocard.lifted.still .ocard-body { transition: none; }
 .ocard.lifted.opening .ocard-in { overflow: hidden; }
-/* the card spoken about lit with the light's own edge, the rest of its row dimmed a little (Zafar, 21 Nov: "so you know
-   which card is being referred to or which part of the card to look at") */
-.ocard.lifted .slot { transition: opacity var(--wo-marks); }
-.ocard.lifted.focusing .slot:not(.focus) { opacity: var(--wo-unlit); }
-.ocard.lifted .slot.focus { border-radius: calc(var(--item-radius) * var(--p)); box-shadow: 0 0 0 calc(var(--wo-lit-w) / var(--wo-k, 1)) var(--light-edge); }
+/* the card in its turn lit with the light's own edge, travelling left to right, nothing else dimmed (Zafar, 21 Nov: "the
+   strong outline does do a job of highlighting what to focus on"); drawn inside the card's edge, over it */
+.ocard.lifted .slot.focus::after { content: ""; position: absolute; inset: 0; z-index: 5; border-radius: calc(var(--item-radius) * var(--p)); box-shadow: inset 0 0 0 calc(var(--wo-lit-w) / var(--wo-k, 1)) var(--light-edge); pointer-events: none; }
 /* going home: its row clipped and fading at its right as the panel's, so it is its panel card's shape as it lands */
 .ocard.lifted.homing .ocard-in { overflow: hidden; }
 .ocard.lifted.homing .orow { -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--rf)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--rf)), transparent); }
