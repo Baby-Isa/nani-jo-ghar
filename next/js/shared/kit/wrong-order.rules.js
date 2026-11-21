@@ -17,11 +17,12 @@
  *       shown: the rows the card asks, in its order (a row never said in the order, the water, the leaves, only when it
  *       is the fault: Zafar, 19 Nov)
  *       slots: one for each row shown, in order, then one for each thing nobody asked for, each { row, holds, made? } as
- *       the card opens: holds "asked" (its row's own card, right: ticked), "made" (a card of the thing as it went in,
+ *       the card opens: holds "asked" (its row's own card, right), "made" (a card of the thing as it went in,
  *       { word, meaning }: a wrong amount in its row's slot, or a thing nobody asked for, row null) or null (missing)
  *       steps, one for each slot in its order, the view playing each as it comes: keeps { slot, row } (a right card
  *       confirmed, its own word said as its speaker says it) | reveals { slot, row, says } (the wrong amount falls; its
- *       row's card is behind it) | rises { slot, row, says } (its row's card rises into its dotted card) | drops { slot,
+ *       row's card is behind it) | unsays { slot, row, says } (a thing in a "no" order: crossed, it fades into its "no" card
+ *       behind it as the big no sign shows and shrinks into the card's own sign: Zafar, 21 Nov) | rises { slot, row, says } (its row's card rises into its dotted card) | drops { slot,
  *       says } (the thing nobody asked for falls, its slot left empty), then closes { slots } (that slot goes, the cards
  *       closing the gap); a correction's says: the person's own, a meaning for the language engine, natural and about that
  *       one thing, never the order again (Zafar, 20 Nov: "only two sugars", "I don't want ginger"): of a wrong amount
@@ -79,7 +80,7 @@ export function playOf(items, faults, made) {
   slots.forEach((s, slot) => {
     if (s.holds === "asked") steps.push({ do: "keeps", slot, row: s.row });
     else if (s.holds === null) steps.push({ do: "rises", slot, row: s.row, says: wanted(itemOf(s.row)) });
-    else if (s.row) steps.push({ do: "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word) });
+    else if (s.row) steps.push({ do: itemOf(s.row).no ? "unsays" : "reveals", slot, row: s.row, says: fixOf(itemOf(s.row), faultOf(s.row).kind, s.made.word) });
     else steps.push({ do: "drops", slot, says: notWanted(madeOf(s).meaning) }, { do: "closes", slots: [slot] });
   });
   return { shown, slots, steps };

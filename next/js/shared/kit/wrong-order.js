@@ -2,31 +2,32 @@
  * The wrong-order pop-up: the one place a mistake is shown outside the thing itself (Zafar's design, 20 Nov: the redesign
  * spec, wrong-order-redesign.md, with his answers on its stills). One thing moves at a time and nothing shakes.
  *   a. Under the first-time light's dim over the whole screen (its tone and fade; the cog hidden), every served order's
- *      folded line leaves the side panel for the middle of the room it is given, stacked; nothing is said.
- *   b. The right ones, one at a time: the tick pops again with a ding, a short gold glow and the family's well done (kit.lines.wellDone; Zafar,
- *      21 Nov: "the correct ones should get the [well done] ... you need more reassurance"), and the line flies off; they do
- *      not come back (their cards wait in the panel as served).
- *   c. Each wrong one in turn: its tick turns to a maroon cross and its edge flashes maroon, with Nani's "oho" (a fond "oh
- *      dear", never a buzzer; once, however many are wrong: Zafar, 20 Nov); then its line glides to where its card's top
- *      will stand and the card opens down from it, as the panel's card opens (Zafar, 21 Nov: "like the order card does on
- *      the left-hand side, it should expand down nicely"): the card lifted (./order-card.js lift: the panel's card and its
- *      item cards, grown by one zoom; every line came to the middle at the first card's width and growth, so nothing
- *      re-wraps), with what went into the pan already on it and a missing thing's place a dotted card. Nothing more is
- *      said (Zafar, 21 Nov: "we shouldn't repeat the entire order ... the voiceover should just directly relate to what's
- *      happening").
- *   d. Then one pass, left to right, every card in its turn (Zafar, 21 Nov: "fix the first card, fix the second card ... or
- *      like, confirm it's correct as it goes along"), led by the light's edge travelling from card to card, nothing else
- *      dimmed and nothing faded (his: the fade read as the "no milk" card's), the card opening with no marks: each card's
- *      mark stamped big in the middle of its picture as its turn comes (Zafar, 21 Nov: "Maybe the tick and cross should be
- *      big in the centre of each card"), one meaning each: a right one, a gold tick, with a ding and its own word said,
- *      settling into the panel's corner tick; a wrong amount, a maroon cross, the person's correction, and it falls to show
- *      the right amount behind it, marked with a hollow gold ring (the right answer put in its place); a missing one, its
- *      card rising into the dotted card, the ring; a thing nobody asked for (they stand last), the cross, the person's
- *      words, it falls, and the cards slide together over its gap. The person says each correction in their own words
- *      about that one thing (the rule's `says`: "only one sugar").
- *   g. The last frame holds (a speaker's word starts the hold again). h. The card narrows to its panel card's width (its
- *      row clipped as the panel's is), then glides into its own place in the panel, open and unticked, ready to make again,
- *      its marks fading as it lands, and becomes the panel's card in the same frame; the veil lifts, the cog comes back.
+ *      folded line leaves the side panel for the middle of the room it is given, stacked, unticked (Zafar, 21 Nov: "both
+ *      order cards, when they come out into the middle, they should be unticked"); nothing is said.
+ *   b. The right ones, one at a time: the tick pops in with a ding, a short gold glow and the family's well done
+ *      (kit.lines.wellDone; Zafar, 21 Nov: "the correct ones should get the [well done]"), and the line flies off, its place
+ *      kept, so nothing else moves; they do not come back (their cards wait in the panel as served).
+ *   c. Each wrong one in turn, where it stands (Zafar, 21 Nov: "It should outline red with a cross in situ"): its tick a
+ *      maroon cross and its edge flashing maroon, with Nani's "oho" (a fond "oh dear", never a buzzer; once, however many are
+ *      wrong: Zafar, 20 Nov); then its line glides to where its card's top will stand and the card opens down from it, as
+ *      the panel's card opens: the card lifted (./order-card.js lift: the panel's card and its item cards, grown by one zoom;
+ *      every line came to the middle at the first card's width and growth, so nothing re-wraps), with what went into the pan
+ *      already on it and a missing thing's place a dotted card. Nothing more is said (Zafar, 21 Nov: "we shouldn't repeat
+ *      the entire order").
+ *   d. Then one pass, left to right, every card in its turn (Zafar, 21 Nov), led by the light's edge travelling from card
+ *      to card, nothing dimmed or faded; its only marks are big, in the middle of the picture, and none stays (Zafar, 21 Nov:
+ *      "remove the ticks in the top right corner ... remove the placeholder circle ... simply keep the big middle tick or
+ *      cross ... the item card just remains as it is"): a right card, the gold tick, a ding and its own word, the tick
+ *      going again; a wrong amount or a thing nobody asked for, the maroon cross, the person's correction, and it falls
+ *      (a wrong amount to show the right amount behind it; a thing nobody asked for, standing last, its gap closing, the
+ *      row's height gliding with it); a missing one, its card rising into the dotted card; a thing in a "no" order (milk
+ *      in a "no milk"), the cross, then the milk fading into the "no milk" card as a big no sign shows in the middle, held
+ *      as long as the cross, then shrinking into the card's own corner sign (Zafar, 21 Nov). The person says each correction
+ *      in their own words about that one thing (the rule's `says`: "only one sugar").
+ *   g. The last frame holds (a speaker's word starts the hold again). h. The card glides into its own place in the panel,
+ *      narrowing to its panel card's width in the same move (Zafar, 21 Nov: "should happen as it moves in flight"; its row
+ *      clipped as the panel's is), open and unticked, ready to make again, and becomes the panel's card in the same frame;
+ *      the veil lifts, the cog comes back.
  * Every move is the kit's one move (./move.js), so nothing snaps (Zafar, 21 Nov).
  * A tap on the veil skips the card showing to its last frame, a second ends it; a speaker's tap is only the speaker's.
  * What it plays is the kit's rule (./wrong-order.rules.js playOf); the cards are the order card's own; this file only
@@ -108,17 +109,15 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   fitLines();
   await Promise.all([move(shade, [{ opacity: 0 }, { opacity: 1 }], W.veilIn), ...seats.map((seat) => mv.fly(lines.get(seat).el, cards.boxOf(seat), { from: true }))]);
 
-  // b. the right ones, one at a time: the tick pops again with a ding, a gold glow and the family's well done, and the line flies off
+  // b. the right ones, one at a time: the tick pops in with a ding, a gold glow and the family's well done, and the line flies
+  // off, its place kept so the lines left stand where they are
   for (const seat of right) {
     const l = lines.get(seat).el;
-    l.classList.add("cheered", "gold");
+    l.classList.add("marked", "cheered", "gold");
     sounds.play("bing");
     await Promise.all([speak(say.line(kit.lines.wellDone)), wait(W.tick)]);
     await move(l, [{ transform: "none", opacity: 1 }, { transform: `translateY(${-W.flyBy * 100}%)`, opacity: 0 }], W.flyOff);
-    await mv.slide(
-      [...stack.children].filter((x) => x !== l),
-      () => (l.remove(), fitLines())
-    );
+    l.style.visibility = "hidden";
   }
 
   for (const [i, w] of wrong.entries()) {
@@ -127,7 +126,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     const others = [...stack.children].filter((x) => x !== line);
     // c. shown plainly: its tick turns to the maroon cross and its edge flashes maroon, with Nani's "oho" (once, however
     // many are wrong: Zafar, 20 Nov); then the line opens into its own card, the cross and the flash gone
-    line.classList.add("wrong", "flash");
+    line.classList.add("marked", "wrong", "flash");
     const oho = i === 0 ? speak(say.line(kit.lines.oho)) : null;
     await Promise.all([oho, wait(W.flash)]);
     line.classList.remove("flash");
@@ -178,20 +177,20 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     // (whether or not it was hurried, it goes back with its own move)
     calm();
     going = true;
-    // h. back into its own place in the panel, open and unticked, its marks fading as it lands: first it narrows to its
-    // panel card's width, its row clipped as the panel's is, so it is that card's shape; then it glides onto it, one even
-    // scale, and becomes it in the same frame (Zafar, 21 Nov: "it just snaps in ... It should smoothly go in the same way
-    // that the pop-up item card during the order goes back into the sidebar")
+    // h. back into its own place in the panel, open and unticked: it glides onto its panel card, narrowing to its width in
+    // the same move, its row clipped as the panel's is, and becomes it in the same frame (Zafar, 21 Nov: "that resizing to
+    // 2.5 ... should happen as it moves in flight")
     await cards.still();
     card.el.classList.add("landing", "homing");
     const last = i === wrong.length - 1;
     fit = () => {};
     // (its row spaced again as it now stands, the fallen cards gone, so its words sit as the panel's do)
     spaceWords(card.slots.map((sl) => sl.own).filter((el) => el && el.isConnected), kit, { again: true });
-    await mv.reshape(card.el, () => ((card.el.style.width = `${cards.widthOf(seat)}px`), place(card)));
     // (a new size of the screen on the way: it lands at once, and the panel's card takes its place)
     const offHome = stage.onResize(() => moves.forEach((a) => a.finish()));
-    await Promise.all([last ? move(shade, [{ opacity: 1 }, { opacity: 0 }], mv.ms) : null, mv.fly(card.el, cards.boxOf(seat))]);
+    // (narrowing to its panel card's width as it flies: one move)
+    const narrow = () => ((card.el.style.width = `${cards.widthOf(seat)}px`), place(card));
+    await Promise.all([last ? move(shade, [{ opacity: 1 }, { opacity: 0 }], mv.ms) : null, mv.fly(card.el, cards.boxOf(seat), { change: narrow })]);
     offHome();
     card.land();
     cards.lead(seat, null);
@@ -205,31 +204,43 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   cog.hide(false);
   veil.remove();
 
-  /** The slots whose things fell go, and the cards slide together over the gaps. */
+  /**
+   * The slots whose things fell go and the cards slide together over the gaps, the card narrowing; the row spaced again as
+   * it now stands (a two-line word gone, the rest stand lower), its height gliding with the card's and its words' room with
+   * it (Zafar, 21 Nov: "that resizing is jerky. It should be more smooth").
+   */
   async function close(card, slots) {
     const gone = slots.map((i) => card.slots[i].el);
-    await mv.slide([card.el, ...card.slots.map((s) => s.el).filter((el) => !gone.includes(el))], () => (gone.forEach((el) => el.remove()), place(card)), card.el);
+    const row = card.el.querySelector(".orow");
+    const change = () => {
+      gone.forEach((el) => el.remove());
+      spaceWords(card.slots.filter((sl) => sl.el.isConnected).map((sl) => sl.own).filter(Boolean), kit, { again: true });
+      place(card);
+    };
+    const words = card.slots.filter((sl) => sl.own && !gone.includes(sl.el)).flatMap((sl) => [...sl.own.querySelectorAll(":scope > .ku, :scope > .en")]);
+    await mv.slide([card.el, ...card.slots.map((s) => s.el).filter((el) => !gone.includes(el))], change, card.el, { also: [row], margins: words });
     await wait(W.beat);
   }
 
   /**
-   * One card's turn: lit by the light's edge, then its mark stamped big in the middle of its picture and its words said: a
-   * right card kept (the gold tick settling into its corner tick); a wrong card crossed and falling (a wrong amount shows
-   * its row's card behind it, ringed; a thing nobody asked for leaves its slot empty, to close next); a missing thing's card
-   * rising into its dotted card, ringed.
+   * One card's turn: lit by the light's edge, then its big mark in the middle of its picture and its words said; no mark
+   * stays: a right card kept (the gold tick, then gone); a wrong card crossed and falling (a wrong amount shows its row's
+   * card behind it; a thing nobody asked for leaves its slot empty, to close next); a thing in a "no" order crossed, then
+   * fading into the "no" card behind it as the big no sign shows and shrinks into the card's own corner sign; a missing
+   * thing's card rising into its dotted card.
    */
   async function step(seat, slot, st) {
     const lit = (on) => slot.el.classList.toggle("focus", on);
     lit(true);
     await wait(W.lit);
     if (st.do === "keeps") {
-      slot.own.classList.add("stamping");
       const mark = stamp(slot.own, "tick");
       if (!hurried) sounds.play("bing");
       const said = speak(cards.lineOf(seat, st.row));
       await pop(mark);
       await Promise.all([said, wait(W.keep)]);
-      await settle(mark, slot.own);
+      await pop(mark, true);
+      mark.remove();
     } else if (st.do === "rises") {
       await wait(W.outline);
       const said = speak(cards.lineIn(seat, st.says));
@@ -237,7 +248,6 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       // (solid as it rises, on top of everything: it fades in only while it is still below the card)
       await move(slot.own, [{ transform: `translateY(${W.riseBy * 100}%)`, opacity: 0 }, { opacity: 1, offset: 0.4 }, { transform: "none", opacity: 1 }], W.rise);
       slot.outline.classList.add("unseen");
-      slot.own.classList.add("put");
       await said;
     } else {
       slot.made.classList.add("wrong");
@@ -246,39 +256,57 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       await pop(mark);
       await wait(W.cross);
       const said = speak(cards.lineIn(seat, st.says));
-      // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card)
-      await move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
-      slot.made.remove();
-      if (slot.own) slot.own.classList.add("put");
+      if (st.do === "unsays") await unsay(slot, mark);
+      else {
+        // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card)
+        await move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
+        slot.made.remove();
+      }
       await said;
     }
     await wait(W.beat);
     lit(false);
   }
 
-  /** A card's big mark (a gold tick or a maroon cross), centred on its picture, a share of the picture's width; unseen. */
+  /**
+   * A thing in a "no" order put right (Zafar, 21 Nov: "the milk fades, and the same size as the cross, you get the big no
+   * symbol in the middle of the card for the same duration that the cross was there, and then it minimizes and moves at the
+   * same time to the top right corner"): the cross goes, the thing's card fades off the "no" card behind it as the big no
+   * sign comes in, held as long as the cross, then flies into the "no" card's own corner sign, which shows as it lands.
+   */
+  async function unsay(slot, cross) {
+    const own = slot.own;
+    own.classList.add("signing");
+    const sign = stamp(own, "no");
+    await Promise.all([pop(cross, true), move(slot.made, [{ opacity: 1 }, { opacity: 0 }], W.stamp), pop(sign)]);
+    slot.made.remove();
+    await wait(W.cross);
+    await mv.fly(sign, cornerOf(own));
+    own.classList.remove("signing");
+    sign.remove();
+  }
+  /** Where a "no" card's own sign stands on its picture (the style sheet's --no-sign and --no-inset, shares of its width). */
+  function cornerOf(card) {
+    const pic = card.querySelector(".well");
+    const r = pic.getBoundingClientRect();
+    const cs = getComputedStyle(pic);
+    const [d, inset] = [parseFloat(cs.getPropertyValue("--no-sign")) * r.width, parseFloat(cs.getPropertyValue("--no-inset")) * r.width];
+    return { left: r.right - inset - d, top: r.top + inset, width: d, height: d };
+  }
+
+  /** A card's big mark (a gold tick, a maroon cross or a no sign), centred on its picture, a share of its width; unseen. */
   function stamp(card, kind) {
-    const el = make(`wo-stamp ${kind === "cross" ? "cross" : ""}`);
+    const el = make(`wo-stamp ${kind}`);
     const pic = card.querySelector(".well");
     const d = pic.offsetWidth * parseFloat(W.vars.stamp);
     Object.assign(el.style, { width: `${d}px`, height: `${d}px`, left: `${pic.offsetLeft + (pic.offsetWidth - d) / 2}px`, top: `${pic.offsetTop + (pic.offsetHeight - d) / 2}px`, opacity: "0" });
     card.append(el);
     return el;
   }
-  /** The mark stamped: it pops in, a little past its size and back. */
-  function pop(el) {
-    return move(el, [{ transform: "scale(0)", opacity: 0 }, { transform: "scale(1.12)", opacity: 1, offset: 0.65 }, { transform: "scale(1)", opacity: 1 }], W.stamp);
-  }
-  /** A right card's big tick settles into its corner tick, by the kit's one move, and the corner tick shows. */
-  async function settle(el, card) {
-    const tick = card.querySelector(".tick");
-    await mv.fly(el, tick.getBoundingClientRect());
-    // (the corner tick takes its place in the same frame, with no fade of its own, and the gold edge with it)
-    tick.style.transition = "none";
-    card.classList.replace("stamping", "done");
-    void tick.offsetWidth;
-    el.remove();
-    tick.style.transition = "";
+  /** The mark stamped: it pops in, a little past its size and back (away: the other way, gone). */
+  function pop(el, away = false) {
+    const frames = [{ transform: "scale(0)", opacity: 0 }, { transform: "scale(1.12)", opacity: 1, offset: 0.65 }, { transform: "scale(1)", opacity: 1 }];
+    return move(el, away ? frames.reverse().map(({ offset, ...f }) => (offset ? { ...f, offset: 1 - offset } : f)) : frames, W.stamp);
   }
 
   /**

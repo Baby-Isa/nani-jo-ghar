@@ -315,6 +315,8 @@ button { padding: 0; cursor: pointer; }
 .wo-lines > .ocard { zoom: var(--wo-lk, 1); }
 .wo-line.gold { box-shadow: var(--wo-glow), var(--card-shadow); }
 .wo-line .ocard-top .tick { transition: transform var(--wo-marks), opacity var(--wo-marks); }
+/* the lines come out unticked; a right one's tick pops in, a wrong one's cross (Zafar, 21 Nov) */
+.wo-line:not(.marked) .ocard-top .tick { transform: scale(0); animation: none; }
 .wo-line.opening .ocard-top .tick { opacity: 0; }
 /* the wrong one shown plainly: its tick a maroon cross, as on the item cards, and its edge flashing maroon (Zafar, 20 Nov) */
 .wo-line { transition: box-shadow var(--wo-marks); }
@@ -335,42 +337,26 @@ button { padding: 0; cursor: pointer; }
    enough to be seen on the white card */
 .ocard.lifted.no-english .icard > .en { display: none; }
 .ocard.lifted .icard.waiting { border: var(--wo-dash-w) dashed var(--wo-dash); opacity: 1; }
-/* its three marks, one meaning each, stamped in its turn (Zafar, 21 Nov: "one should mark that you got it correct, one should
-   mark that this is the correct answer, one needs to mark this is the incorrect answer"; "Maybe the tick and cross should be
-   big in the centre of each card"); nothing on it is faded (his: the fade "looks like ... the way the milk is a bit faded for
-   no milk"), and it opens with no mark at all:
-   right: a big gold tick stamped in the middle of its picture, settling into the panel's corner tick and gold edge (.done);
-   wrong: a big maroon cross, the tick's size, stamped the same way, and a maroon edge (.wrong; Zafar, 19 Nov: "it's essential
-   from user testing for clarity of understanding"), then it falls; the right answer put in its place: a hollow gold ring
-   where the tick sits, and no tick (.put). The one size the lifted card has of its own (all else is the panel card's, grown
-   by its one zoom): the corner mark never under the mark's size on the screen, so it reads on the phone; the stamp a share
-   of the picture's width (--wo-stamp). Every mark is drawn inside its card's edge, so none reaches the face's badge above
-   (Zafar, 21 Nov, the third time) */
-.ocard.lifted .icard > .tick { --mark: max(calc(var(--tick) * var(--p)), calc(var(--wo-mark) / var(--wo-k, 1))); width: var(--mark); height: var(--mark); }
+/* its marks: only big ones, in the middle of a card's picture, and none stays (Zafar, 21 Nov: "remove the ticks in the top
+   right corner ... remove the placeholder circle ... simply keep the big middle tick or cross ... the item card just remains
+   as it is"): a right card's gold tick; a wrong card's maroon cross, its edge maroon as it goes (Zafar, 19 Nov: "it's
+   essential from user testing for clarity of understanding"); a "no" card's no sign, which shrinks into the card's own
+   corner sign (hidden while it is on its way, .signing). Nothing on it is faded; its cards are the panel's, so nothing
+   changes as it lands. The stamp a share of the picture's width (--wo-stamp); every mark drawn inside its card's edge, so
+   none reaches the face's badge above (Zafar, 21 Nov, the third time) */
+.ocard.lifted .icard > .tick { display: none; }
 .ocard.lifted .icard.wrong { border-color: var(--kutchi); }
-.ocard.lifted .icard.put { border-color: var(--done-edge); }
-.ocard.lifted .icard.put > .tick { transform: scale(1); background: none; box-shadow: inset 0 0 0 calc(var(--wo-put-w) / var(--wo-k, 1)) var(--gold); }
-.ocard.lifted .icard.put > .tick::after { display: none; }
-.ocard.lifted .icard.stamping > .tick { opacity: 0; transition: none; }
+.ocard.lifted .icard.no.signing .well::before, .ocard.lifted .icard.no.signing .well::after { opacity: 0; }
 .wo-stamp { position: absolute; grid-column: auto; z-index: 4; border-radius: 50%; background: var(--gold); box-shadow: 0 2px 8px rgba(80, 50, 20, .28); pointer-events: none; }
 .wo-stamp::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
 .wo-stamp.cross { background: var(--kutchi); }
 .wo-stamp.cross::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
-/* a right "no" card stands solid on the lifted card, only its sign saying "no" (Zafar, 21 Nov: the fade read as crossed out);
-   the panel's keeps its dashed edge and faded picture until he has seen this */
-.ocard.lifted .icard.no:not(.waiting) { background: var(--item-bg); box-shadow: var(--item-shadow); border: 1px solid transparent; }
-.ocard.lifted .icard.no .well img { opacity: 1; }
-.ocard.lifted .icard.no.done:not(.waiting), .ocard.lifted .icard.no.put:not(.waiting) { border-color: var(--done-edge); }
-/* and as it lands in the panel again, every mark fades */
-.ocard.lifted .icard { transition: box-shadow var(--wo-marks), border-color var(--wo-marks), background-color var(--wo-marks); }
-.ocard.lifted .icard .well img { transition: opacity var(--wo-marks); }
-.ocard.lifted .icard > .tick { transition: transform var(--wo-marks), opacity var(--wo-marks); }
-.ocard.lifted.landing .icard, .ocard.lifted.landing .icard.no:not(.waiting) { box-shadow: var(--item-shadow); border-color: transparent; }
-.ocard.lifted.landing .icard > .tick { opacity: 0; }
-/* a right "no" card, solid on the lifted card, takes the panel's look again as it lands, so nothing jumps as the panel's
-   card takes its place */
-.ocard.lifted.landing .icard.no:not(.waiting) { background-color: transparent; box-shadow: none; border-style: dashed; border-color: var(--no-edge); }
-.ocard.lifted.landing .icard.no .well img { opacity: var(--no-pic); }
+/* the no sign drawn as a "no" card's own corner sign, big */
+.wo-stamp.no { background: #fff; }
+.wo-stamp.no::after { background: var(--kutchi); -webkit-mask-image: var(--no-mark); mask-image: var(--no-mark); }
+/* (as it lands in the panel again, a wrong card's edge, if any were left, goes) */
+.ocard.lifted .icard { transition: border-color var(--wo-marks); }
+.ocard.lifted.landing .icard { border-color: transparent; }
 /* the card opening down from its line, as the panel's opens (its fold's time the kit's one move: js/shared/kit/wrong-order.js);
    "still": set folded at once, with no move */
 .ocard.lifted.still .ocard-body { transition: none; }

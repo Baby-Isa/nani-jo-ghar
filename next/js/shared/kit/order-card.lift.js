@@ -14,7 +14,8 @@
  *       (Zafar, 20 Nov: "unblur everything for the pop up wrong card, because we should give all the assistance
  *       necessary"). Its item cards are fitted as one row, as the panel's are. Its speakers work; nothing else on it is a
  *       button. land(): the panel's card shows again and the lifted one goes.
- *   line(seat, host) -> { el, land() }   the card's folded line, as served, with its tick, nothing on it to press, in
+ *   line(seat, host) -> { el, land() }   the card's folded line, as served (the pop-up shows its tick only once it marks
+ *       it: Zafar, 21 Nov), nothing on it to press, in
  *       `host` (the pop-up's stack); land() as the card's
  */
 import { wireSpeaker, spaceWords } from "./word-card.js";
