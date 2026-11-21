@@ -352,6 +352,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       const box = kind === "item" ? D.shelf.picBox(key) : kind === "knob" ? D.hob.knobBox(key) : kind === "vessel" ? D.hob.vesselBox(key) : null;
       return box && stage.pageRect("worktop", box);
     },
+    /** For the checks: the box a light round each thing on the worktop would show, shown or not. */
+    lights: () => (D ? lights.every() : []),
     probe() {
       if (!D) return null;
       const P = (kind, id, box, more = {}) => ({ kind, id, ...stage.pageRect("worktop", box), ...more });

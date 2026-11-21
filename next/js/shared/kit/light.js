@@ -10,6 +10,7 @@
  *       to a new place when the screen changes size); avoid: the boxes of the things near it that stay dark, or a function
  *       giving them; the light's own box is litBox's, the one rule
  *   light.hide()      light.showing() -> boolean      light.box() -> the lit rectangle, margin included
+ *   light.boxFor(boxes, { margin?, avoid? }) -> the rectangle a light round them would show, shown or not
  *   litBox(box, { margin, least, avoid, clear, overlap }) -> the lit rectangle      every light's box, in the game's space and on a card alike
  */
 
@@ -96,14 +97,7 @@ export function createLight({ kit, stage }) {
       nudge = again ? () => follow(K.followMs) : null;
       const aim = (boxes) => {
         const box = Array.isArray(boxes) ? union(boxes) : boxes;
-        const side = Math.min(box.w, box.h);
-        const m = margin != null ? margin : Math.max(K.marginMin, Math.min(K.marginMax, side * K.marginShare));
-        const least = Math.max(K.leastMin, Math.min(K.leastMax, side * K.leastShare));
-        const b = litBox(box, { margin: m, least, avoid: (typeof avoid === "function" ? avoid() : avoid) || [], clear: K.clear, overlap: K.overlap });
-        // (at the screen's edge the light stops at the edge)
-        const x = Math.max(K.edgeIn, b.x);
-        const y = Math.max(K.edgeIn, b.y);
-        const to = { x, y, w: Math.min(innerWidth - K.edgeIn, b.x + b.w) - x, h: Math.min(innerHeight - K.edgeIn, b.y + b.h) - y };
+        const to = this.boxFor(boxes, { margin, avoid: typeof avoid === "function" ? avoid() : avoid });
         // (the thing and its light, for the checks: every light even round its thing; written only when they change)
         const mark = [box.x, box.y, box.w, box.h].map((v) => v.toFixed(1)).join(",") + "|" + [to.x, to.y, to.w, to.h].map((v) => v.toFixed(1)).join(",");
         if (mark !== marked) [marked, el.dataset.thing, el.dataset.lit] = [mark, ...mark.split("|")];
@@ -138,6 +132,21 @@ export function createLight({ kit, stage }) {
       el.classList.toggle("hard", hard);
       el.classList.add("on");
       document.body.classList.add("lit");
+    },
+    /**
+     * The rectangle a light would show round `boxes` (one or several, lit as one), with `avoid` kept dark, on the page; the
+     * one way a light's box is made, shown or not (the checks ask it for every thing that may be lit).
+     */
+    boxFor(boxes, { margin = null, avoid = null } = {}) {
+      const box = Array.isArray(boxes) ? union(boxes) : boxes;
+      const side = Math.min(box.w, box.h);
+      const m = margin != null ? margin : Math.max(K.marginMin, Math.min(K.marginMax, side * K.marginShare));
+      const least = Math.max(K.leastMin, Math.min(K.leastMax, side * K.leastShare));
+      const b = litBox(box, { margin: m, least, avoid: avoid || [], clear: K.clear, overlap: K.overlap });
+      // (at the screen's edge the light stops at the edge)
+      const x = Math.max(K.edgeIn, b.x);
+      const y = Math.max(K.edgeIn, b.y);
+      return { x, y, w: Math.min(innerWidth - K.edgeIn, b.x + b.w) - x, h: Math.min(innerHeight - K.edgeIn, b.y + b.h) - y };
     },
     hide() {
       cancelAnimationFrame(moving);

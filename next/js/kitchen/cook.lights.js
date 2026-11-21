@@ -10,6 +10,8 @@
  * A thing on the worktop is lit with its neighbours of the same kind kept dark (the shelf's things and their pills, the knobs,
  * the pans, the glasses), by the kit's one light rule.
  *   lights.clear()
+ *   lights.every() -> [{ what, box }]   the box a light round each thing on the worktop would show (every shelf thing, knob,
+ *       pan and glass), shown or not, on the page: for the checks, which measure each against what is drawn
  */
 export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
   const L = kitchen.lights;
@@ -24,7 +26,7 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
     const n = D.plan.vessels.length;
     if (step.kind === "use") return { parts: D.shelf.partsOf(step.item), near: D.shelf.ids().filter((id) => id !== step.item).flatMap((id) => D.shelf.partsOf(id)) };
     if (step.kind === "knob") return { parts: [D.hob.knobBox(step.vessel)], near: others(n, D.hob.knobBox) };
-    if (step.kind === "take") return { parts: [D.serving.dishBox(step.vessel)], near: others(n, D.serving.dishBox) };
+    if (step.kind === "take") return { parts: D.serving.partsOf(step.vessel), near: others(n, (i) => D.serving.partsOf(i)).flat() };
     if (step.kind === "choose") return { parts: [D.hob.vesselBox(step.vessel)], near: others(n, D.hob.vesselBox) };
     return null;
   }
@@ -43,6 +45,12 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
   };
 
   return {
+    every() {
+      const D = drawn();
+      const n = D.plan.vessels.length;
+      const steps = D.shelf.ids().map((item) => ({ kind: "use", item })).concat(...[...Array(n).keys()].map((vessel) => ["knob", "take", "choose"].map((kind) => ({ kind, vessel }))));
+      return steps.map((step) => ({ what: `${step.kind} ${step.item || step.vessel}`, box: ui.light.boxFor(boxFor(step, "thing"), { avoid: nearFor(step)() }) }));
+    },
     first(step, key) {
       const mine = ++token;
       const card = key === "card";

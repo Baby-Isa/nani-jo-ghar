@@ -9,7 +9,7 @@
  *   serving.frame(i, ref)               one frame of a fill (drawn just above the resting dish)
  *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise   serving.away(seats)
  *   serving.review(checks) -> Promise   the big faces: happy with a hop, or sad with a small shake of the head
- *   serving.praise(text) / serving.closeReview() -> Promise     serving.dishBox(i) / serving.dishMiddle(i)
+ *   serving.praise(text) / serving.closeReview() -> Promise     serving.partsOf(i) (its glass, its face) / serving.dishMiddle(i)
  *   servingRefs({ kit, art, people }) -> { draw, then }: its dishes and labels, then its drop, twinkles and the review's faces
  */
 export const servingRefs = ({ kit, art, people }) => ({
@@ -168,11 +168,14 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       dishes.forEach((d) => ((d.looked = false), showFace(d)));
     },
     dishMiddle: (i) => ({ x: dishes[i].well.x, y: dishes[i].well.y, r: spot.gR }),
-    dishBox(i) {
+    /**
+     * A dish's parts, each its own box: its glass and its person's face. They are handed to the light as they are, and only
+     * the light makes them one box (./light.js, its one rule): a box made here cut the face that hangs below the glass
+     * (Zafar, 21 Nov: "this light box is wrong it clips the face ... please fix structurally").
+     */
+    partsOf(i) {
       const d = dishes[i];
-      const x0 = Math.min(d.well.x - spot.gR, d.face.obj.x - fd / 2);
-      const y0 = Math.min(d.well.y - spot.gR, d.face.obj.y - fd / 2);
-      return { x: x0, y: y0, w: d.well.x + spot.gR - x0, h: d.well.y + spot.gR - y0 };
+      return [{ x: d.well.x - spot.gR, y: d.well.y - spot.gR, w: 2 * spot.gR, h: 2 * spot.gR }, this.faceBox(i)];
     },
     faceBox: (i) => ({ x: dishes[i].face.obj.x - fd / 2, y: dishes[i].face.obj.y - fd / 2, w: fd, h: fd }),
     spotBox: () => ({ x: spot.x, y: spot.y, w: spot.w, h: spot.h }),

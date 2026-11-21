@@ -73,7 +73,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       if (part.lands.length) await gone;
       if (!live) return;
     }
-    const landing = part.lands[0];
+    // (a part whose things do not pop, the opening sentence past level 1, lands them in the row quietly once it is said)
+    const landing = e.pops === false ? null : part.lands[0];
     if (landing) {
       if (head) ui.cards.open(e.seat);
       // (a headline that names a thing lands it as an item's line does: the place before what lands at the row's left)

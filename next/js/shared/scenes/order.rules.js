@@ -30,6 +30,13 @@ export function partsOf(person) {
   return parts;
 }
 
+/**
+ * Whether a part's things pop as big cards as it is said: every part's but the opening sentence's past the levels with a dish
+ * card, whose things land in the row quietly (Zafar, 21 Nov: "no dish cards after level 1 and nothing pops during the opening
+ * sentence from lvl 2 onwards").
+ */
+const popsAt = (kit, round, part) => part !== 0 || !!atLevel(kit.levels.dishCard, round.level);
+
 export function orderRules({ settings, kit }) {
   const speaker = settings.order.speaker;
   if (!SPEAKERS.includes(speaker)) throw new Error(`order: "${speaker}" is not a way of speaking the order`);
@@ -38,7 +45,7 @@ export function orderRules({ settings, kit }) {
   const partEvent = (s, round) => {
     const person = round.order.for[s.seat];
     const part = partsOf(person)[s.part];
-    return { type: "part", seat: s.seat, who: person.who, spokenBy: person.spokenBy, part, last: s.part === partsOf(person).length - 1, lesson: !!s.lesson && !s.lessoned && s.lesson.seat === s.seat && s.lesson.part === s.part ? LESSON_MET : null, dishCard: s.part === 0 && atLevel(kit.levels.dishCard, round.level) ? person.dishCard || true : null };
+    return { type: "part", seat: s.seat, who: person.who, spokenBy: person.spokenBy, part, last: s.part === partsOf(person).length - 1, lesson: !!s.lesson && !s.lessoned && s.lesson.seat === s.seat && s.lesson.part === s.part ? LESSON_MET : null, pops: popsAt(kit, round, s.part), dishCard: s.part === 0 && atLevel(kit.levels.dishCard, round.level) ? person.dishCard || true : null };
   };
   const unsaid = (person) => person.items.filter((i) => !i.said).map((i) => i.id);
 
@@ -90,7 +97,7 @@ export function orderRules({ settings, kit }) {
       round.order.for.forEach((person, seat) =>
         partsOf(person).forEach((x, part) => {
           const shows = x.lands[0] && person.items.find((i) => i.id === x.lands[0]);
-          if (!lesson && !round.met[LESSON_MET] && shows && pictureHidden(kit, round, shows.word)) lesson = { seat, part };
+          if (!lesson && !round.met[LESSON_MET] && shows && popsAt(kit, round, part) && pictureHidden(kit, round, shows.word)) lesson = { seat, part };
         })
       );
       return { name: "saying", seat: 0, part: 0, skipped: false, lesson, lessoned: false, peeks: [], repeats: 0 };
