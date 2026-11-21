@@ -264,7 +264,9 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     // one sound for each meaning, the game's own (Zafar, 21 Nov): the ding a right card, the warm low note a cross, the pop
     // the right thing arriving; a fall or a slide is silent
     const sound = (name) => !hurried && sounds.play(name);
-    lit(true);
+    // (a missing thing's place stays dotted, unlit, until its card stands in it; then it is lit: Zafar, 21 Nov, "it should
+    // stay dashed until the item card fully is in new position and then it turns solid gold")
+    if (st.do !== "rises") lit(true);
     // (a right card quick, a wrong one slow, a beat before it: Zafar, 21 Nov)
     await wait(right ? W.litRight : W.lit);
     if (right) {
@@ -281,11 +283,12 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       await wait(W.outline);
       slot.own.classList.remove("unseen");
       sound("pop");
-      // (said as the right card shows: Zafar, 21 Nov; solid as it rises, on top of everything: it fades in only while it is
-      // still below the card)
+      // (said as the right card shows: Zafar, 21 Nov; solid all the way up, over everything, the light's edge included:
+      // "item cards arrive in from the bottom, they should sit on the top layer ... solid (no fade) the whole time")
       const said = talk(cards.lineIn(seat, st.says));
-      await move(slot.own, [{ transform: `translateY(${W.riseBy * 100}%)`, opacity: 0 }, { opacity: 1, offset: 0.4 }, { transform: "none", opacity: 1 }], W.rise);
+      await above(slot.own, () => move(slot.own, [{ transform: `translateY(${W.riseBy * 100}%)` }, { transform: "none" }], W.rise));
       slot.outline.classList.add("unseen");
+      lit(true);
       await said;
     } else {
       slot.made.classList.add("wrong");
@@ -297,8 +300,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       if (st.do === "unsays") await unsay(slot, mark, () => talk(cards.lineIn(seat, st.says)));
       else if (st.do === "reveals") await turn(slot, () => (sound("pop"), talk(cards.lineIn(seat, st.says))));
       else {
-        // (solid as it falls, its cross with it, on top of everything: it fades only once it is clear of the card)
-        await move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall);
+        // (over everything as it falls, the light's edge included, its cross with it; it fades once it is clear of the card)
+        await above(slot.made, () => move(slot.made, [{ transform: "none", opacity: 1 }, { opacity: 1, offset: 0.6 }, { transform: `translateY(${W.fallBy * 100}%)`, opacity: 0 }], W.fall));
         slot.made.remove();
       }
       await said;
@@ -351,6 +354,12 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     // (flat again, it lets its turn go, so it is drawn as the other cards are, its words as sharp)
     slot.own.getAnimations().forEach((a) => a.cancel());
     await said;
+  }
+  /** A card moving in or out of its place drawn over everything on the card, the light's edge included, while it moves. */
+  async function above(el, moving) {
+    el.classList.add("moving");
+    await moving();
+    el.classList.remove("moving");
   }
   /** Where a "no" card's own sign stands on its picture (the style sheet's --no-sign and --no-inset, shares of its width). */
   function cornerOf(card) {

@@ -8,7 +8,8 @@
  *
  *   const cards = createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds })
  *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.focus(seat)  cards.slot(seat, id) -> rectangle
- *   cards.land(seat, ids)  cards.landAll()  cards.ticks(seat, ids)  the rules' ticked rows, in the order ticked
+ *   cards.land(seat, ids)  cards.landAll()  cards.ticks(seat, ids, placed?)  the rules' ticked rows, in the order ticked, and the
+ *       rows that keep their place in the row (ticked, or gone past what was asked: unticked, the row not sliding back)
  *   cards.served(seat)  cards.reopen(seat)  cards.lineOf(seat, id)  cards.headOf(seat)
  *   cards.cheer(seat)   a served card's tick gives one pop (the well done)
  *   cards.lead(seat, ids)  the order: the row glides so these cards land whole, the place before them at the left
@@ -121,7 +122,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     focus: (seat) => panel.focus(seat == null ? null : seats[seat].el),
     land: (seat, ids) => seats[seat].row.land(ids),
     landAll: () => seats.forEach((s) => s.row.landAll()),
-    ticks: (seat, ids) => seats[seat].row.ticks(ids),
+    ticks: (seat, ids, placed) => seats[seat].row.ticks(ids, placed),
     lead: (seat, ids) => seats[seat].row.lead(ids),
     served(seat) {
       seats[seat].row.served();

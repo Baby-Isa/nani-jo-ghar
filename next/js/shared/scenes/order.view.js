@@ -53,8 +53,14 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     const dishHeard = new Promise((res) => (dishIt = res));
     const dishEntry = e.dishCard && person.dishWord ? say.entry(person.dishWord) : null;
     const dishSaid = !!dishEntry && line.tokens.some((tk) => tk.word === dishEntry.id);
+    // past the dish card's levels, a thing the opening sentence names pops on its own word, as the dish card does, and is
+    // held its own time, not the sentence's (Zafar, 21 Nov: "arriving when the word ... is spoken and lasting the same time
+    // as the other item cards")
+    const named = head && !e.dishCard && part.lands[0] ? person.items.find((i) => i.id === part.lands[0]) : null;
+    const namedEntry = named ? say.entry(named.word) : null;
+    const namedSaid = !!namedEntry && line.tokens.some((tk) => tk.word === namedEntry.id);
     // heard: a clip of the line really started (never a clip that failed to load, a piece with no voice, a sound asleep)
-    const spoken = say.speak(line, { onHeard: () => ((wasHeard = true), heardIt()), onWord: dishSaid ? { word: dishEntry.id, then: dishIt } : null }).then(() => room.reading(false));
+    const spoken = say.speak(line, { onHeard: () => ((wasHeard = true), heardIt()), onWord: dishSaid ? { word: dishEntry.id, then: dishIt } : namedSaid ? { word: namedEntry.id, then: dishIt } : null }).then(() => room.reading(false));
     // a line no voice says is still given its time to be read, so a silent order is never hurried
     const quiet = Math.max(O.silentMin, Math.min(O.silentMax, O.silentBase + O.silentPerLetter * line.text.length)) * O.quietShare;
     const readTime = wait(quiet);
@@ -73,8 +79,10 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       if (part.lands.length) await gone;
       if (!live) return;
     }
-    // (a part whose things do not pop, the opening sentence past level 1, lands them in the row quietly once it is said)
-    const landing = e.pops === false ? null : part.lands[0];
+    const landing = part.lands[0];
+    // (a line heard waits for the named thing's own word)
+    if (landing && named && wasHeard && namedSaid) await Promise.race([dishHeard, spoken]);
+    if (!live) return;
     if (landing) {
       if (head) ui.cards.open(e.seat);
       // (a headline that names a thing lands it as an item's line does: the place before what lands at the row's left)
@@ -82,8 +90,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       big = ui.cards.pop(e.seat, landing);
     }
     // (a part with no card of its own waits only for its line)
-    await Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, said]);
-    room.talk(e.seat, false);
+    await Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, named ? null : said]);
+    if (!named) room.talk(e.seat, false);
     if (!live) return;
     if (big) {
       // the first card that hides a part: the order waits while the child taps each hidden part open; it is met for good
@@ -96,6 +104,11 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       }
       await big.fly();
       big = null;
+    }
+    // (the rest of the sentence after the named thing's card has gone)
+    if (named) {
+      await said;
+      room.talk(e.seat, false);
     }
     if (!live) return;
     if (head && !landing) {

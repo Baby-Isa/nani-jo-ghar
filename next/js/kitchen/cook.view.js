@@ -55,7 +55,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     return say.line(settings.lines[step.line] || kitchen.lines[step.line]);
   }
 
-  const ticks = (s, v) => ui.cards.ticks(v, s.vessels[v].ticked);
+  const ticks = (s, v) => ui.cards.ticks(v, s.vessels[v].ticked, s.vessels[v].placed);
 
   /** The count pills above the stove, for the chosen vessel while it is being made: never one served or boiled over (null: none). */
   function counts(s) {

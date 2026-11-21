@@ -374,6 +374,8 @@ button { padding: 0; cursor: pointer; }
 .ocard.lifted.opening .ocard-in { overflow: hidden; }
 /* the card in its turn lit with the light's own edge, travelling left to right, nothing else dimmed (Zafar, 21 Nov: "the
    strong outline does do a job of highlighting what to focus on"); drawn inside the card's edge, over it */
+/* (a card moving in or out of its place goes over the light's edge, on top of everything on the card: Zafar, 21 Nov) */
+.ocard.lifted .slot > .icard.moving { z-index: 6; }
 .ocard.lifted .slot.focus::after { content: ""; position: absolute; inset: 0; z-index: 5; border-radius: calc(var(--item-radius) * var(--p)); box-shadow: inset 0 0 0 calc(var(--wo-lit-w) / var(--wo-k, 1)) var(--light-edge); pointer-events: none; }
 /* going home: its row clipped and fading at its right as the panel's, so it is its panel card's shape as it lands */
 .ocard.lifted.homing .ocard-in { overflow: hidden; }

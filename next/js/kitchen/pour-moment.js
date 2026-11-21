@@ -134,7 +134,13 @@ export function pourMoment({ stage, kit, kitchen, settings, sounds }) {
           showStream(sy, surf, full, fall(e) * 100);
           const d = (e * K.tailMs - K.dropAfterMs) / (K.tailMs - K.dropAfterMs);
           drop.style.opacity = d > 0 && d < 1 ? 1 : 0;
-          if (d > 0) drop.style.top = `${sy + (surf - sy) * Math.min(1, fall(d)) - dh}px`;
+          if (d > 0) {
+            // (it comes out of the spout bottom first: what is still above the spout's tip is not seen yet; Zafar, 21 Nov,
+            // "the drop should start from the spout (it emerges from the spouts, bottom first and then rest as it comes out")
+            const top = sy + (surf - sy) * Math.min(1, fall(d)) - dh;
+            drop.style.top = `${top}px`;
+            drop.style.clipPath = `inset(${Math.max(0, sy - top)}px 0 0 0)`;
+          }
         });
         stream.style.opacity = 0;
         drop.style.opacity = 0;

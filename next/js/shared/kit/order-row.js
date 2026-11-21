@@ -5,13 +5,16 @@
  * edges fade while there is more to swipe that way. The child may still swipe the row; a new width puts it back at its rest.
  *
  *   const row = createRow({ stage, kit, el, items, panel })   items: Map id -> { el, id, no, atServe } in the order asked
- *   row.land(ids)  row.landAll()  row.lead(ids)  row.ticks(ids)  row.served()  row.reopen()
+ *   row.land(ids)  row.landAll()  row.lead(ids)  row.ticks(ids, placed?)  row.served()  row.reopen()
+ *       placed: the cards that keep their place (the ticked, and one gone past what was asked), by which the row is ordered
+ *       and rests; ids alone are ticked
  */
 import { rowOrder, rowRest, rowLandRest } from "./row.rules.js";
 
 export function createRow({ stage, kit, el, items, panel }) {
   const O = kit.order;
   let ticked = [];
+  let placed = []; // (where the cards stand and the row rests: the ticked, and one gone past what was asked, in place)
   let landing = null; // while the order is said: the cards landing now
   const all = () => [...items.values()];
   const atServe = all().filter((it) => it.atServe).map((it) => it.id);
@@ -25,13 +28,13 @@ export function createRow({ stage, kit, el, items, panel }) {
   };
   /** The row glides to its rest: by the landing cards while the order is said, else by what is ticked. */
   const rest = () => {
-    const to = landing ? rowLandRest(places(), shows(), landing) : rowRest(places(), shows(), ticked, atServe);
+    const to = landing ? rowLandRest(places(), shows(), landing) : rowRest(places(), shows(), placed, atServe);
     if (to != null) el.scrollTo({ left: to, behavior: "smooth" });
   };
 
   /** The cards to their places by the rule, each sliding from where it stood; then the row glides to its rest. */
   function arrange() {
-    const order = rowOrder(all(), ticked).map((id) => items.get(id));
+    const order = rowOrder(all(), placed).map((id) => items.get(id));
     if (order.some((it, i) => el.children[i] !== it.el)) {
       const was = new Map(all().map((it) => [it, it.el.getBoundingClientRect().left]));
       order.forEach((it) => el.appendChild(it.el));
@@ -80,10 +83,12 @@ export function createRow({ stage, kit, el, items, panel }) {
       rest();
     },
     /** The rules' ticked rows, in the order ticked: the cards tick, and slide to their places if the list changed. */
-    ticks(ids) {
+    ticks(ids, keep) {
       const now = ids.filter((id) => items.has(id));
-      if (now.join() === ticked.join()) return;
+      const at = keep.filter((id) => items.has(id));
+      if (now.join() === ticked.join() && at.join() === placed.join()) return;
       ticked = now;
+      placed = at;
       all().forEach((it) => it.el.classList.toggle("done", ticked.includes(it.id)));
       arrange();
     },
@@ -91,6 +96,7 @@ export function createRow({ stage, kit, el, items, panel }) {
     reopen() {
       all().forEach((it) => it.el.classList.remove("done"));
       ticked = [];
+      placed = [];
       arrange();
     },
   };

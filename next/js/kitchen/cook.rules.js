@@ -12,7 +12,9 @@
  *   peek at that word, so the word's ladder does not move this round)
  *   then: reviewed and, for wrong dishes, understood; wrong-order {right, wrong: [{vessel, who, faults, play}]},
  *   remake {vessels, away}: only those are made again, the rest leave the screen (state.away) until all-right
- *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's row)
+ *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's ticks)
+ *   state.vessels[v].placed: the rows that keep their place in the order card's row: the ticked ones, and one gone past
+ *       what was asked (unticked, but no more can put it right, so the row does not slide back to it)
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
  */
 import { machine } from "../shared/machine.js";
@@ -127,10 +129,21 @@ export function cookRules({ game, settings, kitchen, kit }) {
   const ticking = (s) => ({
     ...s,
     vessels: s.vessels.map((x, v) => {
-      const t = G.ticks(x.dish, ctxOf(s, v));
+      const ctx = ctxOf(s, v);
+      const t = G.ticks(x.dish, ctx);
       const kept = x.ticked.filter((id) => t[id]);
       const now = Object.keys(t).filter((id) => t[id] && !kept.includes(id));
-      return kept.length === x.ticked.length && !now.length ? x : { ...x, ticked: kept.concat(now) };
+      const ticked = kept.length === x.ticked.length && !now.length ? x.ticked : kept.concat(now);
+      // where each card stands in the row: a ticked one, or one gone past what was asked (too many in: no more can put it
+      // right), keeps its place; it unticks but the row does not slide back to it (Zafar, 21 Nov: "it should untick but not
+      // scroll back")
+      // (gone past what was asked: the kit's one answer for a row's fault, too many or a "no" row's thing in)
+      const faults = checkOf(s, v).faults;
+      const over = (id) => faults.some((f) => f.id === id && (f.kind === "many" || f.kind === "extra"));
+      const placed0 = x.placed;
+      const placedKept = placed0.filter((id) => ticked.includes(id) || over(id));
+      const placed = placedKept.concat(ticked.filter((id) => !placedKept.includes(id)));
+      return ticked === x.ticked && placed.join() === placed0.join() ? x : { ...x, ticked, placed };
     }),
   });
   const move = (s, mv, c) => {
@@ -374,7 +387,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
         row: rowFor(round, chance),
         lit: [],
         metLit: round.met.lit || [],
-        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, items: p.items, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [] })),
+        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, items: p.items, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [], placed: [] })),
         help: newHelp(),
         // the words asked for that the child's ladder has past support as the round starts
         pastSupport: [...new Set(round.order.for.flatMap((p) => p.items.filter((i) => i.said && !i.no).map((i) => i.word)))].filter((w) => (round.ladder[w] || 0) >= kit.help.pastSupportFrom),
