@@ -269,7 +269,9 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       sound("bing");
       const said = talk(cards.lineOf(seat, st.row));
       await pop(mark);
-      await said;
+      // (held at least keep, its word or not: on a phone an unrecorded word can end at once, and the tick went unseen;
+      // Zafar, 21 Nov: "I didn't see a ... big tick ... for the correct ones")
+      await Promise.all([said, wait(W.keep)]);
       await pop(mark, true);
       mark.remove();
     } else if (st.do === "rises") {
