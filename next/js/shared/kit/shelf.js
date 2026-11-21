@@ -6,7 +6,7 @@
  *   const shelf = createShelf({ stage, say, kit, k, row, wordArt, onItem, onPill })
  *       row: what layout.rowOf gave; k: the family's layout numbers (band, sizes, pill)
  *   shelf.pour(id, to, times, onFill) -> Promise      shelf.spoon(id, to, spoonRef, times, onLand) -> Promise
- *   shelf.back(id, from, spoonRef) -> Promise         shelf.wiggle(id)   shelf.glow(id, on)   shelf.dimOthers(id | null)
+ *   shelf.back(id, from, spoonRef) -> Promise         shelf.wiggle(id)   shelf.glow(id, on, { once? })   shelf.dimOthers(id | null)
  *   shelf.pop(id, at)       the thing's word pops over the vessel as it goes in
  *   shelf.partsOf(id) -> [{ x, y, w, h }] in design px: the thing (with the room it hops into) and its pill, lit as one
  *   shelfRefs({ kit, ids }) -> the pictures it draws with, for a scene to name (ids: every thing its row may hold)
@@ -222,8 +222,12 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       await stage.tween(o, { angle: 0 }, L.wiggle.ms);
       it.busy = false;
     },
-    /** A lit thing glows (a soft gold halo of its own outline, breathing) and hops where it stands until told to stop. */
-    glow(id, on) {
+    /**
+     * A lit thing glows (a soft gold halo of its own outline, breathing) and hops where it stands until told to stop; once:
+     * it hops one time, as the glow starts, then rests on the shelf until the glow ends (a refused fire's "this is missing":
+     * Zafar, 21 Nov, "there shouldn't be an extra jump" as the glow goes).
+     */
+    glow(id, on, { once = false } = {}) {
       const it = items.get(id);
       if (!it) return;
       if (it.hop) {
@@ -243,7 +247,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       it.halo.obj.setScale(kk);
       stage.scene.tweens.add({ targets: it.halo.obj, alpha: L.halo.breatheTo, duration: L.halo.breatheMs, yoyo: true, repeat: -1 });
       const up = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));
-      it.hop = stage.scene.tweens.add({ targets: it.pic.obj, y: b.base - up, duration: L.hop.upMs, ease: "Quad.easeOut", yoyo: true, repeat: -1, repeatDelay: L.hop.restMs });
+      it.hop = stage.scene.tweens.add({ targets: it.pic.obj, y: b.base - up, duration: L.hop.upMs, ease: "Quad.easeOut", yoyo: true, repeat: once ? 0 : -1, repeatDelay: L.hop.restMs });
     },
     dimOthers(id) {
       for (const [key, it] of items) it.pic.obj.alpha = id && key !== id ? L.dimOthers : 1;

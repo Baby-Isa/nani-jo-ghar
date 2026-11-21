@@ -120,7 +120,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       else if (e.vessel != null) stage.tween(D.vessels[e.vessel].box.obj, { angle: C.vesselWiggle.deg }, C.vesselWiggle.ms).then(() => stage.tween(D.vessels[e.vessel].box.obj, { angle: 0 }, C.vesselWiggle.ms));
     },
     point(e) {
-      D.shelf.glow(e.item, true);
+      D.shelf.glow(e.item, true, { once: true });
       stage.wait(C.pointMs).then(() => D.shelf.glow(e.item, false));
     },
     lit(e) {

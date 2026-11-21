@@ -356,11 +356,13 @@ button { padding: 0; cursor: pointer; }
 .ocard.lifted .icard.no.signing .well::before, .ocard.lifted .icard.no.signing .well::after { opacity: 0; }
 .wo-stamp { position: absolute; grid-column: auto; z-index: 4; border-radius: 50%; background: var(--gold); box-shadow: 0 2px 8px rgba(80, 50, 20, .28); pointer-events: none; }
 .wo-stamp::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
-.wo-stamp.cross { background: var(--kutchi); }
-.wo-stamp.cross::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+.wo-stamp[data-kind="cross"] { background: var(--kutchi); }
+.wo-stamp[data-kind="cross"]::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+/* (the gold tick is the stamp's own look, kind "yes"; the cross and the no sign change it; its kind a data attribute, so no
+   style for a card's own parts reaches it) */
 /* the no sign drawn as a "no" card's own corner sign, big */
-.wo-stamp.no { background: #fff; }
-.wo-stamp.no::after { background: var(--kutchi); -webkit-mask-image: var(--no-mark); mask-image: var(--no-mark); }
+.wo-stamp[data-kind="no"] { background: #fff; }
+.wo-stamp[data-kind="no"]::after { background: var(--kutchi); -webkit-mask-image: var(--no-mark); mask-image: var(--no-mark); }
 /* (as it lands in the panel again, a wrong card's edge, if any were left, goes) */
 .ocard.lifted .icard { transition: border-color var(--wo-marks); }
 .ocard.lifted.landing .icard { border-color: transparent; }

@@ -265,7 +265,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     // (a right card quick, a wrong one slow, a beat before it: Zafar, 21 Nov)
     await wait(right ? W.litRight : W.lit);
     if (right) {
-      const mark = stamp(slot.own, "tick");
+      const mark = stamp(slot.own, "yes");
       sound("bing");
       const said = talk(cards.lineOf(seat, st.row));
       await pop(mark);
@@ -349,9 +349,14 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     return { left: r.right - inset - d, top: r.top + inset, width: d, height: d };
   }
 
-  /** A card's big mark (a gold tick, a maroon cross or a no sign), centred on its picture, a share of its width; unseen. */
+  /**
+   * A card's big mark (kind: "yes" a gold tick, "cross" a maroon cross, "no" a no sign), centred on its picture, a share of
+   * its width; unseen. Its kind is a data attribute, not a class, so no style for a card's own parts (a corner .tick, a .no
+   * card) can reach it, nor it them.
+   */
   function stamp(card, kind) {
-    const el = make(`wo-stamp ${kind}`);
+    const el = make("wo-stamp");
+    el.dataset.kind = kind;
     const pic = card.querySelector(".well");
     const d = pic.offsetWidth * parseFloat(W.vars.stamp);
     Object.assign(el.style, { width: `${d}px`, height: `${d}px`, left: `${pic.offsetLeft + (pic.offsetWidth - d) / 2}px`, top: `${pic.offsetTop + (pic.offsetHeight - d) / 2}px`, opacity: "0" });

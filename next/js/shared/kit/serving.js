@@ -44,6 +44,9 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
     return { well, pic, over, face };
   });
   let big = [];
+  // one face per dish (Zafar, 21 Nov: "You shouldn't have more than 1 face per glass"): its small face shows only while it is
+  // on the spot and its big review face is not up
+  const showFace = (d) => d.face.set({ visible: !d.away && !d.looked });
   let praiseCard = null;
 
   const glassW = () => spot.gR * 2;
@@ -66,7 +69,8 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
     away(list) {
       dishes.forEach((d, i) => {
         d.away = list.includes(i);
-        [d.pic, d.over, d.face].forEach((p) => p.set({ visible: !d.away }));
+        [d.pic, d.over].forEach((p) => p.set({ visible: !d.away }));
+        showFace(d);
       });
     },
     /** The painted drop that falls into a dish holding what was asked. */
@@ -110,7 +114,8 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       // (a dish that has left the spot is not looked at again)
       big = dishes.map((d, i) => {
         if (d.away) return null;
-        d.face.set({ visible: false });
+        d.looked = true;
+        showFace(d);
         const off = Rv.off * (spot.gR + size / 2);
         const x = Math.max(spot.x + size / 2 + Rv.inside, d.well.x - off);
         const f = stage.image(top, stage.badge(faceOf(i, checks[i].right)), { x, y: d.well.y - off, w: size });
@@ -160,7 +165,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       big = [];
       if (praiseCard) praiseCard.destroy();
       praiseCard = null;
-      dishes.forEach((d) => d.face.set({ visible: !d.away }));
+      dishes.forEach((d) => ((d.looked = false), showFace(d)));
     },
     dishMiddle: (i) => ({ x: dishes[i].well.x, y: dishes[i].well.y, r: spot.gR }),
     dishBox(i) {

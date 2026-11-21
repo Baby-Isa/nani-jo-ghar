@@ -110,6 +110,8 @@ function speakNow(S, text, { times, onStart, due }) {
       u.rate = times.rate;
       u.onstart = () => {
         started = true;
+        // (its longest is counted from when it starts: a word that starts late still has all its time)
+        timers.push(setTimeout(() => letGo(true), times.capMs + times.capPerLetterMs * String(text).length));
         if (!due()) return letGo(false); // (its line went while the device was getting ready)
         try {
           if (onStart) onStart();
@@ -121,7 +123,6 @@ function speakNow(S, text, { times, onStart, due }) {
       S.speak(u);
       // (no voice installed at all: let go of it almost at once, so a test browser is not held up)
       timers.push(setTimeout(() => !started && letGo(false), vs.length ? times.noStartMs : times.noVoiceMs));
-      timers.push(setTimeout(() => letGo(true), times.capMs + times.capPerLetterMs * String(text).length));
       // its line stopped or replaced while it speaks: it stops too
       watch = setInterval(() => !due() && letGo(started), times.dueEveryMs);
     } catch (e) {
