@@ -13,8 +13,8 @@
  *   then: reviewed and, for wrong dishes, understood; wrong-order {right, wrong: [{vessel, who, faults, play}]},
  *   remake {vessels, away}: only those are made again, the rest leave the screen (state.away) until all-right
  *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's ticks)
- *   state.vessels[v].placed: the rows that keep their place in the order card's row: the ticked ones, and one gone past
- *       what was asked (unticked, but no more can put it right, so the row does not slide back to it)
+ *   state.vessels[v].placed: the rows that keep their place in the order card's row: every row ticked since the dish began,
+ *       ticked or not now, so the row never slides back to one; a dish started again starts its row again
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
  *   | light {first: "takeBack", vessel, item} (./moment.rules.js): the first time ever a spoonful thing goes past what was
  *   asked, its count pill is lit once, at the kitchen's next stillness
@@ -138,16 +138,12 @@ export function cookRules({ game, settings, kitchen, kit }) {
       const kept = x.ticked.filter((id) => t[id]);
       const now = Object.keys(t).filter((id) => t[id] && !kept.includes(id));
       const ticked = kept.length === x.ticked.length && !now.length ? x.ticked : kept.concat(now);
-      // where each card stands in the row: a ticked one, or one gone past what was asked (too many in: no more can put it
-      // right), keeps its place; it unticks but the row does not slide back to it (Zafar, 21 Nov: "it should untick but not
-      // scroll back")
-      // (gone past what was asked: the kit's one answer for a row's fault, too many or a "no" row's thing in)
-      const faults = checkOf(s, v).faults;
-      const over = (id) => faults.some((f) => f.id === id && (f.kind === "many" || f.kind === "extra"));
-      const placed0 = x.placed;
-      const placedKept = placed0.filter((id) => ticked.includes(id) || over(id));
-      const placed = placedKept.concat(ticked.filter((id) => !placedKept.includes(id)));
-      return ticked === x.ticked && placed.join() === placed0.join() ? x : { ...x, ticked, placed };
+      // where each card stands in the row: once ticked, a card keeps its place for the rest of the dish, ticked or not (too
+      // many, or a spoonful taken out again), so the row never slides back to it (Zafar, 21 Nov: "it should untick but not
+      // scroll back ... in this instance and almost ever"); a dish the kitchen starts again (spoilt, made again) starts its
+      // row again where it is reset
+      const placed = x.placed.concat(ticked.filter((id) => !x.placed.includes(id)));
+      return ticked === x.ticked && placed.join() === x.placed.join() ? x : { ...x, ticked, placed };
     }),
   });
   const move = (s, mv, c) => {
@@ -319,11 +315,13 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const vessels = s.vessels.map((x, v) => {
             const out = pass(x.fire, mv.ms, { hold: s.hold }, k);
             let dish = x.dish;
+            let placed = x.placed;
             for (const e of out.events) {
-              if (e.type === "spoiled") dish = G.reset();
+              // (a spoilt dish starts again, its row with it)
+              if (e.type === "spoiled") (dish = G.reset()), (placed = []);
               events.push({ ...e, vessel: v });
             }
-            return { ...x, fire: out.fire, dish };
+            return { ...x, fire: out.fire, dish, placed };
           });
           // the end of a pour, a spoonful or a serve is a right move too: the stuck clock starts again, as in the old game
           const ended = s.moves.filter((m) => m.until <= clock);
@@ -361,7 +359,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           let next = s;
           // the third wrong try is shown the right way instead of being made again; otherwise the whole dish is remade
           const redo = s.wrong.filter((v) => s.vessels[v].tries < kit.help.showTheWayAt);
-          for (const v of s.wrong) next = setVessel(next, v, redo.includes(v) ? { dish: G.reset(), fire: newFire(), redone: true } : { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true });
+          for (const v of s.wrong) next = setVessel(next, v, redo.includes(v) ? { dish: G.reset(), fire: newFire(), redone: true, placed: [] } : { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true });
           const events = s.wrong.map((v) => ({ type: redo.includes(v) ? "redo" : "shown-the-way", vessel: v }));
           if (!redo.length) return { state: { ...next, name: "done", checks: null, wrong: null, away: [] }, events: events.concat({ type: "all-right" }) };
           // only what is remade stays, its card at the top (Zafar, 11 Nov: "the correct tea glasses disappear, the correct order

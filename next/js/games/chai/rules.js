@@ -4,7 +4,7 @@
  * Every word id and number comes in through `ctx` from the settings file; none is written here.
  *
  *   context(settings, { ask, level }) -> ctx    everything below reads the settings only through this
- *   ctx: { ask, words, level, halves, rest, foamShare }       ask: one person's { milk, sugar, spice, named, amount }
+ *   ctx: { ask, words, level, halves, rest, foamShare, sinkSecs }       ask: one person's { milk, sugar, spice, named, amount }
  *       halves: the pours a glass takes to be full (half is one); rest: the pour's frame each number of halves poured
  *       rests on; foamShare: past the green, the share of milky chai's rise that foams before it spills
  *   card(ask, { words }) -> { headline, items, dishCard, dishWord }   the person's order card, as meanings and rows
@@ -31,7 +31,7 @@
  */
 
 /** What the rules need from the game's settings for one person's dish. */
-export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare });
+export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare, sinkSecs: settings.heat.sinkSecs });
 
 /** Which tea a dish (or an ask) is: "milky" or "black", the name its pour, glass and card pictures go by. */
 const teaOf = (x) => (x.milk ? "milky" : "black");
@@ -302,7 +302,7 @@ export const servedLook = (dish) => ({ look: teaOf(dish), amount: dish.poured })
 
 /**
  * What the pan looks like now: one stage, or one fading into the next as the heat climbs. The drawing file draws
- * exactly this; it decides nothing. heat: { fire, heat, lo, hi, boilAt }.
+ * exactly this; it decides nothing. heat: { fire, heat, lo, hi, boilAt, rate } (rate: the heat's climb a second).
  *   -> { a, b, u, wet, spoons, sink }     a, b: stage names; u: how far b has come in over a (0 to 1)
  */
 export function look(dish, heat, ctx) {
@@ -317,8 +317,9 @@ export function look(dish, heat, ctx) {
   // (a spoonful in a dry pan lies on its floor)
   if (!wet) return { ...done, spoons: dish.spoons.slice(), sink: 0 };
   const heating = heat.fire === "heating";
-  // spoonfuls lie on the surface until the boil takes them
-  const sink = heat.fire === "ready" || heat.fire === "over" ? 1 : heating && heat.heat > heat.boilAt ? Math.min(1, (heat.heat - heat.boilAt) / (heat.lo - heat.boilAt)) : 0;
+  // spoonfuls lie on the surface until the fire is lit, then go into the tea over its first sinkSecs, so the heat is seen to
+  // take them at once (Zafar, 21 Nov: "We should switch to that image sooner after turning on the pan ... maybe half a second")
+  const sink = heat.fire === "ready" || heat.fire === "over" ? 1 : heating ? Math.min(1, heat.heat / (heat.rate * ctx.sinkSecs)) : 0;
   const out = (a, b = null, u = 0) => ({ a, b, u, wet, spoons: dish.spoons.slice(), sink });
   if (!dish.leaves) return dish.milk ? out("water", "milky", 0.5) : out("water");
   // boiling over: the pan's own spilt picture, milky or black

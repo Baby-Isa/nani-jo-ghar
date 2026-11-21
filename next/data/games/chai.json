@@ -168,8 +168,9 @@
   "mode": "auto"
  },
  "heat": {
-  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share. foamShare: past the green, milky chai foams up for this share of the way to boiling over, then spills (black tea spills straight away).",
+  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share. foamShare: past the green, milky chai foams up for this share of the way to boiling over, then spills (black tea spills straight away). sinkSecs: the spoonfuls go into the tea over the fire's first this many seconds, so the heat is seen to take them at once (Zafar, 21 Nov: \"maybe half a second\").",
   "foamShare": 0.5,
+    "sinkSecs": 0.5,
   "byLevel": [
    {
     "rate": 0.09,

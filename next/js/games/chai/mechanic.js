@@ -1,6 +1,6 @@
 /*
  * The pan, drawn inside the box it is given: one pan from above in its stages, each picture placed by its rim so they
- * overlay exactly and cross-fade; every spoonful lying in the tea until the boil takes it (in milky chai or black tea its
+ * overlay exactly and cross-fade; every spoonful lying in the tea until the fire takes it into the tea (in milky chai or black tea its
  * own picture painted lying in that tea; in water or a dry pan the kit's box.lying); and,
  * while it pours, its emptying frames. It draws what the rules' `look` says and decides nothing. It knows only its box,
  * its own settings and the measure of its rim.

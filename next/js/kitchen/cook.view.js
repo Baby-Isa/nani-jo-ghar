@@ -44,7 +44,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   const lookOf = (s, v) => {
     const k = heatK();
     const f = s.vessels[v].fire;
-    return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k) }, ctxOf(s, v));
+    return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k), rate: k.rate }, ctxOf(s, v));
   };
 
   /** Nani's line for a step: the game's own line for a thing where it has one, else the family's. */

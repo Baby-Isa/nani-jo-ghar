@@ -320,6 +320,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   async function unsay(slot, cross, say) {
     const own = slot.own;
     own.classList.add("signing");
+    // (the right card begins as the big no sign comes: the wrong card's maroon edge goes with it; Zafar, 21 Nov)
+    slot.made.classList.remove("wrong");
     const sign = stamp(own, "no");
     const said = say();
     await Promise.all([pop(cross, true), move(slot.made, [{ opacity: 1 }, { opacity: 0 }], W.stamp), pop(sign)]);
@@ -336,21 +338,12 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
    */
   async function turn(slot, shown) {
     const depth = `perspective(${slot.el.offsetWidth * W.turnDepth}px)`;
-    // its edge, a card with some thickness (Zafar, 21 Nov: "like a playing card with 1mm thickness"): a strip down the card's
-    // middle, as wide as the card is thick, seen as the card stands on its edge and gone as either face is flat
-    const m = slot.made;
-    const t = m.offsetWidth * W.turnEdge;
-    const edge = make("wo-edge");
-    Object.assign(edge.style, { left: `${m.offsetLeft + (m.offsetWidth - t) / 2}px`, top: `${m.offsetTop}px`, width: `${t}px`, height: `${m.offsetHeight}px` });
-    // (behind both faces: seen only beside a face as it narrows, never across a face that is still flat)
-    slot.el.prepend(edge);
     slot.own.style.visibility = "hidden";
-    await Promise.all([move(m, [{ transform: `${depth} rotateY(0deg)` }, { transform: `${depth} rotateY(90deg)` }], W.turn / 2), move(edge, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], W.turn / 2)]);
-    m.remove();
+    await move(slot.made, [{ transform: `${depth} rotateY(0deg)` }, { transform: `${depth} rotateY(90deg)` }], W.turn / 2);
+    slot.made.remove();
     slot.own.style.visibility = "";
     const said = shown();
-    await Promise.all([move(slot.own, [{ transform: `${depth} rotateY(-90deg)` }, { transform: `${depth} rotateY(0deg)` }], W.turn / 2), move(edge, [{ transform: "scaleX(1)" }, { transform: "scaleX(0)" }], W.turn / 2)]);
-    edge.remove();
+    await move(slot.own, [{ transform: `${depth} rotateY(-90deg)` }, { transform: `${depth} rotateY(0deg)` }], W.turn / 2);
     // (flat again, it lets its turn go, so it is drawn as the other cards are, its words as sharp)
     slot.own.getAnimations().forEach((a) => a.cancel());
     await said;
