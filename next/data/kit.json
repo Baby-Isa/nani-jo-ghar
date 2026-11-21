@@ -266,7 +266,6 @@
    "tick-ring": "2px",
    "tick-inset": "6px",
    "done-edge": "rgba(201,150,46,.55)",
-   "no-edge": "#c8b79c",
    "no-sign": "0.40",
    "no-inset": "0.04",
    "no-pic": "0.9",

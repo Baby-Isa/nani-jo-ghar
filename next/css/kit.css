@@ -190,10 +190,11 @@ button { padding: 0; cursor: pointer; }
 .well.blur .eye { display: grid; }
 .well.blur.peek img { filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); scale: 1; }
 .well.blur.peek .eye { display: none; }
-/* a thing asked for as "no": a dashed card, its picture nearly whole so the thing shows, and a no-sign in a white disc in
+/* a thing asked for as "no": an item card, its picture nearly whole so the thing shows, and a no-sign in a white disc in
    its picture's top right corner, bigger than the old game's (Zafar, 18 Nov: "in the upper right corner so you can still see
    the object you're not putting, but bigger"); the sign a share of the picture (the picture is its container), on the big card too */
-.icard.no:not(.waiting) { background: none; box-shadow: none; border: 1px dashed var(--no-edge); }
+/* (a "no" card is an item card like any other, its sign in the corner saying "no"; a dotted edge is only ever a missing
+   thing's place: Zafar, 21 Nov, "Milk shouldn't be in a dotted outline, that's for missing items") */
 .icard.no .well img, .pop.no .well img { opacity: var(--no-pic); }
 .icard.no .well, .pop.no .well { container-type: inline-size; }
 .icard.no .well::before, .icard.no .well::after, .pop.no .well::before, .pop.no .well::after { content: ""; position: absolute; top: calc(var(--no-inset) * 100cqi); right: calc(var(--no-inset) * 100cqi); z-index: 1; width: calc(var(--no-sign) * 100cqi); aspect-ratio: 1; border-radius: 50%; pointer-events: none; }

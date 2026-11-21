@@ -22,7 +22,8 @@
  *   look(dish, heat, ctx) -> what the pan looks like     glass(dish, art, rest), pourFrames, glassFrame -> the glass's pictures
  *   cardArt, wordMomentArt, spoonArt -> which of the game's pictures a card or a spoon shows
  *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
- *   served(dish, ctx), close(dish), needs(dish, ctx), ticks(dish, ctx), counts(dish)
+ *   needs(dish, ctx) -> [item]   what every dish needs and no card asks for, still missing: the fire is not lit without it
+ *   served(dish, ctx), close(dish), ticks(dish, ctx), counts(dish)
  *   tally(dish, ctx) -> { rows: { [rowId]: { want, got } }, extra: [{ word, n, against }], lost: [rowId] }   the dish counted
  *       against its card (whether it is right is the kit's, from this)
  *   made(dish, ctx) -> [{ row, word, n, meaning }]   the dish as made, as cards (the wrong-order card shows them)
@@ -168,8 +169,12 @@ export const served = (dish, ctx) => dish.poured > 0 && (dish.closed || dish.pou
 /** Closed as it is: every glass is final when the dishes are looked at. */
 export const close = (dish) => (dish.poured > 0 && !dish.closed ? { ...dish, closed: true } : dish);
 
-/** What the fire needs before it can be lit: the thing still missing, or null. */
-export const needs = (dish, ctx) => (dish.water ? null : ctx.words.water);
+/**
+ * What the fire needs before it can be lit: the things every dish needs that no card asks for (the water and the tea
+ * leaves), those still missing, in the card's order (Zafar, 21 Nov: "if there's things you have to put in that aren't in the
+ * order card ... it shouldn't let you start it without putting those in"); none: it may be lit.
+ */
+export const needs = (dish, ctx) => [!dish.water && ctx.words.water, !dish.leaves && ctx.words.leaves].filter(Boolean);
 
 /** The next right move for this pan, in the card's order; the fire when nothing is missing. */
 export function next(dish, ctx, fire) {

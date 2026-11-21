@@ -137,6 +137,9 @@ export function webAudioPlayer({ settings, synth = null }) {
     if (!buf || g !== gen) return false;
     if (!ctx && AC) ctx = new AC(); // (before any tap it stays silent, and the clip still ends on time)
     if (!ctx) return false;
+    // (asleep, woken by a clip asked for too, not only by a tap: the phone may have given the sound to something else, or a
+    // page that already has its tap opens with no start button)
+    if (ctx.state !== "running" && ctx.state !== "closed" && !held) ctx.resume().catch(() => {});
     if (current) current.finish(false);
     return new Promise((resolve) => {
       const span = spanOf(buf);

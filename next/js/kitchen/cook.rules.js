@@ -219,12 +219,15 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const x = s.vessels[v];
           const k = heatAt(s.level);
           const needs = G.needs(x.dish, ctxOf(s, v));
-          const out = turn(x.fire, { canLight: !needs }, k);
+          const out = turn(x.fire, { canLight: !needs.length }, k);
           const events = [];
           let next = setVessel(s, v, { fire: out.fire });
           let rightMove = false;
           for (const e of out.events) {
-            if (e.type === "cannot-light") events.push({ type: "wiggle", knob: v }, { type: "point", item: needs });
+            // (not lit while a thing every dish needs is missing: each missing one shakes and glows on the shelf, at every level:
+            // Zafar, 21 Nov, "it should shake the tea and the water, or whichever one of them is missing")
+            // (each missing one shakes; only the next to put in glows, so the order of the steps still reads)
+            if (e.type === "cannot-light") events.push({ type: "wiggle", knob: v }, ...needs.map((item) => ({ type: "wiggle", item })), { type: "point", item: needs[0] });
             else if (e.type === "lit") {
               next = choose(next, v, events);
               events.push({ type: "lit", vessel: v });

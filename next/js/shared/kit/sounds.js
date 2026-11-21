@@ -19,7 +19,8 @@ const wake = () => {
     const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
     if (AC) ctx = new AC();
   }
-  if (ctx && ctx.state === "suspended" && !held) ctx.resume();
+  // (asleep: suspended, or "interrupted" when the phone gave the sound to something else, a call or a voice note)
+  if (ctx && ctx.state !== "running" && ctx.state !== "closed" && !held) ctx.resume().catch(() => {});
 };
 // (a phone's browser counts a touch as a tap only as it lifts: every kind of tap wakes the sound, every time)
 ["pointerdown", "pointerup", "touchend", "click", "keydown"].forEach((t) => globalThis.addEventListener(t, wake, { capture: true, passive: true }));
@@ -135,6 +136,12 @@ export function createSounds({ kit, say, stage }) {
       return Promise.all(names.map(fetchBuffer));
     },
     play(name, { under = false, volume = 1 } = {}) {
+      // (asleep, it is woken by a sound asked for too, not only by a tap: a phone puts the sound to sleep when something
+      // else takes it (a voice note, the screen going off), and a page that already has its tap opens with no start
+      // button; with no tap to wake it the sounds stayed silent (Zafar, 21 Nov: "the second time ... the sounds weren't
+      // working"). Before any tap at all the browser keeps it asleep, as before; the sound asked for while it wakes is
+      // dropped, never played late)
+      if (ctx && ctx.state !== "running") wake();
       if (!ctx || ctx.state !== "running") return;
       const v = gate(name, under) * volume;
       if (!v) return;
