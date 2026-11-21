@@ -23,13 +23,18 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
         send({ type: "reviewed" });
       });
     },
-    "wrong-order"(e) {
+    "wrong-order"(e, s) {
       later(async () => {
         const D = drawn();
         await D.serving.closeReview();
         // (nothing of the cooking shows over the card: the count pills come back with the remake)
         counts(null);
-        await ui.wrongOrder(e, cardRoom);
+        // (once the card covers the hob, every pan is set back to empty, so a right order's half pour left in its pan does not
+        // stand on the hob while another is made again: Zafar, 21 Nov)
+        await ui.wrongOrder(e, cardRoom, () => {
+          const emptied = { ...s, vessels: s.vessels.map((x) => ({ ...x, dish: G.reset() })) };
+          D.vessels.forEach((x, v) => x.pan.show(lookOf(emptied, v)));
+        });
         send({ type: "understood" });
       });
     },

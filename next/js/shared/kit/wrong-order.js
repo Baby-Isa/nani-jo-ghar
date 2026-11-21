@@ -36,7 +36,8 @@
  * What it plays is the kit's rule (./wrong-order.rules.js playOf); the cards are the order card's own; this file only
  * times it.
  *
- *   showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room }) -> Promise (when it has been shown)
+ *   showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room, covered? }) -> Promise (when it has been shown)
+ *       covered(): called once the first wrong card stands open over the room, so what is under it can change unseen
  *       right: the seats whose orders are right; wrong: [{ vessel, play }] (./wrong-order.rules.js playOf)
  *       room() -> { left, top, right, bottom }: where on the page the cards may stand (the family's)
  */
@@ -48,7 +49,7 @@ const make = (cls) => Object.assign(document.createElement("div"), { className: 
 const finishAll = (el) => el.getAnimations({ subtree: true }).forEach((a) => a.effect.getComputedTiming().iterations !== Infinity && a.finish());
 const box = (el) => el.getBoundingClientRect();
 
-export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room }) {
+export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room, covered = () => {} }) {
   const W = kit.wrongOrder;
   // a first tap on the veil hurries the card showing to its last frame (every wait and move at once, no word waited
   // for); a second ends its hold
@@ -177,6 +178,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     card.el.classList.remove("opening");
     // (the person's face a little bigger while their card is up: it is them telling, not the game marking: Zafar, 21 Nov)
     card.el.classList.add("telling");
+    // (the room under the veil and the open card is the family's to set for what comes next, unseen: the first card open)
+    if (i === 0) covered();
     // d. the rule's steps, one card at a time, left to right; a fallen extra's gap closing straight after it (a missing
     // thing's dotted card keeps its width all along, so nothing grows back)
     for (const st of w.play.steps) await (st.do === "closes" ? close(card, st.slots) : step(seat, card.slots[st.slot], st));

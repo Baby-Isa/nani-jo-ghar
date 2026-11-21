@@ -56,7 +56,7 @@ export async function scenesWithViews(parts) {
   ui.nani = createNaniBox({ stage, say, kit, face: people.nani.face });
   ui.cards = createCards({ stage, say, kit, round, people, picOf, light: ui.light, sounds, onPeek: (word, what) => parts.send({ type: "peek", word, what }), onFace: (seat) => parts.send({ type: stage.showing() === "room" ? "repeat" : "face", who: round.order.for[seat].who, vessel: seat }) });
   ui.itemWords = new Set(round.order.for.flatMap((p) => p.items.map((i) => say.entry(i.word).id)));
-  ui.wrongOrder = (e, room) => showWrongOrder({ stage, say, kit, sounds, cards: ui.cards, cog: ui.cog, right: e.right, wrong: e.wrong, room });
+  ui.wrongOrder = (e, room, covered) => showWrongOrder({ stage, say, kit, sounds, cards: ui.cards, cog: ui.cog, right: e.right, wrong: e.wrong, room, covered });
   // a view may look at the state only while its own scene is the one being played
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
   const make = {
