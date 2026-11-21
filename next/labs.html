@@ -165,7 +165,7 @@
     if (pick.fresh) {
       // one new player at a time: the last one's record goes as the next is made
       player = newPlayer();
-      if (pick.known) storeProgress(knowing(loadProgress(player), await json(`data/games/${pick.game}.json`), kit.ladder));
+      if (pick.known) storeProgress(knowing(loadProgress(player), await json(`data/games/${pick.game}.json`), kit));
     }
     location.href = linkFor(player, lab);
   }

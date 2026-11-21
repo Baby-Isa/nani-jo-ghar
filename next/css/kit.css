@@ -354,6 +354,8 @@ button { padding: 0; cursor: pointer; }
 .ocard.lifted .ocard-top .face.talking { animation: wo-bob var(--wo-bob-ms) ease-in-out infinite; }
 @keyframes wo-bob { 50% { translate: 0 calc(-1 * var(--wo-bob)); } }
 .ocard.lifted .icard.no.signing .well::before, .ocard.lifted .icard.no.signing .well::after { opacity: 0; }
+/* a card's edge as it turns over: its thickness, lit in the middle and darker at its sides (js/shared/kit/wrong-order.js turn) */
+.wo-edge { position: absolute; grid-column: auto; border-radius: 2px; background: linear-gradient(to right, var(--wo-dash), var(--item-bg) 50%, var(--wo-dash)); pointer-events: none; }
 .wo-stamp { position: absolute; grid-column: auto; z-index: 4; border-radius: 50%; background: var(--gold); box-shadow: 0 2px 8px rgba(80, 50, 20, .28); pointer-events: none; }
 .wo-stamp::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
 .wo-stamp[data-kind="cross"] { background: var(--kutchi); }
