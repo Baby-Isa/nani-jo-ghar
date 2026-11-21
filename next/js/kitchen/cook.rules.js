@@ -321,7 +321,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           // card until it is the order as asked
           const cards = wrong.map((v) => {
             const ctx = ctxOf(s, v);
-            const play = playOf(s.vessels[v].items, s.checks[v].faults, G.made(s.vessels[v].dish, ctx), (word, n) => G.thing(word, n, ctx));
+            const play = playOf(s.vessels[v].items, s.checks[v].faults, G.made(s.vessels[v].dish, ctx));
             return { vessel: v, who: s.vessels[v].who, faults: s.checks[v].faults, play };
           });
           // the orders still on screen that are right go first; the ones already gone stay gone

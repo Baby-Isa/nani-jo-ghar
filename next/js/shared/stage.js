@@ -227,7 +227,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     halo: made.halo,
     tiled: things.tiled,
     layer,
-    box: things.box,
+    box: (layer, rect) => things.box(layer, rect, made),
     graphics: things.graphics,
     text: things.text,
     container: things.container,

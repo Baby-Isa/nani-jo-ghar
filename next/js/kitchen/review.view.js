@@ -4,18 +4,14 @@
  * screen (the orders done right leave, their glasses, faces and cards, and come back when all is right). It draws what
  * the cook rules say; it decides nothing.
  *
- *   reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts }) -> handlers by event type
+ *   reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) -> handlers by event type
  *       drawn() -> what the cook scene has drawn (hob, shelf, serving, vessels); later(fn): after the big moves before it
+ *       cardRoom() -> where on the page the wrong-order card may stand
  */
-export function reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts }) {
+export function reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) {
   const G = game.rules;
   const A = settings.art;
   const faceOf = (s) => (i, right) => (right ? people[s.vessels[i].who].faceHappy : people[s.vessels[i].who].faceSad) || people[s.vessels[i].who].face;
-  // where on the page what was made comes up from
-  const page = (box) => {
-    const r = stage.pageRect("worktop", box);
-    return { left: r.x, top: r.y, width: r.w, height: r.h };
-  };
   return {
     review(e, s) {
       later(async () => {
@@ -33,7 +29,7 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
         await D.serving.closeReview();
         // (nothing of the cooking shows over the card: the count pills come back with the remake)
         counts(null);
-        await ui.wrongOrder(e, { pan: (v) => page(D.hob.vesselBox(v)) });
+        await ui.wrongOrder(e, cardRoom);
         send({ type: "understood" });
       });
     },

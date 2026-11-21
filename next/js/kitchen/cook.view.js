@@ -31,6 +31,15 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   const pills = createCountPills({ stage, say, kit, kitchen, onTap: (item) => send({ type: "count", item }) });
   const lights = cookLights({ stage, kitchen, ui, drawn: () => D, itemRow: (v, item) => itemRow(v, item) });
   const heatK = () => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
+  /**
+   * Where the wrong-order card may stand, on the page: the white marble, the play area above the bottom row's band (Zafar,
+   * 20 Nov: "centre the cards on the playing area (not the whole screen but the white marble area)").
+   */
+  const cardRoom = () => {
+    const p = stage.el.play.getBoundingClientRect();
+    const band = stage.pageRect("worktop", { x: 0, y: K.band.top, w: 0, h: 0 });
+    return { left: p.left, top: p.top, right: p.right, bottom: Math.min(p.bottom, band.y) };
+  };
 
   const lookOf = (s, v) => {
     const k = heatK();
@@ -233,7 +242,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       });
     },
     // the dishes looked at, a wrong order shown, and only it made again (./review.view.js)
-    ...reviewView({ stage, kit, settings, game, people, ui, send, drawn: () => D, later: (fn) => (chain = chain.then(fn)), lookOf, counts }),
+    ...reviewView({ stage, kit, settings, game, people, ui, send, drawn: () => D, later: (fn) => (chain = chain.then(fn)), lookOf, counts, cardRoom }),
   };
 
   return {

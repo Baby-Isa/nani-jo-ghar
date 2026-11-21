@@ -4,9 +4,9 @@
  * Every word id and number comes in through `ctx` from the settings file; none is written here.
  *
  *   context(settings, { ask, level }) -> ctx    everything below reads the settings only through this
- *   ctx: { ask, words, level, halves, foamShare }       ask: one person's { milk, sugar, spice, named, amount }
- *       halves: the pours a glass takes to be full (half is one); foamShare: past the green, the share of milky chai's
- *       rise that foams before it spills
+ *   ctx: { ask, words, level, halves, rest, foamShare }       ask: one person's { milk, sugar, spice, named, amount }
+ *       halves: the pours a glass takes to be full (half is one); rest: the pour's frame each number of halves poured
+ *       rests on; foamShare: past the green, the share of milky chai's rise that foams before it spills
  *   card(ask, { words }) -> { headline, items, dishCard, dishWord }   the person's order card, as meanings and rows
  *   newDish() -> dish
  *   wrongNow(dish, item, ctx), howMany(dish, item, ctx)   is this thing wrong now for this pan; how many of it are in (the
@@ -29,7 +29,10 @@
  */
 
 /** What the rules need from the game's settings for one person's dish. */
-export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, foamShare: settings.heat.foamShare });
+export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare });
+
+/** Which tea a dish (or an ask) is: "milky" or "black", the name its pour, glass and card pictures go by. */
+const teaOf = (x) => (x.milk ? "milky" : "black");
 
 export const newDish = () => ({ water: 0, leaves: 0, milk: 0, sugar: 0, lookalike: 0, spices: [], spoons: [], poured: 0, closed: false, empty: false, firstWrong: [] });
 export const reset = newDish;
@@ -148,7 +151,7 @@ export function take(dish, ctx) {
   const to = ctx.ask.amount ? dish.poured + 1 : full;
   // (the pan holds a full glass: once that is poured it is empty)
   const d = { ...dish, poured: to, closed: to >= full, empty: to >= full };
-  const events = [{ type: "pour", from, to, look: dish.milk ? "milky" : "black", last: to >= full }];
+  const events = [{ type: "pour", from, to, look: teaOf(dish), last: to >= full }];
   if (d.closed) events.push({ type: "closed" });
   return { dish: d, events, left: to < full };
 }
@@ -277,7 +280,7 @@ export function asAsked(ctx) {
 }
 
 /** The finished dish as its person gets it, for the serve. */
-export const servedLook = (dish) => ({ look: dish.milk ? "milky" : "black", amount: dish.poured });
+export const servedLook = (dish) => ({ look: teaOf(dish), amount: dish.poured });
 
 /**
  * What the pan looks like now: one stage, or one fading into the next as the heat climbs. The drawing file draws
@@ -290,6 +293,9 @@ export function look(dish, heat, ctx) {
   const wet = !!(dish.water || dish.milk);
   const done = { a: "empty", b: null, u: 0, wet: false, spoons: [], sink: 1 };
   if (dish.empty) return done;
+  // poured but not empty (a half glass taken): the pan stays at what is left, the pour's frame a half glass rests on, until
+  // it pours again from there (Zafar, 20 Nov: "At a half pour, yes, the pan stays at half left")
+  if (dish.poured) return { ...done, a: "poured", set: teaOf(dish), frame: ctx.rest[dish.poured] };
   // (a spoonful in a dry pan lies on its floor)
   if (!wet) return { ...done, spoons: dish.spoons.slice(), sink: 0 };
   const heating = heat.fire === "heating";
@@ -313,7 +319,7 @@ export function look(dish, heat, ctx) {
 /** The glass as it rests (null: still empty), and the frames of a pour: which state of which piece, for the serving spot to draw. */
 export function glass(dish, art, rest) {
   if (!dish.poured) return null;
-  return `${art.filling[dish.milk ? "milky" : "black"].replace("#*", "")}#${rest[dish.poured]}`;
+  return `${art.filling[teaOf(dish)].replace("#*", "")}#${rest[dish.poured]}`;
 }
 export const pourFrames = (from, to, rest) => [from ? rest[from] : 1, rest[to]];
 export const glassFrame = (art, set, n) => `${art.filling[set].replace("#*", "")}#${n}`;
@@ -326,7 +332,7 @@ export const spoonArt = (kind, settings) => settings.art.spoon[settings.row.spoo
  * (a pan made without its milk pours black, so both teas' pours come, the one asked for ahead).
  */
 export function artList(art, asks) {
-  const teas = [...new Set(asks.map((a) => (a.milk ? "milky" : "black")).concat("milky", "black"))];
+  const teas = [...new Set(asks.map(teaOf).concat("milky", "black"))];
   return {
     draw: [art.pan.empty],
     then: [].concat(Object.values(art.pan), Object.values(art.over), Object.values(art.spoon), Object.values(art.onSurface), teas.flatMap((t) => [art.emptying[t], art.filling[t]])),
@@ -342,5 +348,5 @@ export const wordMomentArt = (word, art) => art.amountCard[word].milky;
  */
 export function cardArt(item, ask, art) {
   if (item === "dish") return art.dishCard;
-  return art.amountCard[item.word] ? art.amountCard[item.word][ask.milk ? "milky" : "black"] : null;
+  return art.amountCard[item.word] ? art.amountCard[item.word][teaOf(ask)] : null;
 }

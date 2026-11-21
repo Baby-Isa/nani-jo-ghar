@@ -9,7 +9,8 @@
  *   wireSpeaker(card, { say, line, now? }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said;
  *       a tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would. now: it never
  *       waits behind another line either (Nani's helper card: her line is already said, the child asked for the word)
- *   spaceWords(cards, kit)   every word card (the row's, the big card, the word moment's; one card or an order row) spaced
+ *   spaceWords(cards, kit)   every word card (the row's, the big card, the word moment's; one card or an order row: the
+ *       cards given together are one row, wherever each stands) spaced
  *       as the old game's card (below): its words fitted to the card, one size each per row, and on the row's card only, the
  *       divider's gap to the English's ink. Run now, once the faces are in, and when the card's width or the panel's scale
  *       changes; never on a change of form.
@@ -175,14 +176,13 @@ function spaceRow(cards, kit) {
   cards.forEach((c, i) => gives[i] != null && c.style.setProperty("--en-ink", `${gives[i].toFixed(2)}px`));
 }
 
-// every card known by its kit and the width and panel scale it was spaced at; an order row is spaced as one
+// every card known by its kit, its row (the cards it was given with) and the width and panel scale it was spaced at; a
+// row is spaced as one
 const known = new WeakMap();
 const keyOf = (card) => `${card.clientWidth}|${getComputedStyle(card).getPropertyValue("--p")}`;
-const rowOf = (card) => (card.classList.contains("icard") && card.parentElement ? [...card.parentElement.children].filter((c) => known.has(c)) : [card]);
 function spaceAll(cards) {
-  const rows = new Map();
-  for (const c of cards) if (c.isConnected && c.clientWidth > 0) rows.set(c.parentElement && c.classList.contains("icard") ? c.parentElement : c, rowOf(c));
-  for (const row of rows.values()) {
+  const rows = new Set(cards.filter((c) => c.isConnected && c.clientWidth > 0).map((c) => known.get(c).row));
+  for (const row of rows) {
     const ready = row.filter((c) => c.isConnected && c.clientWidth > 0);
     if (!ready.length) continue;
     spaceRow(ready, known.get(ready[0]).kit);
@@ -203,7 +203,7 @@ const afterFonts = (card) => {
 export function spaceWords(cards, kit) {
   const list = [].concat(cards);
   const fresh = list.filter((c) => !known.has(c));
-  fresh.forEach((c) => known.set(c, { kit, key: null }));
+  list.forEach((c) => known.set(c, { kit, key: fresh.includes(c) ? null : known.get(c).key, row: list }));
   spaceAll(list.filter(stale));
   fresh.forEach((c) => (sized && sized.observe(c), afterFonts(c)));
 }

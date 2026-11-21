@@ -400,6 +400,12 @@
     "why": "the wrong-order card counts what went in, up to six of one thing"
    },
    {
+    "id": "adv.only",
+    "role": "tertiary",
+    "level": 2,
+    "why": "the wrong-order card: the person says the right amount, \"only one sugar\" (Zafar, 20 Nov: corrections natural and specific, \"only two sugars\")"
+   },
+   {
     "id": "neg.not",
     "role": "primary",
     "level": 2,
@@ -644,7 +650,7 @@
   ]
  },
  "art": {
-  "_about": "Chai's pictures, by art id. pan: one pan from exactly above in its looks, all painted on one base (art run C1), so each is placed by the same rim; over-milky and over-black are the pan boiling over. over: pictures laid over the pan's contents (none now: each boil is a whole look of the pan). onSurface: a spoonful's mark in the pan, by what went in: the thing's own close-up, small, lying on the tea until the boil takes it. emptying, filling: the six frames of a pour, pan and glass, milky and black, made by the cutter from the full and emptied pictures (Zafar, 19 Nov). dishCard: the dish's own card, one plain glass of chai for every order, so it never gives away milk or none (Zafar, 19 Nov). amountCard: the side-on glass for half and full, milky or black. A ref ending \"#*\" is every state of the piece, in order (the frames).",
+  "_about": "Chai's pictures, by art id. pan: one pan from exactly above in its looks, all painted on one base (art run C1), so each is placed by the same rim; over-milky and over-black are the pan boiling over. over: pictures laid over the pan's contents (none now: each boil is a whole look of the pan). onSurface: a spoonful's mark in the pan, by what went in: a teaspoonful of the thing as it lies on the tea from straight above, with its wet contact, until the boil takes it (art run C5; Zafar, 20 Nov: \"The items going into the pan should be different, they should be made for the pan and look better\"). emptying, filling: the six frames of a pour, pan and glass, milky and black, made by the cutter from the full and emptied pictures (Zafar, 19 Nov). dishCard: the dish's own card, one plain glass of chai for every order, so it never gives away milk or none (Zafar, 19 Nov). amountCard: the side-on glass for half and full, milky or black. A ref ending \"#*\" is every state of the piece, in order (the frames).",
   "pan": {
    "empty": "chai.pan-c2#empty",
    "water": "chai.pan-c2#water",
@@ -672,13 +678,13 @@
    "wet": "chai.teaspoon-chai"
   },
   "onSurface": {
-   "cook-khun": "kit.closeup-sugar",
-   "spi-10": "kit.closeup-cardamom",
-   "veg-14": "kit.closeup-ginger",
-   "veg-13": "kit.closeup-garlic",
-   "spi-16": "kit.closeup-salt",
-   "spi-02": "kit.closeup-cumin-seeds",
-   "spi-05": "kit.closeup-mustard-seeds"
+   "cook-khun": "kit.spoonful-sugar",
+   "spi-10": "kit.spoonful-cardamom",
+   "veg-14": "kit.spoonful-ginger",
+   "veg-13": "kit.spoonful-garlic",
+   "spi-16": "kit.spoonful-salt",
+   "spi-02": "kit.spoonful-cumin-seeds",
+   "spi-05": "kit.spoonful-mustard-seeds"
   },
   "served": "served.chai",
   "dishCard": "chai.card-full-chai",
@@ -694,7 +700,7 @@
   }
  },
  "vessel": {
-  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: a spoonful's mark, its width a share of the contents' radius (size), on a spiral reaching this share of it (reach) when most marks lie there (more go on outward), and how strongly it shows on the tea (alpha); it fades as the boil takes it. dip: the small settle when something lands.",
+  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. marks: the spoonfuls lying on the tea: each one's width a share of the contents' radius (size; the pictures are all cut at one scale, sources/art/chai-c5/cut_c5.py, so one size: 0.7, the square about a third of the tea's width, the spoonful in it 0.71 to 0.96 of that; the reviewer, 21 Nov: 0.45 read too small at a phone's size); spots: where each lies, in the order they go in, [a share of the contents' radius from the middle, degrees round], a ring at half the radius with every next one across the pan from the last, so they never pile up in the middle and the outermost square reaches 0.85 of the radius, inside the tea; past the last spot the list again, turned by again degrees; alpha: how strongly they show; wet: how each lies in the tea rather than on it (the reviewer, 21 Nov: 'stuck on top'), made by the kit (js/shared/made-pictures.js wet): its own soft dark ring under it (ring: blur, dx, dy as shares of its picture's width, alpha) and the tea's colour over its lower part (tint: from this share of the thing's own height down to its foot, up to alpha), liquid the colour for each look of the pan (sampled from the pan's pictures; other: the black tea's), texture the working copy's size in px. They fade as the boil takes them. dip: the small settle when something lands.",
   "reach": 1.9676,
   "rimSrc": 200,
   "innerSrc": 182.8,
@@ -709,10 +715,85 @@
   },
   "overlay": 1.03,
   "marks": {
-   "size": 0.3,
-   "reach": 0.62,
-   "most": 12,
-   "alpha": 0.92
+   "size": 0.7,
+   "spots": [
+    [
+     0.5,
+     330
+    ],
+    [
+     0.5,
+     150
+    ],
+    [
+     0.5,
+     90
+    ],
+    [
+     0.5,
+     270
+    ],
+    [
+     0.5,
+     30
+    ],
+    [
+     0.5,
+     210
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0.5,
+     0
+    ],
+    [
+     0.5,
+     180
+    ],
+    [
+     0.5,
+     120
+    ],
+    [
+     0.5,
+     300
+    ],
+    [
+     0.5,
+     60
+    ],
+    [
+     0.5,
+     240
+    ]
+   ],
+   "again": 17,
+   "alpha": 1,
+   "wet": {
+    "texture": 192,
+    "ring": {
+     "blur": 0.05,
+     "dx": 0.015,
+     "dy": 0.03,
+     "alpha": 0.5
+    },
+    "tint": {
+     "from": 0.45,
+     "alpha": 0.4
+    },
+    "liquid": {
+     "water": "#b9b7b1",
+     "leaves": "#73300a",
+     "milky": "#c38c54",
+     "boil-milky": "#c38c54",
+     "foam": "#c38c54",
+     "over-milky": "#c38c54",
+     "other": "#55170c"
+    }
+   }
   },
   "dip": {
    "to": 0.982,

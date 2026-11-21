@@ -73,7 +73,7 @@ export function createFrame({ kit }) {
     root.style.setProperty("--dpx", `${1 / dpr}px`);
     frame.now = { ff, scale, w, h, sideW, dpr };
     // (fitted once what listens has laid itself out again at the new size: fitted before, it measured the cards at the old
-    // size and could leave the panel stepped down, the reviewer's find of 20 Nov)
+    // size and could leave the panel stepped down)
     listeners.forEach((fn) => fn(frame.now));
     fitSide(true);
   }

@@ -4,7 +4,8 @@
  * stay in stage.js); a game reaches these through the stage.
  *
  *   const things = createThings({ scene, art, kit, views, dpr, load, tween, wait, ticks })
- *   things.wrap(obj, ref, mirror, size?) -> handle    things.picture(layer, ref, opts) -> handle    things.box(parent, rect)
+ *   things.wrap(obj, ref, mirror, size?) -> handle    things.picture(layer, ref, opts) -> handle
+ *   things.box(parent, rect, makes)   makes: the stage's made pictures (a box's picture lying in a liquid is made there)
  *   things.image(layer, key, o)   things.tiled(layer, ref, rect)   things.graphics(layer)   things.text(layer, str, style)
  *   things.container(layer, x, y)   things.sharpen()   the canvas's words drawn again at the views' scale now
  */
@@ -116,7 +117,7 @@ export function createThings({ scene, art, kit, views, dpr, load, tween, wait, t
    * The box a mechanic is handed: a container it can fill with pictures by art id and move them about in, measured
    * from the box's own middle. It cannot reach the scene, the loader or the screen through it.
    */
-  function box(parent, { x, y, w, h }) {
+  function box(parent, { x, y, w, h }, makes) {
     const c = scene.add.container(x, y);
     parent.add(c);
     // clipped: nothing drawn in the box shows outside it, wherever the box is carried
@@ -138,6 +139,46 @@ export function createThings({ scene, art, kit, views, dpr, load, tween, wait, t
         const hd = picture(c, ref, o);
         made.push(hd);
         return { set: hd.set, to: hd.to, swap: hd.swap, remove: hd.remove, get ref() { return hd.ref; } };
+      },
+      /**
+       * A picture lying in a liquid (a spoonful on the tea): the stage makes it with its wet ring under it and the liquid
+       * over its lower part (made-pictures wet), w wide as a plain picture of it would be. o: { x, y, w, alpha, liquid
+       * ("#rrggbb", or null on a dry floor), wet (the game's numbers) }. Its handle's liquid(colour) makes it again for a liquid that changed.
+       */
+      lying(ref, o = {}) {
+        if (!makes) throw new Error("stage: box.lying needs the stage's made pictures");
+        // (Phaser's blank picture until it is made: a picture still loading never shows a stand-in)
+        const obj = scene.add.image(o.x || 0, o.y || 0, "__DEFAULT").setVisible(false);
+        if (o.alpha != null) obj.setAlpha(o.alpha);
+        c.add(obj);
+        const hd = wrap(obj, null, false);
+        let liquid; // (unset, so the first liquid, even a dry floor's null, is dressed)
+        let shown = true;
+        const dress = (want) => {
+          if (!obj.active || want !== liquid) return;
+          const m = makes.wet(ref, want, o.wet);
+          obj.setTexture(m.key).setScale(o.w / m.w).setVisible(shown);
+        };
+        const pour = (want) => {
+          if (want === liquid) return;
+          liquid = want;
+          if (isIn(ref)) dress(want);
+          else load([ref]).then(() => dress(want));
+        };
+        made.push(hd);
+        pour(o.liquid);
+        const out = {
+          set(props) {
+            if ("visible" in props) shown = props.visible;
+            hd.set(obj.texture.key === "__DEFAULT" ? { ...props, visible: false } : props);
+            return out;
+          },
+          to: hd.to,
+          remove: hd.remove,
+          liquid: pour,
+          ref,
+        };
+        return out;
       },
       wait: (ms) => wait(ms),
       clear() {

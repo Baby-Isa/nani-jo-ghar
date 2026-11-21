@@ -115,7 +115,7 @@ button { padding: 0; cursor: pointer; }
 .tick::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
 /* the folded card's tick: the standard's own size, not the item card's */
 .ocard-top .tick { display: none; width: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); height: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); }
-.ocard.served .ocard-top .tick, .wo-line.ticked .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
+.ocard.served .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
 @keyframes tick-in { from { scale: 0; } }
 /* a served card keeps its gold tick: there is no separate served mark, the folded card already says the person is done (Zafar,
    19 Nov: "is there any real point to having a served symbol? It's basically the same as the tick"); at the well done, and as a
@@ -156,8 +156,12 @@ button { padding: 0; cursor: pointer; }
 /* the tick inside the card's corner, its white ring round it, never cut by the row */
 .icard > .tick { position: absolute; right: calc(var(--tick-inset) * var(--p)); top: calc(var(--tick-inset) * var(--p)); z-index: 3; }
 .icard.done > .tick { transform: scale(1); }
-.icard.cross > .tick { transform: scale(1); background: var(--wrong); }
+.icard.cross > .tick { transform: scale(1); background: var(--kutchi); }
 .icard.cross > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+/* a wrong thing: a maroon edge, its picture faded; a thing put right: a soft gold glow and no tick (the wrong-order card) */
+.icard.cross { border-color: var(--kutchi); }
+.icard.cross .well img { opacity: var(--wo-faded); }
+.icard.glow { box-shadow: var(--wo-glow), var(--item-shadow); }
 .well { position: relative; width: 100%; aspect-ratio: 6 / 5; border-radius: var(--item-radius); background: var(--well); flex: none; }
 .well img { position: absolute; inset: 2%; width: 96%; height: 96%; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); }
 .ku { font: 600 var(--item-font) / 1.08 var(--font-word); color: var(--kutchi); text-align: center; margin-top: 5px; }
@@ -307,29 +311,46 @@ button { padding: 0; cursor: pointer; }
 .reply.shake { animation: shake 500ms; }
 @keyframes shake { 20%, 60% { translate: -10px 0; } 40%, 80% { translate: 10px 0; } }
 
-/* the wrong-order card (js/shared/kit/wrong-order.js): a light veil over the play area, the orders' top lines in the middle */
-.wo { position: fixed; z-index: 940; background: rgba(255, 250, 240, .55); }
-.wo-room { position: absolute; inset: var(--edge); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
-.wo-card { position: relative; box-shadow: 0 0 0 3px var(--card-border), var(--pop-shadow); transition: box-shadow var(--wo-glow); }
-.wo-line { max-width: 100%; }
-.wo-card.gold { box-shadow: 0 0 0 3px var(--gold), 0 0 22px 4px var(--gold), var(--pop-shadow); }
-/* what is wrong is shown plainly, in the Kutchi's maroon with a cross (Zafar, 19 Nov: "I don't see any maroon or crosses - I know
-   the rules don't like crosses or red but it's essential from user testing for clarity of understanding") */
-.wo-card.wrong { z-index: 1; box-shadow: 0 0 0 3px var(--kutchi), var(--pop-shadow); }
-.wo-open { position: absolute; }
-.wo-open .ocard-top { margin-bottom: 8px; }
-/* its item cards side by side, each the row's own card, centred in the room kept for the most it holds; in two rows only
-   past the least word (never scrolled) */
-.wo-row { display: flex; justify-content: center; align-items: flex-start; gap: var(--wo-gap); padding: 2px; box-sizing: content-box; }
-.wo-row.two { flex-wrap: wrap; justify-content: center; width: calc(var(--wo-per) * var(--wo-iw) + (var(--wo-per) - 1) * var(--wo-gap)); }
-.wo-row .icard { flex: 0 0 var(--wo-iw); --pad: max(var(--item-pad-min), var(--wo-pad)); }
-.wo-row .icard.done { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold), var(--item-shadow); }
-.wo-row .icard.wrong { border-color: var(--kutchi); box-shadow: inset 0 0 0 2px var(--kutchi), var(--item-shadow); }
-.wo-row .icard.wrong > .tick { transform: scale(1); background: var(--kutchi); }
-.wo-row .icard.wrong > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
-/* what was short, rising onto its card, is drawn over it */
-.wo-row { position: relative; }
-.wo-row .icard.rising { position: absolute; z-index: 2; margin: 0; }
+/* the wrong-order pop-up (js/shared/kit/wrong-order.js): the first-time light's dim over the whole screen, its tone at the
+   veil's share of its strength, and the wrong order's own card lifted into its room (Zafar's design, 20 Nov) */
+.wo { position: fixed; left: 0; top: 0; width: 100%; height: var(--page-h, 100dvh); z-index: 965; }
+.wo-veil { position: absolute; inset: 0; background: rgb(from var(--dim) r g b / calc(alpha * var(--wo-veil))); }
+/* the orders' folded lines, stacked in the middle of the room (grown by --wo-lk); a right one's short gold glow as it goes;
+   the tick fading on the wrong one as it opens */
+.wo-lines { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--wo-line-gap); }
+.wo-lines > .ocard { zoom: var(--wo-lk, 1); }
+.wo-line.gold { box-shadow: var(--wo-glow), var(--card-shadow); }
+.wo-line .ocard-top .tick { transition: transform var(--wo-marks), opacity var(--wo-marks); }
+.wo-line.opening .ocard-top .tick { opacity: 0; }
+/* the wrong one shown plainly: its tick a maroon cross, as on the item cards, and its edge flashing maroon (Zafar, 20 Nov) */
+.wo-line { transition: box-shadow var(--wo-marks); }
+.wo-line.wrong .ocard-top .tick { background: var(--kutchi); }
+.wo-line.wrong .ocard-top .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
+.wo-line.flash { box-shadow: 0 0 0 var(--wo-flash-w) var(--kutchi), var(--card-shadow); }
+/* the lifted card: the panel's card and its item cards exactly (Zafar, 20 Nov), grown by one zoom (--wo-k), with the big
+   card's wide shadow; its row one line of slots, each an item card the panel's width (--wo-iw), never scrolled; what is marked and
+   what falls or rises is never cut by the card */
+.ocard.lifted { position: absolute; zoom: var(--wo-k, 1); box-shadow: var(--pop-shadow); }
+.ocard.lifted .ocard-body, .ocard.lifted .ocard-in { overflow: visible; }
+.ocard.lifted .orow { overflow: visible; -webkit-mask-image: none; mask-image: none; container-type: normal; }
+.ocard.lifted .slot { position: relative; flex: 0 0 var(--wo-iw); display: grid; }
+.ocard.lifted .slot.extra { margin-left: calc(var(--gap) * (var(--wo-extra) - 1)); }
+.ocard.lifted .slot > .icard { grid-area: 1 / 1; --pad: var(--wo-pad); }
+.ocard.lifted .icard.unseen { visibility: hidden; }
+/* its English written, or none at all (js/shared/kit/order-card.lift.js); a missing thing's dotted card drawn strong
+   enough to be seen on the white card */
+.ocard.lifted.no-english .icard > .en { display: none; }
+.ocard.lifted .icard.waiting { border: var(--wo-dash-w) dashed var(--wo-dash); opacity: 1; }
+/* its marks, one meaning each as in the panel: right, the panel's gold edge and tick; wrong, a maroon edge and cross, the
+   picture faded (Zafar, 19 Nov: "it's essential from user testing for clarity of understanding"); corrected, a soft gold
+   glow and no tick. The one size the lifted card has of its own (all else is the panel card's, grown by its one zoom):
+   the tick and cross never under the mark's size on the screen, the spec's bigger mark, so it reads on the phone */
+.ocard.lifted .icard > .tick { --mark: max(calc(var(--tick) * var(--p)), calc(var(--wo-mark) / var(--wo-k, 1))); width: var(--mark); height: var(--mark); }
+/* and as it lands in the panel again, every mark fades */
+.ocard.lifted .icard { transition: box-shadow var(--wo-marks), border-color var(--wo-marks); }
+.ocard.lifted .icard > .tick { transition: transform var(--wo-marks), opacity var(--wo-marks); }
+.ocard.lifted.landing .icard { box-shadow: var(--item-shadow); border-color: transparent; }
+.ocard.lifted.landing .icard > .tick { opacity: 0; }
 
 /* the word moment: its own scene over the play area */
 .wm { position: absolute; inset: 0; overflow: hidden; z-index: 30; background: var(--stone); animation: fade 350ms ease-out; transition: opacity 350ms; pointer-events: none !important; }
