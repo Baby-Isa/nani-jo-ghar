@@ -50,11 +50,9 @@ export async function carry({ stage, plan, i, box, pan, serving, hob, frames, ha
       duration: t.pour * halves,
       ease: "Sine.easeInOut",
       onUpdate() {
-        const at = frames[0] + (frames[1] - frames[0]) * pour.f;
-        const n = Math.floor(at);
-        pan.emptying(set, Math.round(at));
-        // (the glass between two of its frames: the next fading in over this one)
-        serving.frame(i, glassFrame(n), n < frames[1] ? glassFrame(n + 1) : null, at - n);
+        const n = Math.round(frames[0] + (frames[1] - frames[0]) * pour.f);
+        pan.emptying(set, n);
+        serving.frame(i, glassFrame(n));
       },
       onComplete: resolve,
     })

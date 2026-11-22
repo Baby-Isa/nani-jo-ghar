@@ -6,9 +6,7 @@
  *   const serving = createServing({ stage, kit, spot, people, art: { base, empty }, dim })
  *       spot: the family's plan (where, how big, each dish's place); people: [{ id, face }]
  *   serving.set(i, ref)                 the dish resting in a state
- *   serving.frame(i, ref, nextRef?, u?)   one frame of a fill (drawn just above the resting dish), the next fading in over it by
- *       u (0 to 1), so the tea rises smoothly between the frames there are (Zafar, 21 Nov: "the tea glass filling up should be
- *       smoother")
+ *   serving.frame(i, ref)               one frame of a fill (drawn just above the resting dish)
  *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise   serving.away(seats)
  *   serving.review(checks) -> Promise   the big faces: happy with a hop, or sad with a small shake of the head
  *   serving.praise(text) / serving.closeReview() -> Promise     serving.partsOf(i) (its glass, its face) / serving.dishMiddle(i)
@@ -36,8 +34,6 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
   const dishes = spot.wells.map((well, i) => {
     const pic = stage.picture(base, art.empty, { x: well.x, y: well.y, rim: spot.gR });
     const over = stage.picture(base, art.empty, { x: well.x, y: well.y, rim: spot.gR, alpha: 0 });
-    // (the next frame of a fill, fading in over this one, so the tea rises smoothly between the frames there are)
-    const next = stage.picture(base, art.empty, { x: well.x, y: well.y, rim: spot.gR, alpha: 0 });
     // the face sits in the corner of the spot nearest its dish, clear of the dish's rim
     const left = well.x < spot.x + spot.w / 2;
     const upper = well.y < spot.y + spot.h / 2;
@@ -45,7 +41,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
     const at = () => ({ x: left ? spot.x + c : spot.x + spot.w - c, y: upper ? spot.y + c : spot.y + spot.h - c });
     while (c > fd / 2 - V.face.slide && Math.hypot(at().x - well.x, at().y - well.y) < spot.gR + fd / 2 + V.face.clear) c -= 1;
     const face = stage.image(top, stage.badge(people[i].face), { x: at().x, y: at().y, w: fd });
-    return { well, pic, over, next, face };
+    return { well, pic, over, face };
   });
   let big = [];
   // one face per dish (Zafar, 21 Nov: "You shouldn't have more than 1 face per glass"): its small face shows only while it is
@@ -59,15 +55,9 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
     set(i, ref) {
       dishes[i].pic.swap(ref, { rim: spot.gR });
       dishes[i].over.set({ alpha: 0 });
-      dishes[i].next.set({ alpha: 0 });
     },
-    frame(i, ref, nextRef = null, u = 0) {
-      const d = dishes[i];
-      if (d.shown !== ref) (d.shown = ref), d.over.swap(ref, { rim: spot.gR });
-      d.over.set({ alpha: 1 });
-      if (!nextRef || u <= 0) return void d.next.set({ alpha: 0 });
-      if (d.shownNext !== nextRef) (d.shownNext = nextRef), d.next.swap(nextRef, { rim: spot.gR });
-      d.next.set({ alpha: u });
+    frame(i, ref) {
+      dishes[i].over.swap(ref, { rim: spot.gR }).set({ alpha: 1 });
     },
     async settle(i) {
       const o = dishes[i].pic.obj;

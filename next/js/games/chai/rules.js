@@ -4,7 +4,7 @@
  * Every word id and number comes in through `ctx` from the settings file; none is written here.
  *
  *   context(settings, { ask, level }) -> ctx    everything below reads the settings only through this
- *   ctx: { ask, words, level, halves, rest, foamShare, sinkSecs }       ask: one person's { milk, sugar, spice, named, amount }
+ *   ctx: { ask, words, level, halves, rest, foamShare, sinkSecs, sinkHalf }       ask: one person's { milk, sugar, spice, named, amount }
  *       halves: the pours a glass takes to be full (half is one); rest: the pour's frame each number of halves poured
  *       rests on; foamShare: past the green, the share of milky chai's rise that foams before it spills
  *   card(ask, { words }) -> { headline, items, dishCard, dishWord }   the person's order card, as meanings and rows
@@ -31,7 +31,7 @@
  */
 
 /** What the rules need from the game's settings for one person's dish. */
-export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare, sinkSecs: settings.heat.sinkSecs });
+export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare, sinkSecs: settings.heat.sinkSecs, sinkHalf: settings.heat.sinkHalf });
 
 /** Which tea a dish (or an ask) is: "milky" or "black", the name its pour, glass and card pictures go by. */
 const teaOf = (x) => (x.milk ? "milky" : "black");
@@ -317,9 +317,12 @@ export function look(dish, heat, ctx) {
   // (a spoonful in a dry pan lies on its floor)
   if (!wet) return { ...done, spoons: dish.spoons.slice(), sink: 0 };
   const heating = heat.fire === "heating";
-  // spoonfuls lie on the surface until the fire is lit, then go into the tea over its first sinkSecs, so the heat is seen to
-  // take them at once (Zafar, 21 Nov: "We should switch to that image sooner after turning on the pan ... maybe half a second")
-  const sink = heat.fire === "ready" || heat.fire === "over" ? 1 : heating ? Math.min(1, heat.heat / (heat.rate * ctx.sinkSecs)) : 0;
+  // spoonfuls lie on the surface until the fire is lit; they settle half in over its first sinkSecs, still seen, as if
+  // infusing, and stay so; the boil takes them the rest of the way (Zafar, 22 Nov: "They're still visible, but they're like ...
+  // semi-submerged. And then eventually they disappear as it starts bubbling")
+  const settle = Math.min(1, heat.heat / (heat.rate * ctx.sinkSecs)) * ctx.sinkHalf;
+  const boiled = heat.heat > heat.boilAt ? Math.min(1, (heat.heat - heat.boilAt) / (heat.lo - heat.boilAt)) : 0;
+  const sink = heat.fire === "ready" || heat.fire === "over" ? 1 : heating ? settle + (1 - ctx.sinkHalf) * boiled : 0;
   const out = (a, b = null, u = 0) => ({ a, b, u, wet, spoons: dish.spoons.slice(), sink });
   if (!dish.leaves) return dish.milk ? out("water", "milky", 0.5) : out("water");
   // boiling over: the pan's own spilt picture, milky or black
