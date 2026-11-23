@@ -4,6 +4,7 @@
 import { createRoom, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { createEndScreen } from "../kit/end-screen.js";
+import { rightFirst } from "../kit/touches.rules.js";
 
 /** Well done: one praise from Nani, in her box as she says it, with a small card by a face at the serving spot. */
 export function wellDoneView({ stage, say, kit, ui, send }) {
@@ -174,9 +175,9 @@ export function endView({ stage, say, kit, ui, send, endArt }) {
           else words.push({ kutchi: piece.t, english: (say.entry(piece.word) || {}).english || "", line: { ...line, plan: line.plan.filter((c) => c.text === piece.t) }, right });
         }
       };
-      for (const [i, p] of round.order.for.entries()) {
+      for (const p of round.order.for) {
         add(say.line(p.headline.meaning, { register: p.headline.register }), true, true);
-        p.items.forEach((it, n) => add(say.line(it.meaning, { row: true }), round.dishes[i].rowsRight[n]));
+        p.items.forEach((it) => add(say.line(it.meaning, { row: true }), !!rightFirst(round.touches, p.who, it.id)));
       }
       screen = createEndScreen({ stage, kit, say, sounds: ui.sounds, endArt, state, words, life, onNext: () => send({ type: "next" }), onAgain: () => send({ type: "again" }), onLeave: () => send({ type: "leave" }) });
     },

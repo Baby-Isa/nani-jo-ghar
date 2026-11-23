@@ -33,9 +33,10 @@
  *   fixOf(row, kind, word) -> what the person says of a wrong amount (kind: many | few; word: the thing as it went in):
  *       a "no" row's thing, notWanted; the other of a pair (half for whole), the row's own card's line "whole"; too many,
  *       onlyThis(row) "Only one sugar."; too few, wanted(row) "I'd like three sugars."
- *   dishCheck(items, tally) -> { right, faults, byRow, lost }   the one answer to "is this dish what was asked": right when
- *       every fault is right; byRow: each card row right, and costed by no extra (the ticks and the word ladder read it);
- *       lost: the rows whose first try was lost
+ *   dishCheck(items, tally) -> { right, faults }   the one answer to "is this dish what was asked": right when every fault
+ *       is right
+ *   rowsAtLook(items, faults) -> { [rowId]: right }   each card row at a look: right, and costed by no extra (a touch of
+ *       each for the ledger, ./touches.rules.js, which alone keeps whether its first try was lost)
  */
 export function faultsOf(items, tally) {
   const out = items.map((it) => {
@@ -91,6 +92,7 @@ export function playOf(items, faults, made) {
 
 export function dishCheck(items, tally) {
   const faults = faultsOf(items, tally);
-  const byRow = Object.fromEntries(items.map((it) => [it.id, faults.some((f) => f.id === it.id && f.kind === "right") && !faults.some((f) => f.id === null && f.against === it.id)]));
-  return { right: isRight(faults), faults, byRow, lost: tally.lost || [] };
+  return { right: isRight(faults), faults };
 }
+
+export const rowsAtLook = (items, faults) => Object.fromEntries(items.map((it) => [it.id, faults.some((f) => f.id === it.id && f.kind === "right") && !faults.some((f) => f.id === null && f.against === it.id)]));

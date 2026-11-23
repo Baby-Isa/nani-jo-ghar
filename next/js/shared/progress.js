@@ -6,7 +6,8 @@
  *   OWN_PLAYER: the child's own player, when the game's link names none        progressKey(player): where it is kept
  *   loadProgress(player) -> { id, player: { gender }, ladder: { wordId: stage }, grammar: { row: rung }, met: {…}, words: {…}, best: {…}, earned: { wordId: true } }
  *   saveRound(progress, round)        folds a finished round in and stores it
- *   afterRound(progress, round, ladderK) -> progress     the same without storing (pure); ladderK: the kit's ladder numbers
+ *   afterRound(progress, round, ladderK) -> progress     the same without storing (pure); ladderK: the kit's ladder numbers;
+ *       it reads the round's ledger of touches (./kit/touches.rules.js), so a pick graded in any scene counts alike
  *   knowing(progress, settings, kit) -> progress     a player who already knows the game's words (settings.words)
  *   triedOf(progress) -> { wordId: true }     the words picked right at least once
  *   wordStage({ earned, tried }, wordId) -> "new" | "learning" | "known"     (a round carries both)
@@ -16,6 +17,8 @@
  *   isNewPlayer(id) -> boolean         a player made by newPlayer, not the child's own
  *   playerName(id, words) -> who is playing, in the grown-ups' words (kit.cog.player: own, fresh)
  */
+import { progressOf } from "./kit/touches.rules.js";
+
 export const OWN_PLAYER = "child";
 export const progressKey = (id) => `njg:${id}`;
 // the start of every new player's name (made by the cog's "New player" or the labs page), so the last one can be found and cleared
@@ -54,28 +57,28 @@ export function wordStage({ earned = {}, tried = {} }, id) {
   return earned[id] ? "known" : tried[id] ? "learning" : "new";
 }
 
-/** A word's stage climbs with right first tries and never moves on a round in which it was helped. */
+/**
+ * A word's stage climbs with right first touches and never moves on a round in which it was helped: each place the round's
+ * ledger holds touched, in the order it was asked.
+ */
 export function afterRound(progress, round, ladderK) {
   const words = { ...progress.words };
   const ladder = { ...progress.ladder };
   const earned = { ...progress.earned };
   const peeked = new Set(round.peeks || []);
-  for (const [i, person] of round.order.for.entries()) {
-    const dish = round.dishes[i];
-    person.items.forEach((item, n) => {
-      const w = { seen: 0, right: 0, miss: 0, run: 0, won: false, ...(words[item.word] || {}) };
-      w.seen += 1;
-      // a peek is exposure: it neither counts nor breaks the run
-      if (!peeked.has(item.word)) {
-        if (dish.rowsRight[n]) [w.right, w.run] = [w.right + 1, w.run + 1];
-        else [w.miss, w.run] = [w.miss + 1, 0];
-      }
-      // the shelf pill loses its written word after a run of right picks; a miss brings it back until the next right pick
-      w.won = w.won || w.run >= ladderK.pillRun;
-      earned[item.word] = w.won && w.run >= 1;
-      words[item.word] = w;
-      ladder[item.word] = stageOf(w, ladderK);
-    });
+  for (const { key, rightFirst } of progressOf(round.touches)) {
+    const w = { seen: 0, right: 0, miss: 0, run: 0, won: false, ...(words[key] || {}) };
+    w.seen += 1;
+    // a peek is exposure: it neither counts nor breaks the run
+    if (!peeked.has(key)) {
+      if (rightFirst) [w.right, w.run] = [w.right + 1, w.run + 1];
+      else [w.miss, w.run] = [w.miss + 1, 0];
+    }
+    // the shelf pill loses its written word after a run of right picks; a miss brings it back until the next right pick
+    w.won = w.won || w.run >= ladderK.pillRun;
+    earned[key] = w.won && w.run >= 1;
+    words[key] = w;
+    ladder[key] = stageOf(w, ladderK);
   }
   const key = `${round.game}:${round.level}`;
   const best = { ...progress.best };

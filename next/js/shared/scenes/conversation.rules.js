@@ -4,6 +4,7 @@
  * starts "done", so it costs no time. Pure: a view (or a robot) says when a line has been said or a card shown.
  */
 import { machine } from "../machine.js";
+import { progressOf } from "../kit/touches.rules.js";
 
 /** The check: the person checks the order back with the child. No game fills it yet. */
 export function checkRules({ settings }) {
@@ -124,7 +125,8 @@ export function endRules({ kit }) {
   return {
     states: ["badges", "words", "done"],
     start(round) {
-      const rows = round.dishes.flatMap((d) => d.rowsRight);
+      // every graded place of the round, right first or not (the kit's ledger)
+      const rows = progressOf(round.touches).map((t) => t.rightFirst);
       const [timeMs, best, right, hints] = [round.cookMs || 0, round.best || 0, rows.filter(Boolean).length, round.hints || 0];
       // the gold edge: a first time or a new best; every row right; no help
       const timeTier = !best || timeMs <= best ? "gold" : timeMs <= best * E.nearBest ? "mid" : "plain";

@@ -12,7 +12,8 @@
  *   wrongNow(dish, item, ctx), howMany(dish, item, ctx)   is this thing wrong now for this pan; how many of it are in (the
  *       level's rule for mistakes is the kit's, js/shared/kit/mistakes.rules.js, and the kitchen applies it)
  *   use(dish, item, ctx) -> { dish, events }                        a thing from the bottom row, for this pan
- *   takeBack(dish, item, ctx) -> { dish, events }                   one spoonful out again
+ *   takeBack(dish, item, ctx) -> { dish, events }                   one spoonful out again; a spoonful wrong when it went in
+ *       still costs the counted rows their first try, named on its event ({ type: "out", costs: [rowId] }) for the kit's ledger
  *   take(dish, ctx) -> { dish, events, left }                       the pan is ready and is tapped: it pours; its event
  *       { type: "pour", parts, frames, look, last }: parts, how many of the dish's parts this take moves (halves of a glass);
  *       frames, the first and last frame of the pour's pictures
@@ -27,7 +28,7 @@
  *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
  *   needs(dish, ctx) -> [item]   what every dish needs and no card asks for, still missing: the fire is not lit without it
  *   served(dish, ctx), final(dish), close(dish), ticks(dish, ctx), counts(dish)     final: nothing more goes in or out (a closed glass)
- *   tally(dish, ctx) -> { rows: { [rowId]: { want, got } }, extra: [{ word, n, against }], lost: [rowId] }   the dish counted
+ *   tally(dish, ctx) -> { rows: { [rowId]: { want, got } }, extra: [{ word, n, against }] }   the dish counted
  *       against its card (whether it is right is the kit's, from this)
  *   made(dish, ctx) -> [{ row, word, n, meaning }]   the dish as made, as cards (the wrong-order card shows them)
  *   thing(word, n, ctx) -> meaning                   n of a thing as a card says it
@@ -39,7 +40,7 @@ export const context = (settings, { ask, level }) => ({ ask, level, words: { ...
 /** Which tea a dish (or an ask) is: "milky" or "black", the name its pour, glass and card pictures go by. */
 const teaOf = (x) => (x.milk ? "milky" : "black");
 
-export const newDish = () => ({ water: 0, leaves: 0, milk: 0, sugar: 0, lookalike: 0, spices: [], spoons: [], poured: 0, closed: false, empty: false, firstWrong: [] });
+export const newDish = () => ({ water: 0, leaves: 0, milk: 0, sugar: 0, lookalike: 0, spices: [], spoons: [], poured: 0, closed: false, empty: false });
 export const reset = newDish;
 
 /** How many pours the glass takes to hold what was asked: half is one, full is two; where no amount is asked one tap fills it. */
@@ -128,7 +129,10 @@ export function use(dish, item, ctx) {
   return { dish: d, events: [{ type: "in", item, kind, how: kind === "water" || kind === "milk" ? "pour" : "spoon", n: kind === "sugar" ? d.sugar : 1 }] };
 }
 
-/** Was this spoonful a wrong one when it went in? The first placement is the one judged, even if it is taken back. */
+/**
+ * Was this spoonful a wrong one when it went in? The first placement is the one judged, even if it is taken back: taken
+ * back, it still costs the counted rows their first try (the sugar and the spice).
+ */
 const wrongSpoon = (dish, item, kind, ask) => (kind === "sugar" ? dish.sugar > ask.sugar : kind === "lookalike" || item !== ask.spice);
 
 /** One spoonful out again. Water, milk and leaves never come back; nothing comes back once the pan has poured. */
@@ -137,11 +141,10 @@ export function takeBack(dish, item, ctx) {
   if (dish.poured > 0 || dish.closed || at < 0) return refuse(dish, item, "cannot-take-back");
   const kind = kindOf(item, ctx);
   const d = { ...dish, spoons: dish.spoons.filter((s, i) => i !== at) };
-  if (wrongSpoon(dish, item, kind, ctx.ask)) d.firstWrong = dish.firstWrong.concat(item);
   if (kind === "sugar") d.sugar = dish.sugar - 1;
   else if (kind === "lookalike") d.lookalike = dish.lookalike - 1;
   else if (!d.spoons.includes(item)) d.spices = dish.spices.filter((s) => s !== item);
-  return { dish: d, events: [{ type: "out", item, kind }] };
+  return { dish: d, events: [{ type: "out", item, kind, ...(wrongSpoon(dish, item, kind, ctx.ask) ? { costs: ["sugar", "spice"] } : {}) }] };
 }
 
 /**
@@ -199,8 +202,8 @@ export function next(dish, ctx, fire) {
  * The dish counted against the card, the game's one answer about it: for each of the card's rows how many were asked and
  * how many went in (the amount in halves poured); what went in that no row asks for, with the row it costs (an unasked
  * jar the spice, the lookalike the sugar: the asked spice is known only when it was chosen, with nothing unasked beside
- * it); and the rows whose first try was lost (a wrong spoonful taken back still costs the counted rows theirs). Whether
- * the dish is right, and each row's fault, are the kit's (js/shared/kit/wrong-order.rules.js dishCheck).
+ * it). Whether the dish is right, and each row's fault, are the kit's (js/shared/kit/wrong-order.rules.js dishCheck); whether
+ * a row's first try was lost is the kit's ledger's (js/shared/kit/touches.rules.js).
  */
 export function tally(dish, ctx) {
   const { ask, words: w } = ctx;
@@ -218,8 +221,7 @@ export function tally(dish, ctx) {
   const unasked = [...new Set(dish.spoons)].filter((id) => id !== ask.spice && id !== w.sugar && id !== w.lookalike);
   const extra = unasked.map((id) => ({ word: id, n: spoonsOf(id), against: "spice" }));
   if (dish.lookalike) extra.push({ word: w.lookalike, n: dish.lookalike, against: ask.sugar > 0 ? "sugar" : "no-sugar" });
-  const lost = dish.firstWrong.length ? ["sugar", "spice"] : [];
-  return { rows, extra, lost };
+  return { rows, extra };
 }
 
 /**

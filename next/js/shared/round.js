@@ -13,6 +13,7 @@
  *       earned, tried: the words whose shelf pill is earned, and those picked right at least once, { wordId: true }
  *       card(asks, { level, words }) -> { headline, items, dishCard?, dishWord? }   the game's own rule for turning asks into a
  *       card; dishCard: the dish's own card as a meaning, dishWord: the word it is (said in the headline)
+ *   round.touches: the kit's ledger of touches (./kit/touches.rules.js), empty as the round starts, filled by the scenes
  */
 
 export function chanceFrom(holder) {
@@ -70,7 +71,7 @@ function taught(ask, level, seat, ladder) {
 export function newRound({ game, settings, people, level, seed, player = {}, ladder = {}, met = {}, today = null, best = {}, earned = {}, tried = {}, card }) {
   const o = settings.order;
   if (!["each", "nani"].includes(o.speaker)) throw new Error(`round: order.speaker "${o.speaker}" is not a way of speaking the order`);
-  const round = { game, level, seed: seed >>> 0, drawn: 0, player: { gender: player.gender || null }, ladder: { ...ladder }, met: { ...met }, today };
+  const round = { game, level, seed: seed >>> 0, drawn: 0, player: { gender: player.gender || null }, ladder: { ...ladder }, met: { ...met }, today, touches: [] };
   round.earned = { ...earned }; // the words whose shelf pill is the speaker alone
   round.tried = { ...tried };
   round.best = best[`${game}:${level}`] || null; // the best time so far at this level
