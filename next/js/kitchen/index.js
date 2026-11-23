@@ -32,7 +32,7 @@ export function kitchenScenes({ game, settings, kitchen, kit, views = () => null
 /** The same list with a screen: the kit's cards and sounds are made once for the round and shared by its scenes. */
 export async function scenesWithViews(parts) {
   const { game, settings, kitchen, kit, stage, say, people, round, roundLife } = parts;
-  const [{ createNaniBox }, { createCards }, { createSounds }, { showWrongOrder }, { orderView }, conv, { cookView }, { createLight }, { createCog }, { greetingView }, { wordMomentView }, { pourMoment }] = await Promise.all([
+  const [{ createNaniBox }, { createCards }, { createSounds }, { showWrongOrder }, { orderView }, conv, { cookView }, { createLight }, { createCog }, { greetingView }, { wordMomentView }, { pourMoment }, { momentScene }] = await Promise.all([
     import("../shared/kit/nani-box.js"),
     import("../shared/kit/order-card.js"),
     import("../shared/kit/sounds.js"),
@@ -45,6 +45,7 @@ export async function scenesWithViews(parts) {
     import("../shared/scenes/greeting.view.js"),
     import("../shared/scenes/word-moment.view.js"),
     import("./pour-moment.js"),
+    import("../shared/scenes/word-moment.pictures.js"),
   ]);
   const A = settings.art;
   const G = game.rules;
@@ -60,8 +61,17 @@ export async function scenesWithViews(parts) {
   ui.wrongOrder = (e, life, room, covered) => showWrongOrder({ say, kit, sounds, cards: ui.cards, cog: ui.cog, right: e.right, wrong: e.wrong, room, covered, life });
   // a view may look at the state only while its own scene is the one being played
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
+  // the word moment's act, as the game's settings name it: the kitchen's pour, or the kit's pictures (its own word cards from
+  // its sides); "none" has no view, its scene over as it starts
+  const wm = settings.wordMoment;
+  const acts = {
+    pour: (v) => wordMomentView({ ...v, sounds, words: wm.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, sounds, kitchen }) }),
+    pictures: (v) => momentScene({ ...v, sounds, moment: wm }).view,
+    none: () => null,
+  };
+  if (!acts[wm.act]) throw new Error(`word moment: the kitchen offers ${Object.keys(acts).join(", ")}, not "${wm.act}"`);
   const make = {
-    "word-moment": (v) => wordMomentView({ ...v, sounds, words: settings.wordMoment.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, sounds, kitchen }) }),
+    "word-moment": (v) => acts[wm.act](v),
     greeting: (v) => greetingView(v),
     order: (v) => orderView(v),
     cook: (v, rules) => cookView({ ...v, ctxOf: rules.ctxOf }),

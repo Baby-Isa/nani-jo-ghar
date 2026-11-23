@@ -26,14 +26,21 @@ export function momentRules({ id, words, due = () => true }) {
   };
 }
 
-/** The game's word moment: a word no picture can show is shown first, once, while it is still new to the child. */
+/**
+ * The game's word moment: a word no picture can show is shown first, once, while it is still new to the child. Its act is
+ * named in the game's settings ("none": the game has no word moment, and the scene is over as it starts); its words are
+ * the settings' own, or its sides' where the kit's pictures show them.
+ */
 export function wordMomentRules({ settings }) {
-  const wm = settings.wordMoment || {};
+  const wm = settings.wordMoment;
+  if (!wm || !wm.act) throw new Error('word moment: the game\'s settings name its act ("none" for no word moment)');
+  if (wm.act === "none") return momentRules({});
+  const words = wm.words || wm.sides.map((s) => s.word);
   const due = (round) => {
     const asked = new Set(round.order.for.flatMap((p) => p.items.map((i) => i.word)));
-    return wm.words.every((w) => asked.has(w)) && wm.words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
+    return words.every((w) => asked.has(w)) && words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
   };
-  return momentRules({ id: wm.id, words: wm.words, due });
+  return momentRules({ id: wm.id, words, due });
 }
 
 /** Well done: one praise from Nani, once every person's whole card is right. */

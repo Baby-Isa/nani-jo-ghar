@@ -6,7 +6,9 @@
  *   loadJSON(path, {base})         a data file: fetch + njgV() in a page, the file system in Node
  *   query(name)                    a URL parameter in a page (null in Node)
  *   devFlags()                     the set of ?dev= switches ("voice", ...); window.NJG_DEV adds more
- *   build()                        "store" in the store app (window.NJG_BUILD set to "store"), else "test"
+ *   build()                        "store" in the store app (window.NJG_BUILD set to "store"), else "test": the one reading
+ *                                  of the store flag; everything that differs in a store build (the device voice, the labs,
+ *                                  stand-in art, a developer's warning) asks it, never the flag itself
  */
 export const isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
 

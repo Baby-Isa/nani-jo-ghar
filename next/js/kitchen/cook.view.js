@@ -206,7 +206,6 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     pour(e, s) {
       const v = e.vessel;
       const dish = s.vessels[v].dish;
-      const frames = G.pourFrames(e.from, e.to, settings.serving.rest);
       lights.clear();
       if (e.last) counts(null);
       D.hob.chosen(null); // the chosen look hides while the pan is in the air
@@ -220,8 +219,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
           pan: D.vessels[v].pan,
           serving: D.serving,
           hob: D.hob,
-          frames,
-          halves: e.to - e.from,
+          frames: e.frames,
+          parts: e.parts,
           set: e.look,
           t: settings.motion.take,
           shape: settings.motion.carry,
@@ -319,7 +318,12 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       D = { plan, hob, shelf, serving, vessels };
       ui.serving = serving;
       // a dish already poured as the scene opens (the labs page's wrong order) is drawn as the state holds it: its pan and glass
-      state.vessels.forEach((x, v) => x.dish.poured && (vessels[v].pan.show(lookOf(state, v)), serving.set(v, G.glass(x.dish, A, settings.serving.rest))));
+      state.vessels.forEach((x, v) => {
+        const glass = G.glass(x.dish, A, settings.serving.rest);
+        if (!glass) return;
+        vessels[v].pan.show(lookOf(state, v));
+        serving.set(v, glass);
+      });
       // (the first scene drawn lifts the page's cover, as the greeting and the order do: the lab's round starts here)
       stage.uncover();
       hob.chosen(state.chosen);

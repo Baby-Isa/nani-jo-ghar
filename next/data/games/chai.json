@@ -286,8 +286,9 @@
   }
  },
  "wordMoment": {
-  "_about": "Half and full cannot be shown by a picture of a thing, so they are shown once before the kitchen, while either word is still new to the child. fills: how far each word's glass is poured. art: the scene's pictures. scene: the counter picture (the row its counter line is on, its shape, the span of it drawn across the play area, and the lowest the line may sit). vessel: the kettle (where its spout is in its picture, its width in glasses, and how far it is tipped back when not pouring). tea: where the tea's inside starts and ends in the full glass's picture.",
+  "_about": "Half and full cannot be shown by a picture of a thing, so they are shown once before the kitchen, while either word is still new to the child. act: what shows each word, the game's choice (the kitchen's pour: a kettle pours each glass to its measure; the kit's pictures, its sides drawn as data/moments/ files are; or none: no word moment). fills: how far each word's glass is poured. art: the scene's pictures. scene: the counter picture (the row its counter line is on, its shape, the span of it drawn across the play area, and the lowest the line may sit). vessel: the kettle (where its spout is in its picture, its width in glasses, and how far it is tipped back when not pouring). tea: where the tea's inside starts and ends in the full glass's picture.",
   "id": "word-moment-half-full",
+  "act": "pour",
   "words": [
    "ph-half",
    "ph-full"

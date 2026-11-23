@@ -4,9 +4,11 @@
  * A line the engine cannot build comes back with its English placeholder (shown grey italic) and is logged as a gap.
  *
  *   const say = await createSay({ voice?, player?, path?, child?, wait? })
+ *       child: { gender } who is playing: the speaker of every line the child says (by: "child"), so an "I will" line takes
+ *       the child's own form (kar dos / kar dis, grammar notes §32); with no gender known the engine reports a gap, never a guess
  *       wait(ms): the round's clock (the stage's, which stands still while the round is held), for the pause between words
  *       voice: data/kit.json `voice`; in a page with sound, the family's clips play through the Web Audio player with it
- *   say.line(meaning, { register?, voice?, elder?, row? }) -> Line
+ *   say.line(meaning, { register?, voice?, elder?, row?, by? }) -> Line      by: "child", a line the child says
  *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning, tokens }
  *       tokens: the engine's words and marks in order, [{ t, word, mark }], as the plan's clips count them
  *       guess: the word's form is a guess (a defaulted gender), so no recording of a longer stretch may say it
@@ -54,8 +56,9 @@ export async function createSay({ voice: settings = null, player = null, path = 
 
   const note = (gaps) => gaps.forEach((g) => met.has(g.key || g.what) || met.set(g.key || g.what, g));
 
-  function contextOf({ register = null, voice: whose = null, elder = null } = {}) {
-    const ctx = { path: thePath, child: { gender: child.gender || null } };
+  function contextOf({ register = null, voice: whose = null, elder = null, by = null } = {}) {
+    const ctx = { path: thePath };
+    if (by === "child") ctx.speaker = { gender: child.gender || null };
     if (register) ctx.register = register;
     if (whose) ctx.voice = whose;
     if (elder != null) ctx.addressee = { elder: !!elder };

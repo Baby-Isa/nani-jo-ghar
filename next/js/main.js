@@ -11,7 +11,7 @@ import { createFrame, setLook } from "./shared/frame.js";
 import { createRunner } from "./shared/runner.js";
 import { newRound, levelsOf } from "./shared/round.js";
 import { loadProgress, saveRound, meetNow, newPlayer, playerName, triedOf, OWN_PLAYER } from "./shared/progress.js";
-import { loadJSON as json } from "./core/env.js";
+import { loadJSON as json, build } from "./core/env.js";
 
 const ask = new URLSearchParams(location.search);
 /** Something broke: said plainly over the page, never a silent stop. */
@@ -26,14 +26,18 @@ async function start() {
   const id = ask.get("game");
   const moment = ask.get("moment");
   if (!moment && (!id || !/^[a-z-]+$/.test(id))) throw new Error("which game? add ?game= to the address");
+  // (a word moment by itself is the labs page's, for grown-ups: never in a store build, as the labs below)
+  if (moment && build() === "store") throw new Error("labs are for testing only");
   const [kit, registry] = await Promise.all([json("data/kit.json"), json("data/art/registry.json")]);
   setLook(kit);
   const frame = createFrame({ kit });
-  const art = createArt(registry, { build: globalThis.NJG_BUILD === "store" ? "store" : "test" });
+  const art = createArt(registry, { build: build() });
   const stage = await createStage({ art, kit, frame, renderer: ask.get("draw") || "auto" });
   // the page's own lifetime on the stage's clock, never ended: the voice's pause between words, and each round's a part of it
   const page = stage.life();
-  const say = await createSay({ voice: kit.voice, wait: page.wait });
+  const progress = loadProgress(ask.get("player") || OWN_PLAYER);
+  // who is playing goes to the language engine: the lines the child says take the child's own form
+  const say = await createSay({ voice: kit.voice, wait: page.wait, child: progress.player });
   // a scene's lifetime is a part of its owner's, and the voice stops with it: whatever a scene said ends as it is left
   const sceneLife = (owner) => () => {
     const life = owner.child();
@@ -51,7 +55,6 @@ async function start() {
   const family = settings.family;
   const [familySettings, { game }, familyCode] = await Promise.all([json(`data/${family}.json`), import(`./games/${id}/index.js`), import(`./${family}/index.js`)]);
   const level = Math.max(1, Math.min(levelsOf(kit), Number(ask.get("level")) || 1));
-  const progress = loadProgress(ask.get("player") || OWN_PLAYER);
   // "New player" in the cog: the same link with a fresh player, started again (the plain link stays the child's)
   const player = {
     name: playerName(progress.id, kit.cog.player),
@@ -72,7 +75,7 @@ async function start() {
     // a grown-up's lab from the labs page (?lab=wrong-order: the round opens on its dishes made, one wrong): never in a store
     // build, and never kept in anyone's record (its dishes are made up); the family says which labs it offers
     const lab = ask.get("lab");
-    if (lab && globalThis.NJG_BUILD === "store") throw new Error("labs are for testing only");
+    if (lab && build() === "store") throw new Error("labs are for testing only");
     if (lab) round.lab = lab;
     const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, roundLife, player, meet: (key) => !round.lab && meetNow(progress, key) };
     let run = null;

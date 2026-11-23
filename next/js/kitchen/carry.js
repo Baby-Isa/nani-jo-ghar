@@ -3,11 +3,12 @@
  * place on the serving spot; the game's mechanic empties the vessel inside its box; the kit fills the dish through
  * the frames the game names; the box is carried back. Nothing tips and no stream is drawn.
  *
- *   life.go(carry({ stage, life, plan, i, box, pan, serving, hob, frames, set, t, shape, glassFrame, restRef, left }))
+ *   life.go(carry({ stage, life, plan, i, box, pan, serving, hob, frames, parts, set, t, shape, glassFrame, restRef, left }))
  *       a task of the cook scene's lifetime (js/shared/life.js): the scene's end stops the carry where it is
- *       frames: [first, last] frame numbers of this pour; set: which of the game's sets of frames
+ *       frames: [first, last] frame numbers of this pour; parts: how many of the dish's parts it moves (the pour's length);
+ *       set: which of the game's sets of frames
  */
-export function* carry({ stage, life, plan, i, box, pan, serving, hob, frames, halves, set, t, shape, glassFrame, restRef, left, onPouring, onBack }) {
+export function* carry({ stage, life, plan, i, box, pan, serving, hob, frames, parts, set, t, shape, glassFrame, restRef, left, onPouring, onBack }) {
   const LIFT = shape.lift;
   const GAP = 1 + shape.gap;
   const top = stage.layer("worktop", "carried");
@@ -53,7 +54,7 @@ export function* carry({ stage, life, plan, i, box, pan, serving, hob, frames, h
         serving.frame(i, glassFrame(n));
       },
     },
-    t.pour * halves,
+    t.pour * parts,
     "inOut"
   );
   if (onPouring) onPouring(false);

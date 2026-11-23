@@ -52,16 +52,16 @@ export function cookRules({ game, settings, kitchen, kit }) {
   const ctxOf = (s, v) => G.context(settings, { ask: s.vessels[v].ask, level: s.level });
   /** Is this dish what was asked, row by row: the kit's one answer, from the game's count of it against its card. */
   const checkOf = (s, v) => dishCheck(s.vessels[v].items, G.tally(s.vessels[v].dish, ctxOf(s, v)));
-  /** Does this dish hold more of a spoonful thing than was asked, or one nobody asked for (what the count pill's light is for)? */
-  const overIn = (s, v, item) => s.vessels[v].dish.spoons.includes(item) && checkOf(s, v).faults.some((f) => f.word === item && (f.kind === "many" || f.kind === "extra"));
+  /** Does this dish hold more of a counted thing than was asked, or one nobody asked for (what the count pill's light is for)? */
+  const overIn = (s, v, item) => G.counts(s.vessels[v].dish).some((c) => c.item === item) && checkOf(s, v).faults.some((f) => f.word === item && (f.kind === "many" || f.kind === "extra"));
   // every movement the rules start, with when it ends; one that blocks holds the next step back while it is in the air
   const busyNow = (s) => s.moves.some((m) => m.blocks);
   const moving = (s, ms, blocks) => ({ ...s, moves: s.moves.concat({ until: s.clock + ms, blocks }) });
   const pourMs = sum(settings.motion.row);
   const spoonMs = settings.motion.spoon.fly + settings.motion.spoon.stir;
-  // a pour's length: the lift, the pour itself for each half poured, the way back and the settle
+  // a take's length: the lift, the pour itself for each part of the dish it moves, the way back and the settle
   const T = settings.motion.take;
-  const takeMs = (halves) => T.lift + T.pour * halves + T.back + T.end;
+  const takeMs = (parts) => T.lift + T.pour * parts + T.back + T.end;
 
   const askedOf = (round) => {
     const fixed = settings.row.groups.flat();
@@ -177,7 +177,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
     const from = s.chosen;
     events.push({ type: "chosen", vessel: v, from });
     const left = G.setAside(s.vessels[from].dish, ctxOf(s, from));
-    if (left.closed && !s.vessels[from].dish.closed) events.push({ type: "closed", vessel: from });
+    if (G.final(left) && !G.final(s.vessels[from].dish)) events.push({ type: "closed", vessel: from });
     return { ...setVessel(s, from, { dish: left }), chosen: v };
   }
 
@@ -195,7 +195,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
     }
     if (!busyNow(next) && next.vessels.every((x, v) => G.served(x.dish, ctxOf(next, v)))) {
       // every glass is final as the dishes are looked at: one still open closes now, seen as every glass closes
-      next.vessels.forEach((x, v) => !x.dish.closed && events.push({ type: "closed", vessel: v }));
+      next.vessels.forEach((x, v) => !G.final(x.dish) && events.push({ type: "closed", vessel: v }));
       next = { ...next, vessels: next.vessels.map((x) => ({ ...x, dish: G.close(x.dish) })) };
       const checks = next.vessels.map((x, v) => checkOf(next, v));
       // a row that is wrong at any look stays "not right first time", however the dish ends
@@ -293,7 +293,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           if (out.events.some((e) => e.type === "refused")) return settle(next, events.concat({ type: "wiggle", vessel: v }));
           next = setVessel(next, v, { dish: out.dish, fire: out.left ? x.fire : spend(x.fire) });
           const poured = out.events.find((e) => e.type === "pour");
-          next = moving(next, takeMs(poured.to - poured.from), true);
+          next = moving(next, takeMs(poured.parts), true);
           events.push(...out.events.map((e) => ({ ...e, vessel: v, who: x.who })));
           return settle(next, events, { rightMove: true });
         },

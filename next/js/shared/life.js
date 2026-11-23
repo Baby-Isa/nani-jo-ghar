@@ -28,8 +28,10 @@
  *   life.end()                    the runner's (or a child's owner's): everything above ends, once
  * The view's closing (its leave) is after the lifetime, on a lifetime of its own that the runner ends once it has closed.
  */
+import { build } from "../core/env.js";
+
 // (a store build says nothing on the console)
-const late = (what) => globalThis.NJG_BUILD !== "store" && console.warn(`life: a ${what} asked for after its lifetime ended never settles; run the steps that wait as a task (life.go)`);
+const late = (what) => build() !== "store" && console.warn(`life: a ${what} asked for after its lifetime ended never settles; run the steps that wait as a task (life.go)`);
 
 export function createLife(clock) {
   let over = false;

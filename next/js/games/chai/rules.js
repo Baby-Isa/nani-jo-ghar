@@ -13,17 +13,20 @@
  *       level's rule for mistakes is the kit's, js/shared/kit/mistakes.rules.js, and the kitchen applies it)
  *   use(dish, item, ctx) -> { dish, events }                        a thing from the bottom row, for this pan
  *   takeBack(dish, item, ctx) -> { dish, events }                   one spoonful out again
- *   take(dish, ctx) -> { dish, events, left }                       the pan is ready and is tapped: it pours
+ *   take(dish, ctx) -> { dish, events, left }                       the pan is ready and is tapped: it pours; its event
+ *       { type: "pour", parts, frames, look, last }: parts, how many of the dish's parts this take moves (halves of a glass);
+ *       frames, the first and last frame of the pour's pictures
  *   setAside(dish, ctx) -> dish                                     the child moves to another pan
  *   next(dish, ctx) -> { use: item } | { fire: true } | { take: true } | null     the next right move
  *   reset() -> dish                                                 this pan starts again
  *   asAsked(ctx) -> dish                                            the dish as asked, shown after three wrong tries
  *   asMade(ctx, { wrong?, row? }) -> dish   made and poured, not yet closed: as asked, or wrong (the labs page's wrong order)
- *   look(dish, heat, ctx) -> what the pan looks like     glass(dish, art, rest), pourFrames, glassFrame -> the glass's pictures
+ *   look(dish, heat, ctx) -> what the pan looks like     glass(dish, art, rest), glassFrame -> the glass's pictures (glass: null
+ *       while it is still empty)
  *   cardArt, wordMomentArt, spoonArt -> which of the game's pictures a card or a spoon shows
  *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
  *   needs(dish, ctx) -> [item]   what every dish needs and no card asks for, still missing: the fire is not lit without it
- *   served(dish, ctx), close(dish), ticks(dish, ctx), counts(dish)
+ *   served(dish, ctx), final(dish), close(dish), ticks(dish, ctx), counts(dish)     final: nothing more goes in or out (a closed glass)
  *   tally(dish, ctx) -> { rows: { [rowId]: { want, got } }, extra: [{ word, n, against }], lost: [rowId] }   the dish counted
  *       against its card (whether it is right is the kit's, from this)
  *   made(dish, ctx) -> [{ row, word, n, meaning }]   the dish as made, as cards (the wrong-order card shows them)
@@ -153,7 +156,7 @@ export function take(dish, ctx) {
   const to = ctx.ask.amount ? dish.poured + 1 : full;
   // (the pan holds a full glass: once that is poured it is empty)
   const d = { ...dish, poured: to, closed: to >= full, empty: to >= full };
-  const events = [{ type: "pour", from, to, look: teaOf(dish), last: to >= full }];
+  const events = [{ type: "pour", parts: to - from, frames: pourFrames(from, to, ctx.rest), look: teaOf(dish), last: to >= full }];
   if (d.closed) events.push({ type: "closed" });
   return { dish: d, events, left: to < full };
 }
@@ -165,6 +168,9 @@ export function take(dish, ctx) {
 export const setAside = (dish, ctx) => (dish.poured > 0 && !dish.closed && dish.poured >= poursAsked(ctx) ? { ...dish, closed: true } : dish);
 
 export const served = (dish, ctx) => dish.poured > 0 && (dish.closed || dish.poured >= poursAsked(ctx));
+
+/** Is this dish final: its glass closed, nothing more going in or out. */
+export const final = (dish) => dish.closed;
 
 /** Closed as it is: every glass is final when the dishes are looked at. */
 export const close = (dish) => (dish.poured > 0 && !dish.closed ? { ...dish, closed: true } : dish);
@@ -343,7 +349,7 @@ export function glass(dish, art, rest) {
   if (!dish.poured) return null;
   return `${art.filling[teaOf(dish)].replace("#*", "")}#${rest[dish.poured]}`;
 }
-export const pourFrames = (from, to, rest) => [from ? rest[from] : 1, rest[to]];
+const pourFrames = (from, to, rest) => [from ? rest[from] : 1, rest[to]];
 export const glassFrame = (art, set, n) => `${art.filling[set].replace("#*", "")}#${n}`;
 
 /** The spoon a thing travels on, by what kind of thing it is. */

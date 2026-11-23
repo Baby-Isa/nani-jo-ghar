@@ -75,7 +75,8 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
         row.dataset.ownTaps = "1";
         for (const opt of state.options) {
           const o = kit.greetings[opt];
-          lines[opt] = say.line(o.meaning);
+          // (an answer is the child's own line, in the child's own form)
+          lines[opt] = say.line(o.meaning, { by: "child" });
           const wrap = document.createElement("div");
           wrap.className = "reply-wrap";
           wrap.innerHTML = `<button class="round hear" aria-label="Hear it"></button><button class="reply${state.lit && opt === state.right ? " lit" : ""}" data-choice="${opt}"><span class="emoji">${o.emoji}</span><span>${lineHtml(lines[opt])}</span></button>`;
