@@ -55,8 +55,8 @@ export function loadProgress(id) {
  * stored ladder never lowered). Until 23 Nov a thing nobody asked for was filed under the row it was counted against, or
  * under its own word where there was none (the lookalike spi-16 as "sugar" or "no-sugar"): such a side is only ever wrong,
  * so it would hold the word at stage 1 for good, in this game or a later one that asks it. It is now its word's NOT_ASKED
- * side, which the stage does not read. A side so filed is known by its shape: named after the word itself, or never won
- * under a row another word has won (sugar's; the asked spice's). (A spice or an amount shares its row with the others of
+ * side, which the stage does not read. A side so filed is known by its shape: never won, and named after the word itself
+ * or under a row another word has won (sugar's; the asked spice's). (A spice or an amount shares its row with the others of
  * its kind: if it was asked there and never won, that side goes too; it is the word's only side, so its stage, read off its
  * own rights instead, is still 1 until it is won.)
  */
@@ -64,7 +64,9 @@ function winnableSides(words) {
   const wonBy = new Map(); // a filler: the words right first under it
   for (const [key, w] of Object.entries(words))
     for (const [filler, f] of Object.entries(w.fillers)) if (f.right > 0) wonBy.set(filler, [...(wonBy.get(filler) || []), key]);
-  const lost = (key, filler, f) => filler === key || (f.right === 0 && (wonBy.get(filler) || []).some((other) => other !== key));
+  // (a side named after its own word goes only while never won, the old stray's shape: a game whose row is named as its
+  // word keeps every side the child has won there)
+  const lost = (key, filler, f) => f.right === 0 && (filler === key || (wonBy.get(filler) || []).some((other) => other !== key));
   return Object.fromEntries(Object.entries(words).map(([key, w]) => [key, { ...w, fillers: Object.fromEntries(Object.entries(w.fillers).filter(([filler, f]) => !lost(key, filler, f))) }]));
 }
 

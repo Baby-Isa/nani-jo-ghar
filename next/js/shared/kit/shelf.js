@@ -55,7 +55,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     const mid = top + h / 2;
     const drawnTop = top + h * solid.top();
     const entry = say.entry(slot.id);
-    const pill = makePill(slot, entry ? entry.kutchi : "", pillShows(slot.id));
+    const pill = makePill(slot, entry, pillShows(slot.id));
     items.set(slot.id, { slot, pic, shade, pill, w, h, top, mid, drawnTop, busy: false });
     // only the pill's speaker says the word; the thing takes every other tap in its slot, down to and across its pill, and
     // where the two meet the thing wins (Zafar, 11 Nov: "they still sometimes tap the word pills rather than tapping the
@@ -85,10 +85,16 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     for (const r of M.waves) g.lineStyle(M.line * k, ink, 1).beginPath().arc(x + (cw + 1) * k, y, r * k, -M.wave, M.wave).strokePath();
   }
 
+  /** A word's ink: the word colour, or a word not built yet as its English in grey italic, as everywhere else. */
+  function inkOf(entry, px) {
+    const gap = entry && entry.gap;
+    return { fontFamily: L.wordFont, fontSize: `${px}px`, fontStyle: gap ? L.gapStyle : L.wordWeight, color: gap ? L.vars.grey : L.pillInk };
+  }
+
   /** A word pill: a white card with a speaker and the word (the speaker alone once the child has earned the word). */
-  function makePill(slot, word, shown) {
+  function makePill(slot, entry, shown) {
     const c = stage.container(pills, slot.x, row.pillY);
-    const text = stage.text(c, shown ? word : "", { fontFamily: L.wordFont, fontStyle: L.wordWeight, fontSize: `${k.pill.font}px`, color: L.pillInk });
+    const text = stage.text(c, shown && entry ? entry.kutchi : "", inkOf(entry, k.pill.font));
     const w = shown ? text.width1 + k.pill.pad : k.pill.min;
     const h = k.pill.h;
     const gg = stage.graphics(c);
@@ -178,7 +184,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       // whole on screen, whatever the pan's place: never above the play area's top
       const y = Math.max(at.y, stage.topOf("worktop") + P.edge + P.h * kPop);
       const c = stage.container(stage.layer("worktop", "labels"), at.x, y + P.rise);
-      const text = stage.text(c, entry ? entry.kutchi : "", { fontFamily: L.wordFont, fontStyle: L.wordWeight, fontSize: `${P.font}px`, color: L.pillInk });
+      const text = stage.text(c, entry ? entry.kutchi : "", inkOf(entry, P.font));
       const w = text.width1 + P.pad;
       const g = stage.graphics(c);
       g.fillStyle(parseInt(L.pillShade.slice(1), 16), L.pillShadeA).fillRoundedRect(-w / 2, -P.h + Z.popDrop, w, P.h, Z.popRadius);

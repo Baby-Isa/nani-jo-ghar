@@ -168,8 +168,9 @@
   "mode": "auto"
  },
  "heat": {
-  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share. foamShare: past the green, milky chai foams up for this share of the way to boiling over, then spills (black tea spills straight away). sinkSecs, sinkHalf: as the fire is lit the spoonfuls settle half into the tea over its first sinkSecs (still seen, semi-submerged, as if infusing), and stay so until the boil takes them the rest of the way (Zafar, 21 and 22 Nov: \"maybe half a second\"; \"half faded in after 0.4 secs of lighting\"; \"They're still visible, but they're like ... semi-submerged. And then eventually they disappear as it starts bubbling\").",
+  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share. foamShare: past the green, milky chai foams up for this share of the way to boiling over, then spills (black tea spills straight away). milkInWater: milk in the water before the tea leaves, how far the pan shows milky over plain water. sinkSecs, sinkHalf: as the fire is lit the spoonfuls settle half into the tea over its first sinkSecs (still seen, semi-submerged, as if infusing), and stay so until the boil takes them the rest of the way (Zafar, 21 and 22 Nov: \"maybe half a second\"; \"half faded in after 0.4 secs of lighting\"; \"They're still visible, but they're like ... semi-submerged. And then eventually they disappear as it starts bubbling\").",
   "foamShare": 0.5,
+  "milkInWater": 0.5,
     "sinkSecs": 0.4,
     "sinkHalf": 0.5,
   "byLevel": [

@@ -4,9 +4,10 @@
  * Every word id and number comes in through `ctx` from the settings file; none is written here.
  *
  *   context(settings, { ask, level }) -> ctx    everything below reads the settings only through this
- *   ctx: { ask, words, level, halves, rest, foamShare, sinkSecs, sinkHalf }       ask: one person's { milk, sugar, spice, named, amount }
+ *   ctx: { ask, words, level, halves, rest, foamShare, milkInWater, sinkSecs, sinkHalf }       ask: one person's { milk, sugar, spice, named, amount }
  *       halves: the pours a glass takes to be full (half is one); rest: the pour's frame each number of halves poured
- *       rests on; foamShare: past the green, the share of milky chai's rise that foams before it spills
+ *       rests on; foamShare: past the green, the share of milky chai's rise that foams before it spills; milkInWater: how milky
+ *       water with milk and no leaves yet shows
  *   card(ask, { words }) -> { headline, items, dishCard, dishWord }   the person's order card, as meanings and rows
  *   newDish() -> dish
  *   wrongNow(dish, item, ctx), howMany(dish, item, ctx)   is this thing wrong now for this pan; how many of it are in (the
@@ -35,7 +36,7 @@
  */
 
 /** What the rules need from the game's settings for one person's dish. */
-export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare, sinkSecs: settings.heat.sinkSecs, sinkHalf: settings.heat.sinkHalf });
+export const context = (settings, { ask, level }) => ({ ask, level, words: { ...settings.words, lookalike: settings.row.lookalike }, halves: settings.serving.halves, rest: settings.serving.rest, foamShare: settings.heat.foamShare, milkInWater: settings.heat.milkInWater, sinkSecs: settings.heat.sinkSecs, sinkHalf: settings.heat.sinkHalf });
 
 /** Which tea a dish (or an ask) is: "milky" or "black", the name its pour, glass and card pictures go by. */
 const teaOf = (x) => (x.milk ? "milky" : "black");
@@ -326,7 +327,7 @@ export function look(dish, heat, ctx) {
   const boiled = heat.heat > heat.boilAt ? Math.min(1, (heat.heat - heat.boilAt) / (heat.lo - heat.boilAt)) : 0;
   const sink = heat.fire === "ready" || heat.fire === "over" ? 1 : heating ? settle + (1 - ctx.sinkHalf) * boiled : 0;
   const out = (a, b = null, u = 0) => ({ a, b, u, wet, spoons: dish.spoons.slice(), sink });
-  if (!dish.leaves) return dish.milk ? out("water", "milky", 0.5) : out("water");
+  if (!dish.leaves) return dish.milk ? out("water", "milky", ctx.milkInWater) : out("water");
   // boiling over: the pan's own spilt picture, milky or black
   if (heat.fire === "over") return dish.milk ? out("foam", "over-milky", 1) : out("boil-tea", "over-black", 1);
   if (heat.fire === "ready" || heat.fire === "spent") return out(calm);

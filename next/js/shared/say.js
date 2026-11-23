@@ -13,7 +13,7 @@
  *       tokens: the engine's words and marks in order, [{ t, word, mark }], as the plan's clips count them
  *       guess: the word's form is a guess (a defaulted gender), so no recording of a longer stretch may say it
  *       row: true gives the line as a card's row: lower case, no final mark, its English without notes in brackets
- *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status } | null
+ *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status, gap } | null
  *   say.speak(line, { queue?, ifIdle?, onPiece?, onHeard?, onWord? }) -> Promise<{ done }>     never holds up a tap
  *       onPiece: a piece is next; onHeard: a piece is really heard (its clip started, or the device voice began)
  *       onWord: { word, then() }: then() as that word (the engine's id) starts being heard, once; inside a clip that says
@@ -111,7 +111,9 @@ export async function createSay({ voice: settings = null, player = null, path = 
     entry(id) {
       const e = engine.linearizer.lexOf(id);
       if (!e) return null;
-      return { id: e.id, kutchi: engine.word(id).text, english: englishOf(e), gender: e.gender || null, status: e.status };
+      // gap: the engine cannot build the word yet, so kutchi holds its English placeholder, to be shown grey italic
+      const w = engine.word(id);
+      return { id: e.id, kutchi: w.text, english: englishOf(e), gender: e.gender || null, status: e.status, gap: !w.ok };
     },
     speak(line, { queue = true, ifIdle = false, onPiece = null, onHeard = null, onWord = null } = {}) {
       const at = onWord && line.tokens ? line.tokens.findIndex((tk) => tk.word === onWord.word) : -1;
