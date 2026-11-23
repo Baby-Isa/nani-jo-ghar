@@ -6,17 +6,17 @@
  *   loadJSON(path, {base})         a data file: fetch + njgV() in a page, the file system in Node
  *   query(name)                    a URL parameter in a page (null in Node)
  *   devFlags()                     the set of ?dev= switches ("voice", ...); window.NJG_DEV adds more
- *   build()                        "store" in the store app (window.NJG_BUILD, written by the packager), else "test"
+ *   build()                        "store" in the store app (window.NJG_BUILD set to "store"), else "test"
  */
 export const isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
 
 const g = globalThis;
 
-/** A URL with the cache-busting stamp (js/version.js's njgV), or as it is when there is none. */
+/** A URL with the page's cache-busting stamp (a global njgV, where the page sets one), or as it is when there is none. */
 export const stamp = (url) => (typeof g.njgV === "function" ? g.njgV(url) : url);
 
-// a page's data files, fetched once each (COOK-2: a host that builds a core and then mounts a mode built two, fetching the four
-// core files twice): the TEXT is kept per stamped URL and parsed for every caller, so each core owns its objects (Save.init
+// a page's data files, fetched once each (a host that builds a core and then mounts a mode would otherwise fetch the core's
+// files twice): the TEXT is kept per stamped URL and parsed for every caller, so each core owns its objects (Save.init
 // mutates progressData); a failed fetch is forgotten, so a retry fetches again
 const texts = new Map();
 function fetchText(url, path) {
@@ -64,5 +64,5 @@ export function devFlags() {
   return out;
 }
 
-/** "store" in the packaged store app (build/package.mjs writes window.NJG_BUILD = "store"), else "test" (GitHub Pages, labs, Node). */
+/** "store" in the packaged store app (its page sets window.NJG_BUILD = "store"), else "test" (GitHub Pages, labs, Node). */
 export const build = () => (g.NJG_BUILD === "store" ? "store" : "test");

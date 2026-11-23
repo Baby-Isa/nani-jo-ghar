@@ -17,7 +17,7 @@ export async function playMoment({ id, kit, stage, say, onError }) {
   let run = null;
   const scene = momentScene({ moment, stage, say, kit, sounds: createSounds({ kit, say, stage }), send: (move) => run.send(move) });
   const once = () => {
-    run = createRunner({ scenes: [scene], round: { seed: 1, met: {} }, load: (ids) => stage.load(ids), onError, onEnd: () => document.addEventListener("pointerdown", once, { once: true }) });
+    run = createRunner({ scenes: [scene], round: { seed: 1, met: {} }, load: (ids) => stage.load(ids), life: () => stage.life(), onError, onEnd: () => document.addEventListener("pointerdown", once, { once: true }) });
     globalThis.njg = { run, stage, say }; // (for the checks, as on the game's page)
     run.start();
   };

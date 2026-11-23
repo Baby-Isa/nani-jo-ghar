@@ -7,6 +7,7 @@
  *   cookRules({ game, settings, kitchen, kit }) -> { start, move, leave, stepOf, ctxOf }
  *   hiddenWord(step, hint) -> the thing whose word Nani's line shows as dots while her hint is shut, or null
  *   rowMayHold(settings, kit, level) -> every thing the row may hold (its pictures are named before the row is drawn)
+ *   TAKE_BACK: the count pill's first-time light, as its light event names it
  *   moves while cooking: item {id} | knob {vessel} | vessel {vessel} | face {vessel} | count {item} | time {ms} | hint
  *   (Nani's hint opened or shut: her helper card and the step's word; counted as help; opened on a word she hides, it is a
  *   peek at that word, so the word's ladder does not move this round)
@@ -15,8 +16,11 @@
  *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's ticks)
  *   state.vessels[v].placed: the rows that keep their place in the order card's row: every row ticked since the dish began,
  *       ticked or not now, so the row never slides back to one; a dish started again starts its row again
+ *   state.vessels[v].emptied: its pan is empty, its dish as made kept (for the review and the end): every pan is emptied as a
+ *       wrong order is shown, so a right order's half pour never stands on the hob while another is made again (Zafar,
+ *       21 Nov); a pan made again fills anew
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
- *   | light {first: "takeBack", vessel, item} (./moment.rules.js): the first time ever a spoonful thing goes past what was
+ *   | light {first: TAKE_BACK, vessel, item} (./moment.rules.js): the first time ever a spoonful thing goes past what was
  *   asked, its count pill is lit once, at the kitchen's next stillness, if its pill is shown then (pillHolds)
  */
 import { machine } from "../shared/machine.js";
@@ -29,8 +33,9 @@ import { ruling } from "../shared/kit/mistakes.rules.js";
 import { labDishes, LAB_WRONG_ORDER } from "./lab.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
-// what the child has met once a count pill has been lit as the way to take a spoonful out (kept with the other first-time lights)
-const TAKE_BACK = "takeBack";
+// what the child has met once a count pill has been lit as the way to take a spoonful out (kept with the other first-time lights);
+// the light's kind on its event, which the screen matches by this name, never by its spelling
+export const TAKE_BACK = "takeBack";
 
 /** Every thing a round's row may hold at a level: its fixed groups, the pool its asks and decoys are drawn from, the lookalike. */
 const lookalikeAt = (settings, kit, level) => (atLevel(kit.levels.lookalike, level) ? [settings.row.lookalike] : []);
@@ -350,7 +355,8 @@ export function cookRules({ game, settings, kitchen, kit }) {
         reviewed(s) {
           const wrong = s.checks.map((c, v) => (c.right ? null : v)).filter((v) => v != null);
           if (!wrong.length) return { state: { ...s, name: "done", away: [] }, events: [{ type: "all-right" }] };
-          let next = s;
+          // (every pan emptied as the wrong order is shown: the screen empties them once the card covers the hob)
+          let next = { ...s, vessels: s.vessels.map((x) => ({ ...x, emptied: true })) };
           for (const v of wrong) next = setVessel(next, v, { tries: next.vessels[v].tries + 1 });
           // each wrong card's rows (right, missed, too few, too many or extra), and what it plays: the dish as made onto the
           // card until it is the order as asked
@@ -369,7 +375,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           let next = s;
           // the third wrong try is shown the right way instead of being made again; otherwise the whole dish is remade
           const redo = s.wrong.filter((v) => s.vessels[v].tries < kit.help.showTheWayAt);
-          for (const v of s.wrong) next = setVessel(next, v, redo.includes(v) ? { dish: G.reset(), fire: newFire(), redone: true, placed: [] } : { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true });
+          for (const v of s.wrong) next = setVessel(next, v, redo.includes(v) ? { dish: G.reset(), fire: newFire(), redone: true, placed: [], emptied: false } : { dish: G.asAsked(ctxOf(s, v)), shownTheWay: true });
           const events = s.wrong.map((v) => ({ type: redo.includes(v) ? "redo" : "shown-the-way", vessel: v }));
           if (!redo.length) return { state: { ...next, name: "done", checks: null, wrong: null, away: [] }, events: events.concat({ type: "all-right" }) };
           // only what is remade stays, its card at the top (Zafar, 11 Nov: "the correct tea glasses disappear, the correct order

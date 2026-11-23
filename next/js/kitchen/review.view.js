@@ -5,7 +5,8 @@
  * the cook rules say; it decides nothing.
  *
  *   reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) -> handlers by event type
- *       drawn() -> what the cook scene has drawn (hob, shelf, serving, vessels); later(fn): after the big moves before it
+ *       drawn() -> what the cook scene has drawn (hob, shelf, serving, vessels); later(task): a task of the cook scene's
+ *       lifetime (js/shared/life.js), after the big moves before it
  *       cardRoom() -> where on the page the wrong-order card may stand
  */
 export function reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) {
@@ -14,27 +15,24 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
   const faceOf = (s) => (i, right) => (right ? people[s.vessels[i].who].faceHappy : people[s.vessels[i].who].faceSad) || people[s.vessels[i].who].face;
   return {
     review(e, s) {
-      later(async () => {
+      later(function* () {
         const D = drawn();
         D.hob.stepBack();
         e.checks.forEach((c, i) => c.right && D.serving.twinkle(i, true));
-        await D.serving.review(e.checks, faceOf(s));
+        yield D.serving.review(e.checks, faceOf(s));
         e.checks.forEach((c) => ui.sounds.play(c.right ? "right" : "soft"));
         send({ type: "reviewed" });
       });
     },
     "wrong-order"(e, s) {
-      later(async () => {
+      later(function* () {
         const D = drawn();
-        await D.serving.closeReview();
+        yield D.serving.closeReview();
         // (nothing of the cooking shows over the card: the count pills come back with the remake)
         counts(null);
-        // (once the card covers the hob, every pan is set back to empty, so a right order's half pour left in its pan does not
-        // stand on the hob while another is made again: Zafar, 21 Nov)
-        await ui.wrongOrder(e, cardRoom, () => {
-          const emptied = { ...s, vessels: s.vessels.map((x) => ({ ...x, dish: G.reset() })) };
-          D.vessels.forEach((x, v) => x.pan.show(lookOf(emptied, v)));
-        });
+        // (once the card covers the hob, every pan is drawn as the rules now hold it, emptied, so a right order's half pour
+        // left in its pan does not stand on the hob while another is made again: Zafar, 21 Nov)
+        yield ui.wrongOrder(e, cardRoom, () => D.vessels.forEach((x, v) => x.pan.show(lookOf(s, v))));
         send({ type: "understood" });
       });
     },

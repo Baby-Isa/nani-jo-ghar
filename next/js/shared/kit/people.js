@@ -7,8 +7,8 @@
  *   const room = createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech? })
  *       speech: the kind of bubble its scene shows ("greet", the tallest, or "line"), for the strip kept above the heads
  *   room.walkIn() -> Promise      room.walkOff() -> Promise      room.mood(seat, "happy" | "neutral")
- *   room.says(seat, said) -> said: the person talks from now until their line ends (said, a promise), and stops with it
- *   room.hush()   every seat stops talking at once: the scene skipped or left, whatever lines are still being said
+ *   room.says(seat, said, life) -> said: the person talks from now until their line ends (said, a promise), and stops
+ *       with it, or with the scene's lifetime (js/shared/life.js), skipped or left, whichever ends first
  *   room.bubble(seat, html | null)      room.head(seat) -> the head's box on the page      room.figureAt(seat) -> { x, top }
  *   room.bubbleBox() -> where the bubble sits, in the play area's px      room.placeBubble(avoid?) places it again
  *   room.headsTop: the top of the highest head's outline, in world px      room.strip() -> its px
@@ -144,14 +144,12 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
   /**
    * While a person speaks, their talking picture flaps against their resting (neutral) one, with a small bob, as the standard
    * does: never against their happy one, whose raised hand would flap up and down. After the line they keep their mood.
-   * (The room's own: a scene starts and ends a talk only through says and hush.)
+   * (The room's own: a scene starts a talk only through says, and the line or the scene's lifetime ends it.)
    */
   function talk(seat, on) {
     const s = seats[seat];
-    const hush = () => (s.talking && s.talking.forEach((t) => t.remove()), (s.talking = null));
-    hush();
-    // (a room already taken down has no picture left to talk with: whatever a scene does late, it draws on nothing)
-    if (!s.pic.obj.active) return;
+    if (s.talking) s.talking.forEach((t) => t.remove());
+    s.talking = null;
     s.pic.swap(s.f[s.mood]);
     s.pic.set({ y: s.top, angle: 0 });
     if (!on) return;
@@ -159,8 +157,6 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
     const flap = { remove: () => (flap.timer && flap.timer.remove(), (flap.gone = true)) };
     const step = (open) => {
       if (flap.gone) return;
-      // the talk stops itself once its picture is gone with its room, never left to flap on nothing
-      if (!s.pic.obj.active) return hush();
       s.pic.swap(open ? s.f.talk : s.f.neutral);
       flap.timer = stage.scene.time.delayedCall(open ? T.openMs : T.shutMs[0] + Math.random() * (T.shutMs[1] - T.shutMs[0]), () => step(!open));
     };
@@ -191,18 +187,19 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
     },
     /**
      * A person says a line: they talk from now until the line ends (said: its voice, or its time to be read), whatever their
-     * scene does meanwhile (a card held, a lesson, a flight), and stop with it. The room owns the talk, so no scene pairs it on
-     * and off by hand: a line hushed first (the room's hush, or the same person's next line) ends nothing when it ends.
+     * scene does meanwhile (a card held, a lesson, a flight), and stop with it, or as the scene's lifetime ends (a skip, or the
+     * scene left with the line cut short). The room owns the talk, so no scene pairs it on and off by hand: a line ended
+     * first (the same person's next line, or the scene's end) ends nothing when it ends.
      */
-    says(seat, said) {
+    says(seat, said, life) {
       talk(seat, true);
       const mine = seats[seat].talking;
-      const end = () => mine && seats[seat].talking === mine && talk(seat, false);
+      let off = null;
+      const end = () => (off && off(), mine && seats[seat].talking === mine && talk(seat, false));
+      off = life.onEnd(end);
       Promise.resolve(said).then(end, end);
       return said;
     },
-    /** No one talks on: the scene skipped or left, a line cut short ends its talk with it. */
-    hush: () => seats.forEach((s, i) => s.talking && talk(i, false)),
     nani: (mood) => naniPic && naniPic.swap(nf[mood]),
     /** The bubble's words are underlined in gold while they are being said. */
     reading: (on) => bubbleEl && bubbleEl.classList.toggle("reading", !!on),

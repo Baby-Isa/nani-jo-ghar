@@ -70,6 +70,7 @@ async function start() {
       scenes,
       round,
       load: (ids) => stage.load(ids),
+      life: () => stage.life(),
       onError: stopped,
       onEnd(ended) {
         if (!round.lab) saveRound(progress, ended, kit.ladder);

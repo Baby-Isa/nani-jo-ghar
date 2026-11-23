@@ -3,19 +3,22 @@
  * were right, how much help was used), shown one after another; then the words of the order, each with its English
  * small beneath for the grown-up reading along. No verdict, no stars to earn, no sweets.
  *
- *   const end = createEndScreen({ stage, kit, say, sounds, endArt, state, words, onNext, onAgain, onLeave })
+ *   const end = createEndScreen({ stage, kit, say, sounds, endArt, state, words, life, onNext, onAgain, onLeave })
  *   end.page("words")     end.close()
+ *   life: the end scene's lifetime (js/shared/life.js): the badges' show is a part of it that stops as the words' page opens
  *   state: { timeMs, bestMs, timeTier, newBest, right, rows, rightTier, hints, hintTier }   tiers: gold | mid | plain
  */
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const svg = (body, w = 2.6) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
 const ARROW = svg(`<path d="M5 12h14M13 6l6 6-6 6"/>`);
 const AGAIN = svg(`<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>`);
 const GRID = svg(`<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>`, 2.2);
 
-export function createEndScreen({ stage, kit, sounds, say, endArt, state, words, onNext, onAgain, onLeave }) {
+export function createEndScreen({ stage, kit, sounds, say, endArt, state, words, life, onNext, onAgain, onLeave }) {
   const E = kit.end;
+  // (the stage's own clock, through the scene's lifetime: it stands still while the round is held behind the turn card)
+  const showing = life.child();
+  const wait = (ms) => showing.wait(ms);
   const file = (ref) => stage.art.file(ref);
   const clock = (ms) => {
     const secs = Math.round(ms / 1000);
@@ -38,53 +41,48 @@ export function createEndScreen({ stage, kit, sounds, say, endArt, state, words,
   document.body.appendChild(el);
   const card = el.querySelector(".end-card");
   const tiles = [...el.querySelectorAll(".btile")];
-  let open = true;
   el.querySelector("[data-act=next]").addEventListener("click", () => (sounds.play("tap"), onNext()));
 
   /** Count a number up on the page in a few steps. */
-  async function count(node, to, steps, ms, show, each = () => {}) {
-    for (let i = 1; i <= steps && open; i++) {
+  function* count(node, to, steps, ms, show, each = () => {}) {
+    for (let i = 1; i <= steps; i++) {
       node.textContent = show(Math.round((to * i) / steps));
       each();
-      await wait(ms / steps);
+      yield wait(ms / steps);
     }
     node.textContent = show(to);
   }
 
-  /** The show: the three tiles one after another. Before its turn a tile is empty. */
-  async function show() {
+  /** The show: the three tiles one after another. Before its turn a tile is empty. It stops as the words' page opens. */
+  function* show() {
     const [time, rows, hints] = tiles;
     time.classList.add("in-view");
-    await wait(E.popMs);
+    yield wait(E.popMs);
     const secs = Math.round(state.timeMs / 1000);
-    if (short) await count(time.querySelector(".time"), secs, Math.min(E.countSteps, Math.max(1, secs)), E.countMs, (n) => `${n}s`);
-    if (!open) return;
+    if (short) yield* count(time.querySelector(".time"), secs, Math.min(E.countSteps, Math.max(1, secs)), E.countMs, (n) => `${n}s`);
     time.classList.add("burst-on");
     sounds.play(state.newBest ? "bing" : "sparkle");
     if (state.newBest) time.classList.add("cheer");
-    await wait(E.waits[0]);
-    if (!open) return;
+    yield wait(E.waits[0]);
     rows.classList.add("in-view");
     rows.querySelector(".fill").style.setProperty("--share", `${Math.round((100 * state.right) / Math.max(1, state.rows))}%`);
-    await wait(E.popMs);
-    await count(rows.querySelector(".n"), state.right, Math.min(state.right, E.tickSteps), E.tickMs, (n) => n, () => sounds.play("right", { volume: E.tickVolume }));
-    if (!open) return;
+    yield wait(E.popMs);
+    yield* count(rows.querySelector(".n"), state.right, Math.min(state.right, E.tickSteps), E.tickMs, (n) => n, () => sounds.play("right", { volume: E.tickVolume }));
     if (!allRight) sounds.play("oops", { volume: E.tickVolume });
     else {
       sounds.play("gold");
       rows.classList.add("all", "cheer");
     }
-    await wait(E.waits[1]);
-    if (!open) return;
+    yield wait(E.waits[1]);
     hints.classList.add("in-view");
     if (!state.hints) hints.classList.add("cheer");
   }
-  show();
+  showing.go(show);
 
   return {
     page(name) {
       if (name !== "words") return;
-      open = false;
+      showing.end();
       sounds.play("whoosh");
       const from = card.offsetHeight;
       const missed = words.filter((w) => !w.right);
@@ -99,7 +97,7 @@ export function createEndScreen({ stage, kit, sounds, say, endArt, state, words,
       void card.offsetHeight;
       card.classList.add("easing");
       card.style.height = `${to}px`;
-      wait(E.pageMs).then(() => (card.classList.remove("easing"), (card.style.height = "")));
+      life.wait(E.pageMs).then(() => (card.classList.remove("easing"), (card.style.height = "")));
       card.querySelectorAll(".wtile").forEach((t) =>
         t.addEventListener("click", async () => {
           t.classList.add("sounding");
@@ -111,7 +109,6 @@ export function createEndScreen({ stage, kit, sounds, say, endArt, state, words,
       card.querySelector("[data-act=leave]").addEventListener("click", onLeave);
     },
     close() {
-      open = false;
       el.remove();
     },
   };

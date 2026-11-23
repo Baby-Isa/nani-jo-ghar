@@ -13,12 +13,11 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
   const O = kit.order;
   let room = null;
   let big = null;
-  let live = true; // (a part still being said when the order is skipped, or closed, stops where it is)
-  let offTap = null;
-  let offResize = null;
+  // the scene's lifetime (the runner's): a part still being said when the order is skipped, or closed, stops where it is
+  let life = null;
   let saying = null; // the part being said now: its bubble's seat and words, to place them again at a new size
-  // (the stage's own clock: it stands still while the round is held behind the turn card)
-  const wait = (ms) => stage.wait(ms);
+  // (the stage's own clock, through the scene's lifetime: it stands still while the round is held behind the turn card)
+  const wait = (ms) => life.wait(ms);
 
   /** The least time a big card is held: by how well the child knows its word (the kit's words.holdMs). */
   const holdOf = (round, word) => wait(kit.words.holdMs[wordStage(round, word)]);
@@ -28,9 +27,9 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
    * line ends unheard, a line with no voice at once), is held for its word's time and the line together, and flies as both
    * are over. At the levels that show it, the dish's own card comes first, as any item card does but on the dish's own
    * word, held by that word's time and the line, then goes where it stands: one big card at a time, so a headline's own
-   * item card pops only after it.
+   * item card pops only after it. A task of the scene's lifetime: each yield waits, and the scene's end stops it there.
    */
-  async function sayPart(e, round) {
+  function* sayPart(e, round) {
     const person = round.order.for[e.seat];
     const part = e.part;
     const head = part.kind === "headline";
@@ -65,26 +64,21 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     const readTime = wait(quiet);
     const said = Promise.race([spoken.then(() => (wasHeard ? null : readTime)), wait(quiet + O.voiceCapMs)]);
     // the person talks for as long as their line is said, whatever its cards do meanwhile (held, a lesson, a flight): the
-    // room's to end, as a skip or the scene's end hushes everyone
-    room.says(e.seat, said);
+    // room's to end, and its talk ends with the scene's lifetime too, skipped or over
+    room.says(e.seat, said, life);
     // (a clip still loading is waited for as long as the player itself waits for it: the card never pops before the word)
-    await Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
-    if (!live) return;
+    yield Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
     if (e.dishCard) {
       // (a line heard waits for its dish word; a line no voice says shows it as its other cards would show)
-      if (wasHeard && dishSaid) await Promise.race([dishHeard, spoken]);
-      if (!live) return;
+      if (wasHeard && dishSaid) yield Promise.race([dishHeard, spoken]);
       const dishCard = ui.cards.pop(e.seat, null, { line: say.line(person.dishCard, { row: true }), pic: picOf("dish", person) });
-      await Promise.all([holdOf(round, person.dishWord), said]);
-      if (!live) return;
+      yield Promise.all([holdOf(round, person.dishWord), said]);
       const gone = dishCard.out();
-      if (part.lands.length) await gone;
-      if (!live) return;
+      if (part.lands.length) yield gone;
     }
     const landing = part.lands[0];
     // (a line heard waits for the named thing's own word)
-    if (landing && named && wasHeard && namedSaid) await Promise.race([dishHeard, spoken]);
-    if (!live) return;
+    if (landing && named && wasHeard && namedSaid) yield Promise.race([dishHeard, spoken]);
     if (landing) {
       if (head) ui.cards.open(e.seat);
       // (a headline that names a thing lands it as an item's line does: the place before what lands at the row's left)
@@ -92,33 +86,27 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       big = ui.cards.pop(e.seat, landing);
     }
     // (a part with no card of its own waits only for its line)
-    await Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, named ? null : said]);
-    if (!live) return;
+    yield Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, named ? null : said]);
     if (big) {
       // the first card that hides a part: the order waits while the child taps each hidden part open; it is met for good
       // the moment it plays, so a round left early never shows it again
       if (e.lesson) {
         if (meet) meet(e.lesson);
-        await big.lesson();
-        if (!live) return;
+        yield big.lesson();
         send({ type: "lessoned" });
       }
-      await big.fly();
+      yield big.fly();
       big = null;
     }
     // (the rest of the sentence after the named thing's card has gone)
-    if (named) await said;
-    if (!live) return;
+    if (named) yield said;
     if (head && !landing) {
-      await wait(O.partGap);
+      yield wait(O.partGap);
       ui.cards.open(e.seat);
-      await wait(O.cardOpen);
-    } else await wait(O.partGap);
-    if (live) send({ type: "said" });
+      yield wait(O.cardOpen);
+    } else yield wait(O.partGap);
+    send({ type: "said" });
   }
-
-  /** No one talks on once the order stops (skipped, or the scene over): a line cut short ends its talk with it. */
-  const hush = () => room && room.hush();
 
   /** A new size of the play area: the big card's place is worked out again, and the bubble placed beside it. */
   function relayout() {
@@ -131,7 +119,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
   return {
     /** The room and every picture its cards will show, all of it before the first card pops. */
     pictures: (round) => roomRefs({ roomArt, people, standing: round.people }).concat(round.order.for.flatMap((p) => p.items.map((i) => picOf(i, p)).concat(picOf("dish", p), people[p.who].face))),
-    async enter(state, round) {
+    enter(state, round, lifetime) {
+      life = lifetime;
       ui.cards.seats.forEach((s, i) => (s.el.hidden = true));
       // after a greeting the same people are already at the counter: they stay, and never walk in again (the round is a
       // new object after every scene, so the room is known by who stands in it)
@@ -139,18 +128,20 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       const here = !!ui.room && ui.room.key === roomKey(round.people, lift) && stage.showing() === "room";
       room = here ? ui.room : createRoom({ stage, kit, roomArt, people, standing: round.people, lift });
       ui.room = room;
-      offResize = stage.onResize(relayout, "room");
+      life.onResize(relayout);
       stage.uncover();
-      offTap = stage.onTap({ view: "room", x: -kit.room.far, y: -kit.room.far, w: 2 * kit.room.far + stage.sheet.w, h: 2 * kit.room.far + stage.sheet.h }, () => live && send({ type: "skip" }));
-      if (!here) {
-        await room.walkIn();
-        await wait(O.walkWait - O.walkIn);
-      }
+      life.onTap({ view: "room", x: -kit.room.far, y: -kit.room.far, w: 2 * kit.room.far + stage.sheet.w, h: 2 * kit.room.far + stage.sheet.h }, () => send({ type: "skip" }));
+      return life.go(function* () {
+        if (!here) {
+          yield room.walkIn();
+          yield wait(O.walkWait - O.walkIn);
+        }
+      });
     },
     // (nothing of the order is said until the room is drawn: a skip while the people walk in ends it before it is heard)
     on(events, state, round) {
       for (const e of events) {
-        if (e.type === "part") sayPart(e, round);
+        if (e.type === "part") life.go(sayPart(e, round));
         else if (e.type === "landed") ui.cards.land(e.seat, e.items);
         else if (e.type === "person" && e.seat > 0) ui.cards.fold(e.seat - 1);
         else if (e.type === "repeat") {
@@ -158,26 +149,19 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
           const p = round.order.for[seat];
           ui.cards.replay(seat, e.dishCard ? { line: say.line(p.dishCard, { row: true }), pic: picOf("dish", p) } : null);
         }
-        else if (e.type === "skipped") {
-          live = false;
-          say.stop();
-          hush();
-        }
+        // (the voice cut short; the rest, every talk with it, ends with the scene's lifetime as it closes)
+        else if (e.type === "skipped") say.stop();
       }
     },
     probe: () => (room ? room.probe() : []),
     async leave() {
-      live = false;
-      if (offTap) offTap();
-      if (offResize) offResize();
       saying = null;
-      hush();
       if (big) big.remove();
       big = null;
       document.querySelectorAll("#over .pop, body > .pop").forEach((el) => el.remove());
       room.bubble(null);
       ui.cards.landAll();
-      await wait(O.holdAlong);
+      await stage.wait(O.holdAlong);
     },
   };
 }

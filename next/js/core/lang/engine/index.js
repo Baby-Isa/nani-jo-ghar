@@ -91,7 +91,7 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
       return ps.map((p, i) => (i ? p.charAt(0).toLowerCase() + p.slice(1) : p.charAt(0).toUpperCase() + p.slice(1))).join(", ") + (ps.length ? "." : "");
     }
     const num = v.number || (v.n != null && Number(v.n) !== 1 ? "pl" : null);
-    // the grown-ups' English (the bulb, SH-52): "put it in!", never "put in it !"
+    // the grown-ups' English (the bulb): "put it in!", never "put in it !"
     return abs.en
       // (Mum's 12 Nov session, code change 2: an argument the grammar says through a function, Item's with and without, takes that
       // function's English, "with potato", never the bare noun; a count of one is "once", never "one times")

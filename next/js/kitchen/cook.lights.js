@@ -4,7 +4,8 @@
  * this file turns a step into the box to light, and the light itself is the kit's. The first thing a person asked for
  * is never lit on the shelf (that would be the answer): its card in their order is lit instead, briefly.
  *
- *   const lights = cookLights({ stage, kitchen, ui, drawn, itemRow })     drawn: () => { shelf, hob, serving, plan }
+ *   const lights = cookLights({ stage, kitchen, ui, drawn, itemRow, wait })     drawn: () => { shelf, hob, serving, plan }
+ *       wait(ms): the cook scene's lifetime's (js/shared/life.js), so a light's own timing ends with the scene
  *   lights.first(step, key)      the first-time light for this step, now (a card's moment comes once the order list has stopped)
  *   lights.help(step)            the stuck light: soft, with the thing's glow
  * A thing on the worktop is lit with its neighbours of the same kind kept dark (the shelf's things and their pills, the knobs,
@@ -14,7 +15,7 @@
  *   lights.every() -> [{ what, box }]   the box a light round each thing on the worktop would show (every shelf thing, knob,
  *       pan and glass), shown or not, on the page: for the checks, which measure each against what is drawn
  */
-export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
+export function cookLights({ stage, kitchen, ui, drawn, itemRow, wait }) {
   const L = kitchen.lights;
   let token = 0;
   let glowing = null;
@@ -65,7 +66,7 @@ export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
       }
       ui.sounds.play("pop", { volume: L.popVolume });
       // the card is only pointed at, so the eye knows where to look: a brief light, then it goes
-      if (card) stage.wait(L.cardLitMs).then(() => mine === token && ui.light.hide());
+      if (card) wait(L.cardLitMs).then(() => mine === token && ui.light.hide());
     },
     help(step) {
       token += 1;

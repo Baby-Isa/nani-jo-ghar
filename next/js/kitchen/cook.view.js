@@ -11,7 +11,7 @@ import { layoutOf, rowOf } from "./layout.js";
 import { bubbleAt } from "./heat.rules.js";
 import { carry } from "./carry.js";
 import { cookLights } from "./cook.lights.js";
-import { rowMayHold, hiddenWord } from "./cook.rules.js";
+import { rowMayHold, hiddenWord, TAKE_BACK } from "./cook.rules.js";
 import { createCountPills } from "./count-pills.js";
 import { reviewView } from "./review.view.js";
 
@@ -25,11 +25,11 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   const M = settings.motion;
   let D = null; // what is drawn: plan, hob, shelf, serving, vessels
   let chain = Promise.resolve(); // the big moves, one after another
-  let offTick = null;
-  let offResize = null;
+  // the scene's lifetime (the runner's): every wait, tween, listener and task the scene starts here ends with it
+  let life = null;
   let level = 1;
   const pills = createCountPills({ stage, say, kit, kitchen, onTap: (item) => send({ type: "count", item }) });
-  const lights = cookLights({ stage, kitchen, ui, drawn: () => D, itemRow: (v, item) => itemRow(v, item) });
+  const lights = cookLights({ stage, kitchen, ui, drawn: () => D, itemRow: (v, item) => itemRow(v, item), wait: (ms) => life.wait(ms) });
   const heatK = () => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
   /**
    * Where the wrong-order card may stand, on the page: the white marble, the play area above the bottom row's band (Zafar,
@@ -41,10 +41,12 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     return { left: p.left, top: p.top, right: p.right, bottom: Math.min(p.bottom, band.y) };
   };
 
+  /** What a pan looks like as the rules hold it: its dish at its heat, or empty once the rules have emptied it. */
   const lookOf = (s, v) => {
     const k = heatK();
-    const f = s.vessels[v].fire;
-    return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k), rate: k.rate }, ctxOf(s, v));
+    const x = s.vessels[v];
+    const f = x.fire;
+    return G.look(x.emptied ? G.reset() : x.dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k), rate: k.rate }, ctxOf(s, v));
   };
 
   /** Nani's line for a step: the game's own line for a thing where it has one, else the family's. */
@@ -86,7 +88,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     // a first-time light of its own, at its moment: the count pill, the first time a spoonful thing goes past what was asked
     // (the rules show it only while its pill is shown: its pan chosen, not boiling over)
     light(e) {
-      if (e.first === "takeBack") lights.pill(e.item);
+      if (e.first === TAKE_BACK) lights.pill(e.item);
     },
     in(e, s) {
       const v = e.vessel;
@@ -123,16 +125,16 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     wiggle(e) {
       if (e.item) D.shelf.wiggle(e.item);
       else if (e.knob != null) D.hob.wiggleKnob(e.knob);
-      else if (e.vessel != null) stage.tween(D.vessels[e.vessel].box.obj, { angle: C.vesselWiggle.deg }, C.vesselWiggle.ms).then(() => stage.tween(D.vessels[e.vessel].box.obj, { angle: 0 }, C.vesselWiggle.ms));
+      else if (e.vessel != null) life.tween(D.vessels[e.vessel].box.obj, { angle: C.vesselWiggle.deg }, C.vesselWiggle.ms).then(() => life.tween(D.vessels[e.vessel].box.obj, { angle: 0 }, C.vesselWiggle.ms));
     },
     point(e) {
       D.shelf.glow(e.item, true, { once: true });
-      stage.wait(C.pointMs).then(() => D.shelf.glow(e.item, false));
+      life.wait(C.pointMs).then(() => D.shelf.glow(e.item, false));
     },
     lit(e) {
       D.hob.fire(e.vessel, "high");
       ui.sounds.play("knob", { under: true });
-      stage.wait(C.flameAfterMs).then(() => ui.sounds.play("flame", { under: true }));
+      life.wait(C.flameAfterMs).then(() => ui.sounds.play("flame", { under: true }));
     },
     "not-yet"() {
       say.speak(say.line(kit.lines.notYet));
@@ -245,11 +247,11 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
           ui.sounds.play("sparkle");
           D.serving.twinkle(v);
         });
-        stage.wait(kit.cards.foldAfterMs).then(() => ui.cards.fold(v));
+        life.wait(kit.cards.foldAfterMs).then(() => ui.cards.fold(v));
       });
     },
     // the dishes looked at, a wrong order shown, and only it made again (./review.view.js)
-    ...reviewView({ stage, kit, settings, game, people, ui, send, drawn: () => D, later: (fn) => (chain = chain.then(fn)), lookOf, counts, cardRoom }),
+    ...reviewView({ stage, kit, settings, game, people, ui, send, drawn: () => D, later: (task) => (chain = chain.then(() => life.go(task))), lookOf, counts, cardRoom }),
   };
 
   return {
@@ -266,7 +268,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       const spot = servingRefs({ kit, art: settings.serving.art, people: who });
       return { draw: [kitchen.art.worktop].concat(hob.draw, shelfRefs({ kit, ids }), spot.draw, own.draw), then: hob.then.concat(spot.then, own.then) };
     },
-    enter(state, round) {
+    enter(state, round, lifetime) {
+      life = lifetime;
       level = round.level;
       const n = state.vessels.length;
       const row = state.row;
@@ -307,8 +310,8 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
         const sh = settings.vessel.shadow;
         stage.shadow(stage.layer("worktop", "shadows"), { x: at.x, y: at.y + sh.dy * plan.vesselR, w: sh.size * plan.vesselR, h: sh.size * plan.vesselR });
         const b = stage.box(stage.layer("worktop", "vessels"), { x: at.x, y: at.y, w: plan.rimR * settings.vessel.box.w, h: plan.rimR * settings.vessel.box.h });
-        stage.onTap({ view: "worktop", x: at.x - plan.rimR, y: at.y - plan.rimR, w: plan.rimR * 2, h: plan.rimR * 2 }, () => send({ type: "vessel", vessel: i }));
-        stage.onTap(serving.tapOf(i), () => send({ type: "vessel", vessel: i }));
+        life.onTap({ view: "worktop", x: at.x - plan.rimR, y: at.y - plan.rimR, w: plan.rimR * 2, h: plan.rimR * 2 }, () => send({ type: "vessel", vessel: i }));
+        life.onTap(serving.tapOf(i), () => send({ type: "vessel", vessel: i }));
         return { box: b.handle, pan: game.draw(b.api, { art: A, vessel: settings.vessel, rim: plan.rimR }) };
       });
       D = { plan, hob, shelf, serving, vessels };
@@ -325,15 +328,13 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       ui.sounds.ready(settings.sounds.ready);
       ui.nani.onHint(() => send({ type: "hint" }));
       // a new size of the play area: the canvas is fitted by the stage; the worktop and the count pills follow
-      offResize = stage.onResize(() => {
+      life.onResize(() => {
         groundTo(stage.topOf("worktop"));
-        const s = peek();
-        if (s) counts(s);
+        counts(peek());
       });
       // every frame: the ring and the pan follow the heat
-      offTick = stage.onTick(() => {
+      life.onTick(() => {
         const s = peek();
-        if (!s || !s.vessels) return;
         const k = heatK();
         let hottest = -1;
         s.vessels.forEach((x, v) => {
@@ -379,8 +380,6 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     async leave() {
       await chain;
       lights.clear();
-      if (offTick) offTick();
-      if (offResize) offResize();
       ui.sounds.simmer(-1);
       pills.clear();
     },

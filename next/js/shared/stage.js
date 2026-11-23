@@ -16,6 +16,7 @@
  *   stage.box(layer, { x, y, w, h }) -> box        what a game's mechanic is handed: its own clipped corner of a layer
  *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture      stage.visibleX(view) -> { left, right }
  *   stage.onTap(handle | { view, x, y, w, h }, fn)  stage.onTick(fn(ms))   stage.wait(ms)   stage.clear()
+ *   stage.life() -> a scene's lifetime on the stage's clock (js/shared/life.js): the runner gives one to each scene
  *   stage.hold(on)   stage.onHold(fn(on)) -> off     the whole round stands still (the turn card) and goes on
  *   stage.keepInView(view, y, px?, bottom?)   world y stays in view, with px screen px above it, whatever the play area's
  *                                       shape; in the room, down to world y `bottom` too (shown smaller where it must be)
@@ -28,6 +29,7 @@
 import { createOutlines } from "./outline.js";
 import { createMadePictures } from "./made-pictures.js";
 import { createThings } from "./stage.things.js";
+import { createLife } from "./life.js";
 
 const DESIGN_W = 1600;
 const DESIGN_H = 900;
@@ -164,6 +166,29 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     return new Promise((resolve) => scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: resolve }));
   }
 
+  /** The stage's clock for a scene's lifetime: each thing it starts handed back with the way to stop it. */
+  const clock = {
+    later(ms, fn) {
+      const t = scene.time.delayedCall(ms, fn);
+      return () => t.remove(false);
+    },
+    tween(obj, props, ms, ease = "inOut", done = () => {}) {
+      if (!ms) return (Object.assign(obj, props), done(), () => {});
+      const t = scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: done });
+      return () => t.stop();
+    },
+    tick(fn) {
+      ticks.add(fn);
+      return () => ticks.delete(fn);
+    },
+    resize(fn) {
+      const r = { fn, view: null };
+      resized.add(r);
+      return () => resized.delete(r);
+    },
+    tap: (target, fn) => onTap(target, fn),
+  };
+
   function layer(view, name) {
     const v = views[view];
     if (!v.layers[name]) {
@@ -184,7 +209,8 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
   function onTap(target, fn) {
     const t = { target, fn };
     taps.push(t);
-    return () => taps.splice(taps.indexOf(t), 1);
+    // (one already let go of, with its view cleared, is not there to take out)
+    return () => taps.includes(t) && taps.splice(taps.indexOf(t), 1);
   }
   function rectOf(t) {
     const g = t.target;
@@ -233,6 +259,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     container: things.container,
     tween,
     wait,
+    life: () => createLife(clock),
     toPage,
     onTap,
     size,

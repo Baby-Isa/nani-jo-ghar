@@ -7,7 +7,7 @@
  *   const row = createRow({ stage, kit, el, items, panel })   items: Map id -> { el, id, no, atServe } in the order asked
  *   row.land(ids)  row.landAll()  row.lead(ids)  row.ticks(ids, placed?)  row.served()  row.reopen()
  *       placed: the cards that keep their place (the ticked, and one gone past what was asked), by which the row is ordered
- *       and rests; ids alone are ticked
+ *       and rests; ids alone are ticked; without it, the ticked cards are the ones that keep their place
  */
 import { rowOrder, rowRest, rowLandRest } from "./row.rules.js";
 
@@ -83,7 +83,7 @@ export function createRow({ stage, kit, el, items, panel }) {
       rest();
     },
     /** The rules' ticked rows, in the order ticked: the cards tick, and slide to their places if the list changed. */
-    ticks(ids, keep) {
+    ticks(ids, keep = ids) {
       const now = ids.filter((id) => items.has(id));
       const at = keep.filter((id) => items.has(id));
       if (now.join() === ticked.join() && at.join() === placed.join()) return;

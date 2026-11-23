@@ -8,6 +8,7 @@
  *
  *   wordMomentView({ stage, say, kit, sounds, send, words, wordCardArt, act })   words: every word the moment may show
  *   act: { pictures() -> refs, draw({ pane, area, words, wait, frames }) -> { slots, play() -> Promise, stop() } }
+ *     wait, frames: the scene's lifetime's, so an act's play goes no further once the scene leaves
  *     slots: [{ word, cx, cy, w, h, cardW, hide(), picture?(well) }]  w, h: the shown thing's own drawn box (not its
  *     picture's empty margin: stage.thingBox), which the frame pads evenly; cardW: the word card's width for it (the act's
  *     own rule); picture: the act draws the thing into its card's picture as the scene showed it (else wordCardArt's)
@@ -23,13 +24,13 @@ const el = (tag, cls, parent) => {
 
 export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardArt, act }) {
   const K = kit.wordMoment;
-  // (the stage's own clock: it stands still while the round is held behind the turn card)
-  const wait = (ms) => stage.wait(ms);
+  // (the stage's own clock, through the scene's lifetime: it stands still while the round is held behind the turn card;
+  // every wait and frame-by-frame move, the act's too, ends as the scene leaves)
+  let life = null;
+  const wait = (ms) => life.wait(ms);
   const file = (ref) => stage.art.file(ref);
   let box = null;
-  let offResize = null;
   let shown = null; // what the act drew
-  const running = new Set(); // the frame-by-frame moves now, let go of as the scene leaves
   let play = null; // the moment itself, once it is drawn
 
   /** fn(u) on every frame of the stage's clock, u from 0 to 1 over ms; resolves at 1. */
@@ -37,21 +38,20 @@ export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardA
     new Promise((done) => {
       let t = 0;
       fn(0);
-      const off = stage.onTick((dt) => {
+      const off = life.onTick((dt) => {
         t += dt;
         const u = Math.min(1, t / ms);
         fn(u);
         if (u < 1) return;
         off();
-        running.delete(off);
         done();
       });
-      running.add(off);
     });
 
   return {
     pictures: () => act.pictures().concat(words.map(wordCardArt)),
-    enter(state) {
+    enter(state, round, lifetime) {
+      life = lifetime;
       const area = stage.size();
       const n = state.words.length;
       box = el("div", "wm", stage.el.over);
@@ -63,7 +63,7 @@ export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardA
         const k = Math.min(now.w / area.w, now.h / area.h);
         pane.style.transform = `translate(${(now.w - area.w * k) / 2}px, ${(now.h - area.h * k) / 2}px) scale(${k})`;
       };
-      offResize = stage.onResize(fit);
+      life.onResize(fit);
       shown = act.draw({ pane, area, words: state.words, wait, frames });
       stage.uncover();
 
@@ -82,19 +82,19 @@ export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardA
       const cr = Math.min(K.cornerCurve, K.cornerRound * cs);
       // the cards stand on one line: centred on the things' middle height, each on its own thing's across
       const lineY = shown.slots.reduce((t, s) => t + s.cy, 0) / shown.slots.length;
-      const snap = async (s) => {
+      const snap = function* (s) {
         const frame = el("div", "wm-frame", pane);
         const [fw, fh] = frameOf(s);
         Object.assign(frame.style, { left: `${s.cx - fw / 2}px`, top: `${s.cy - fh / 2}px`, width: `${fw}px`, height: `${fh}px` });
         frame.style.setProperty("--wm-cs", `${cs}px`);
         frame.style.setProperty("--wm-cr", `${cr}px`);
         frame.innerHTML = "<i></i><i></i><i></i><i></i><b></b>";
-        await wait(K.cornersInMs);
+        yield wait(K.cornersInMs);
         frame.classList.add("in");
-        await wait(K.cornersMs - K.cornersInMs);
+        yield wait(K.cornersMs - K.cornersInMs);
         sounds.play("shutter");
         frame.classList.add("flash");
-        await wait(K.shutterMs);
+        yield wait(K.shutterMs);
         const line = say.word(s.word);
         const card = el("div", "pop wm-card", pane);
         card.innerHTML = wordCardHtml({ file, line, pic: wordCardArt(s.word), english: true, blurred: false, kit });
@@ -111,31 +111,28 @@ export function wordMomentView({ stage, say, kit, sounds, send, words, wordCardA
         const sayIt = wireSpeaker(card, { say, line });
         s.hide();
         sounds.play("pop");
-        await wait(K.sayAfterMs);
+        yield wait(K.sayAfterMs);
         frame.remove();
-        await sayIt();
-        await wait(K.holdMs);
+        yield sayIt();
+        yield wait(K.holdMs);
       };
 
       // the moment plays once it is drawn and the scene opens; nothing ends it but its own last card (no tap skips it)
-      play = async () => {
-        await shown.play();
-        await wait(K.lookMs);
-        for (const s of shown.slots) await snap(s);
-        await wait(K.lingerMs);
+      play = function* () {
+        yield shown.play();
+        yield wait(K.lookMs);
+        for (const s of shown.slots) yield* snap(s);
+        yield wait(K.lingerMs);
         box.classList.add("out");
-        await wait(K.fadeMs);
+        yield wait(K.fadeMs);
         send({ type: "shown" });
       };
     },
     on(events) {
-      if (events.some((e) => e.type === "show")) play();
+      if (events.some((e) => e.type === "show")) life.go(play);
     },
     leave() {
       if (shown) shown.stop();
-      running.forEach((off) => off());
-      running.clear();
-      if (offResize) offResize();
       if (box) box.remove();
       box = shown = null;
     },
