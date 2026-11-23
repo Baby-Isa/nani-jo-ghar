@@ -1229,9 +1229,11 @@
   }
  },
  "ladder": {
-  "_about": "The word ladder: a word's stage climbs one for every so many rounds it was right first time, up to the top stage. pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
+  "_about": "The word ladder: a word's stage climbs one for every so many rounds it was right first time on its weakest side (each filler it was met with: milk asked and not asked; grammar-in-play 8(a) 6), up to the top stage; from daysFrom up, only once every side was right first on this many different days (days; the table had no days, so the two-days condition is on the top stages only: 23 Nov). pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
   "top": 4,
   "rightsPerStage": 2,
+  "daysFrom": 3,
+  "days": 2,
   "pillRun": 3
  },
  "light": {
@@ -1295,7 +1297,7 @@
   "passGlyph": "✋"
  },
  "end": {
-  "_about": "The end screen's numbers. nearBest: a time within this many times the best keeps a dim gold watch. midShare: this share of rows right is the middle tier. shortSecs: under this a time shows as seconds and counts up. popMs: a tile's contents pop in. countSteps, countMs: the time counts up. waits: after each tile, in ms. tickSteps, tickMs, tickVolume: the rows count up, a tick on each. pageMs: the card eases to the second page. wordCols: word tiles across. tightOver, smallFrom: more words than this on a side sit tighter, then smaller. stars: where the six stars twinkle on a tile, each [left %, top %, delay s]. listKinds: the kinds of word the second page lists (things and numbers; never a connective, a 'no' or a verb).",
+  "_about": "The end screen's numbers. nearBest: a time within this many times the best keeps a dim gold watch. midShare: this share of rows right is the middle tier. shortSecs: under this a time shows as seconds and counts up. popMs: a tile's contents pop in. countSteps, countMs: the time counts up. waits: after each tile, in ms. tickSteps, tickMs, tickVolume: the rows count up, a tick on each. pageMs: the card eases to the second page. wordCols: word tiles across. tightOver, smallFrom: more words than this on a side sit tighter, then smaller. stars: where the six stars twinkle on a tile, each [left %, top %, delay s]. listKinds: the kinds of word the second page lists from a line (things and numbers; never a connective, a 'no' or a verb). listRows: the card's rows it lists, by their meaning's form (a thing's row, asked or not; never an amount's, whose word is no thing), read by both pages through one rule (js/shared/scenes/conversation.rules.js listedRows), so the tick tile counts exactly the rows the words page lists.",
   "nearBest": 1.25,
   "midShare": 0.6,
   "shortSecs": 100,
@@ -1349,6 +1351,10 @@
   "listKinds": [
    "n",
    "num"
+  ],
+  "listRows": [
+   "Item",
+   "NoItem"
   ]
  },
  "serving": {

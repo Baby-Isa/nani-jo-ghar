@@ -35,9 +35,13 @@
  *       onlyThis(row) "Only one sugar."; too few, wanted(row) "I'd like three sugars."
  *   dishCheck(items, tally) -> { right, faults }   the one answer to "is this dish what was asked": right when every fault
  *       is right
- *   rowsAtLook(items, faults) -> { [rowId]: right }   each card row at a look: right, and costed by no extra (a touch of
- *       each for the ledger, ./touches.rules.js, which alone keeps whether its first try was lost)
+ *   strayPlace(fault) -> { key, filler }   a thing nobody asked for, its own word's place: the word, filling its own "not
+ *       asked" filler (./touches.rules.js NOT_ASKED), never the row it is counted against (an unasked spice is not the
+ *       asked spice's side, the lookalike not sugar's), so putting it in costs its own word, card row or not, and the
+ *       stage's gate, which needs every asked side right, never waits on a side that cannot be won (23 Nov)
  */
+import { NOT_ASKED } from "./touches.rules.js";
+
 export function faultsOf(items, tally) {
   const out = items.map((it) => {
     const { want = 0, got = 0 } = tally.rows[it.id] || {};
@@ -95,4 +99,4 @@ export function dishCheck(items, tally) {
   return { right: isRight(faults), faults };
 }
 
-export const rowsAtLook = (items, faults) => Object.fromEntries(items.map((it) => [it.id, faults.some((f) => f.id === it.id && f.kind === "right") && !faults.some((f) => f.id === null && f.against === it.id)]));
+export const strayPlace = (f) => ({ key: f.word, filler: NOT_ASKED });

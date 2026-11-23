@@ -4,7 +4,7 @@
  * starts "done", so it costs no time. Pure: a view (or a robot) says when a line has been said or a card shown.
  */
 import { machine } from "../machine.js";
-import { progressOf } from "../kit/touches.rules.js";
+import { rightFirst } from "../kit/touches.rules.js";
 
 /** The check: the person checks the order back with the child. No game fills it yet. */
 export function checkRules({ settings }) {
@@ -107,6 +107,13 @@ export function serveRules({ settings, kit }) {
   return { states: ["serving", "thanking", "leaving", "done"], slots: ["thanks", "goodbye"], start: () => ({ name: "serving", landed: 0, seat: 0 }), first: () => [{ type: "land", seat: 0 }], move };
 }
 
+/**
+ * The rows of a person's card the end lists, both pages from this one rule: the words page lists their words and the tick
+ * tile counts them, so the two never disagree. A row by its meaning's form (kit.end.listRows): a thing's, asked or not;
+ * never an amount's (half, full), whose word is no thing.
+ */
+export const listedRows = (kit, person) => person.items.filter((it) => kit.end.listRows.includes(it.meaning.fn));
+
 /** The end: two pages, the badges and then the words of the order; no verdict. */
 export function endRules({ kit }) {
   const E = kit.end;
@@ -125,8 +132,9 @@ export function endRules({ kit }) {
   return {
     states: ["badges", "words", "done"],
     start(round) {
-      // every graded place of the round, right first or not (the kit's ledger)
-      const rows = progressOf(round.touches).map((t) => t.rightFirst);
+      // each row the words page lists (listedRows), right first or not (the kit's ledger), as that page reads them: a thing
+      // nobody asked for costs its word in the ledger, but is no row of the card, so the tile's total is the page's
+      const rows = round.order.for.flatMap((p) => listedRows(kit, p).map((it) => rightFirst(round.touches, { who: p.who, key: it.word, filler: it.id }) === true));
       const [timeMs, best, right, hints] = [round.cookMs || 0, round.best || 0, rows.filter(Boolean).length, round.hints || 0];
       // the gold edge: a first time or a new best; every row right; no help
       const timeTier = !best || timeMs <= best ? "gold" : timeMs <= best * E.nearBest ? "mid" : "plain";

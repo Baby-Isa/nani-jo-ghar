@@ -5,6 +5,7 @@ import { createRoom, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { createEndScreen } from "../kit/end-screen.js";
 import { rightFirst } from "../kit/touches.rules.js";
+import { listedRows } from "./conversation.rules.js";
 
 /** Well done: one praise from Nani, in her box as she says it, with a small card by a face at the serving spot. */
 export function wellDoneView({ stage, say, kit, ui, send }) {
@@ -163,7 +164,8 @@ export function endView({ stage, say, kit, ui, send, endArt }) {
     pictures: () => Object.values(endArt).flatMap((v) => (typeof v === "string" ? v : Object.values(v))),
     enter(state, round, life) {
       ui.nani.line(null);
-      // one tile per thing and number the order used, in the form it was said: the dish first, then each row in turn
+      // one tile per thing and number the order used, in the form it was said: the dish first, then each row the end lists
+      // (listedRows, the rows the tick tile counts) in turn
       const words = [];
       const listed = (piece) => piece.kind === "k" && kit.end.listKinds.includes(String(piece.word).split(".")[0]);
       const add = (line, right, headFirst = false) => {
@@ -177,7 +179,7 @@ export function endView({ stage, say, kit, ui, send, endArt }) {
       };
       for (const p of round.order.for) {
         add(say.line(p.headline.meaning, { register: p.headline.register }), true, true);
-        p.items.forEach((it) => add(say.line(it.meaning, { row: true }), !!rightFirst(round.touches, p.who, it.id)));
+        listedRows(kit, p).forEach((it) => add(say.line(it.meaning, { row: true }), !!rightFirst(round.touches, { who: p.who, key: it.word, filler: it.id })));
       }
       screen = createEndScreen({ stage, kit, say, sounds: ui.sounds, endArt, state, words, life, onNext: () => send({ type: "next" }), onAgain: () => send({ type: "again" }), onLeave: () => send({ type: "leave" }) });
     },

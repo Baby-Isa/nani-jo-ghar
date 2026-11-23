@@ -11,11 +11,15 @@
  *       more than one day: grammar-in-play 8(a) 6); rightFirst: null while asked and not yet touched
  *   asked(ledger, places) -> ledger       places a scene will grade, untouched, in the order it asks them: the ledger keeps
  *       that order, which progress reads them in (so a place touched wrong early still counts in its turn)
- *   touched(ledger, verdicts, places) -> ledger      a graded touch of each place named, { [filler]: right }, of the places
- *       given ({ who, key, filler, day }, asked or not); a place not named is left as it is
+ *   touched(ledger, touches) -> ledger      a graded touch of each place given, { who, key, filler, day, right }, asked or
+ *       not; a place is known by who, key and filler together, so a word and a pattern sharing a filler never meet
  *   rowPlaces(who, items, day) -> places  a person's card, its rows as places
- *   rightFirst(ledger, who, filler) -> true | false | null      progressOf(ledger) -> the places touched, in order
+ *   rightFirst(ledger, place) -> true | false | null      progressOf(ledger) -> the places touched, in order
+ *   NOT_ASKED: the filler of a thing nobody asked for, its own word's place (./wrong-order.rules.js strayPlace): leaving a
+ *       thing out is never a touch, so this side is only ever wrong; it costs the word, and no stage waits on it
  */
+
+export const NOT_ASKED = "not-asked";
 
 const same = (a, b) => a.who === b.who && a.key === b.key && a.filler === b.filler;
 
@@ -26,11 +30,10 @@ export function asked(ledger, places) {
   return fresh.length ? ledger.concat(fresh.map((p) => ({ ...p, rightFirst: null }))) : ledger;
 }
 
-export function touched(ledger, verdicts, places) {
+export function touched(ledger, touches) {
   let out = ledger;
-  for (const p of places) {
-    if (!(p.filler in verdicts)) continue;
-    const right = !!verdicts[p.filler];
+  for (const { right: r, ...p } of touches) {
+    const right = !!r;
     const at = out.findIndex((e) => same(e, p));
     // (a wrong touch is kept; a right one counts only while none was wrong)
     if (at < 0) out = out.concat({ ...p, rightFirst: right });
@@ -39,8 +42,8 @@ export function touched(ledger, verdicts, places) {
   return out;
 }
 
-export const rightFirst = (ledger, who, filler) => {
-  const e = (ledger || []).find((x) => x.who === who && x.filler === filler);
+export const rightFirst = (ledger, place) => {
+  const e = (ledger || []).find((x) => same(x, place));
   return e ? e.rightFirst : null;
 };
 
