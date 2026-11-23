@@ -8,11 +8,24 @@
  *   ruling({ kit, level, wrong, n, once }) -> "in" | "no" | "full"
  *       wrong: is this thing wrong now for this dish (the game's); n: how many of it are in already (the game's);
  *       once: it goes in once (the game's settings); no: refused with Nani's "no"; full: refused, it has all it can take
+ *   refusedCost(items, tally) -> [rowId]     what a pick refused with Nani's "no" costs: the card's rows it would have
+ *       made wrong had it gone in (the game's tally of the dish with it in, judged by the kit's one dish check)
+ *
+ * Only a right first touch counts as progress, in every game (Zafar, 23 Nov; non-negotiable 3). A refused pick still
+ * teaches: it plays on, Nani says "no" and nothing is marked, but it costs the rows it is about their first try, as the
+ * same pick let in costs them at the look; so a child who taps both until one is accepted never wins the word.
  */
 import { atLevel } from "../round.js";
+import { faultsOf } from "./wrong-order.rules.js";
 
 export function ruling({ kit, level, wrong, n, once }) {
   if (n >= (once ? 1 : kit.levels.mostOfOne)) return "full";
   if (wrong && !atLevel(kit.levels.mistakes, level)) return "no";
   return "in";
+}
+
+export function refusedCost(items, tally) {
+  // a row given too many, a "no" row given its thing, or a row a thing nobody asked for is counted against
+  const rows = faultsOf(items, tally).flatMap((f) => (f.id === null ? [f.against] : f.kind === "many" || f.kind === "extra" ? [f.id] : []));
+  return [...new Set(rows.filter((id) => items.some((it) => it.id === id)))];
 }

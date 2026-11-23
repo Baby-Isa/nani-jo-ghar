@@ -10,7 +10,7 @@
  */
 import { orderRules } from "../shared/scenes/order.rules.js";
 import { greetingRules } from "../shared/scenes/greeting.rules.js";
-import { checkRules, wordMomentRules, wellDoneRules, serveRules, endRules } from "../shared/scenes/conversation.rules.js";
+import { checkRules, wordMomentRules, wordMomentOf, wellDoneRules, serveRules, endRules } from "../shared/scenes/conversation.rules.js";
 import { cookRules } from "./cook.rules.js";
 import { LAB_WRONG_ORDER } from "./lab.rules.js";
 
@@ -63,7 +63,7 @@ export async function scenesWithViews(parts) {
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
   // the word moment's act, as the game's settings name it: the kitchen's pour, or the kit's pictures (its own word cards from
   // its sides); "none" has no view, its scene over as it starts
-  const wm = settings.wordMoment;
+  const wm = wordMomentOf(settings);
   const acts = {
     pour: (v) => wordMomentView({ ...v, sounds, words: wm.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, sounds, kitchen }) }),
     pictures: (v) => momentScene({ ...v, sounds, moment: wm }).view,

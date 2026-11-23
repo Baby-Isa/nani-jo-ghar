@@ -29,7 +29,7 @@ import { newFire, turn, pass, spend, zone, nearGreen } from "./heat.rules.js";
 import { newHelp, acted, rush, pass as helpPass } from "../shared/kit/help.rules.js";
 import { stepMoment } from "./moment.rules.js";
 import { dishCheck, playOf } from "../shared/kit/wrong-order.rules.js";
-import { ruling } from "../shared/kit/mistakes.rules.js";
+import { ruling, refusedCost } from "../shared/kit/mistakes.rules.js";
 import { labDishes, LAB_WRONG_ORDER } from "./lab.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
@@ -229,9 +229,9 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const said = ruling({ kit, level: s.level, wrong: G.wrongNow(x.dish, mv.id, ctx), n: G.howMany(x.dish, mv.id, ctx), once: settings.row.once.includes(mv.id) });
           if (said === "full") return settle(s, [{ type: "wiggle", item: mv.id }]);
           if (said === "no") {
-            // one more of an asked thing than was asked costs that row its first try (a thing nobody asked for costs none)
-            const row = x.items.find((i) => i.word === mv.id && !i.no);
-            const next = row && !x.missed.includes(row.id) ? setVessel(s, v, { missed: x.missed.concat(row.id) }) : s;
+            // only a right first touch counts: a refused pick costs the rows it is about their first try, as it would let in
+            const cost = refusedCost(x.items, G.tally(out.dish, ctx)).filter((id) => !x.missed.includes(id));
+            const next = cost.length ? setVessel(s, v, { missed: x.missed.concat(cost) }) : s;
             // (said again only after a beat: a run of taps queues one "no", not one each)
             const again = s.clock - s.noAt >= kitchen.noEveryMs;
             return settle(again ? { ...next, noAt: s.clock } : next, [{ type: "wiggle", item: mv.id }].concat(again ? { type: "no" } : []));

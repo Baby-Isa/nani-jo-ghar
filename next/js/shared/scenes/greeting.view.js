@@ -17,7 +17,7 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
   // ends it where it was, its voice with it
   let asking = null;
   // the greeting's lines are few and known from the round's start: their clips are decoded long before they are said
-  Object.values(kit.greetings).forEach((g) => g && g.meaning && say.warm(g.meaning));
+  Object.values(kit.greetings).forEach((g) => g && g.meaning && say.warm(g.meaning, { by: g.by }));
   let room = null;
   let bubble = null;
   let row = null;
@@ -63,7 +63,9 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
         stage.uncover();
         yield room.walkIn();
         yield wait(kit.order.walkWait - kit.order.walkIn);
-        lines.ask = say.line(kit.greetings[state.line].meaning);
+        // (each line said by whom its data says: an answer is the child's own, in the child's own form)
+        const ask = kit.greetings[state.line];
+        lines.ask = say.line(ask.meaning, { by: ask.by });
         const face = stage.art.file(people[state.who].face);
         room.bubble(0, `<button class="say round" data-act="again"></button><span class="face" style="background-image:url(${face})"></span><span class="text">${lineHtml(lines.ask)}</span><button class="round pass" data-act="skip">${K.passGlyph}</button>`, "greet");
         bubble = stage.el.over.querySelector(".bubble");
@@ -75,8 +77,7 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
         row.dataset.ownTaps = "1";
         for (const opt of state.options) {
           const o = kit.greetings[opt];
-          // (an answer is the child's own line, in the child's own form)
-          lines[opt] = say.line(o.meaning, { by: "child" });
+          lines[opt] = say.line(o.meaning, { by: o.by });
           const wrap = document.createElement("div");
           wrap.className = "reply-wrap";
           wrap.innerHTML = `<button class="round hear" aria-label="Hear it"></button><button class="reply${state.lit && opt === state.right ? " lit" : ""}" data-choice="${opt}"><span class="emoji">${o.emoji}</span><span>${lineHtml(lines[opt])}</span></button>`;

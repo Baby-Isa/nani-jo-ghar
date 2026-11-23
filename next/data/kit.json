@@ -1204,7 +1204,7 @@
  },
 
  "greetings": {
-  "_about": "The greeting's lines: each a meaning for the language engine, and the small picture that goes with an answer.",
+  "_about": "The greeting's lines: each a meaning for the language engine, and the small picture that goes with an answer. by: who says the line, where it is not the person greeting (\"child\": an answer, the child's own line, said in the child's own form; the view and the check read it alike).",
   "salaam": {
    "meaning": {
     "fn": "Exclaim",
@@ -1212,6 +1212,7 @@
    }
   },
   "salaam-reply": {
+   "by": "child",
    "meaning": {
     "fn": "Exclaim",
     "x": "cook.line.greet-reply"
@@ -1219,6 +1220,7 @@
    "emoji": "🙋"
   },
   "goodbye": {
+   "by": "child",
    "meaning": {
     "fn": "Exclaim",
     "x": "phrase.goodbye-khuda-hafiz"

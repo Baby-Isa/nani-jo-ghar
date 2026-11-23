@@ -26,16 +26,32 @@ export function momentRules({ id, words, due = () => true }) {
   };
 }
 
+/** A moment shown by the kit's pictures: its words are its sides', in order. */
+export const momentWords = (moment) => moment.sides.map((s) => s.word);
+
+/**
+ * The game's word moment as its settings name it, read here alone, by its rules and its screen alike: a game whose
+ * settings name no act stops with a plain message, before anything reads it. Its words are one list: the sides' where
+ * the kit's pictures show them, else the settings' own `words`.
+ */
+export function wordMomentOf(settings) {
+  const wm = settings.wordMoment;
+  if (!wm || !wm.act) throw new Error('word moment: the game\'s settings name its act ("none" for no word moment)');
+  if (wm.act === "none") return wm;
+  const from = wm.act === "pictures" ? "sides" : "words";
+  if (!Array.isArray(wm[from]) || !wm[from].length) throw new Error(`word moment: the "${wm.act}" act shows the settings' ${from}, and they name none`);
+  return { ...wm, words: from === "sides" ? momentWords(wm) : wm.words };
+}
+
 /**
  * The game's word moment: a word no picture can show is shown first, once, while it is still new to the child. Its act is
  * named in the game's settings ("none": the game has no word moment, and the scene is over as it starts); its words are
  * the settings' own, or its sides' where the kit's pictures show them.
  */
 export function wordMomentRules({ settings }) {
-  const wm = settings.wordMoment;
-  if (!wm || !wm.act) throw new Error('word moment: the game\'s settings name its act ("none" for no word moment)');
+  const wm = wordMomentOf(settings);
   if (wm.act === "none") return momentRules({});
-  const words = wm.words || wm.sides.map((s) => s.word);
+  const words = wm.words;
   const due = (round) => {
     const asked = new Set(round.order.for.flatMap((p) => p.items.map((i) => i.word)));
     return words.every((w) => asked.has(w)) && words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);

@@ -12,7 +12,7 @@
  *     moment: { id (its file's name), sides: [{ word, art, count?: 1 to 3, scale?: over 0, up to 1 }] }
  *     a word is a language engine id, said and spelt by the engine (say.js)
  */
-import { momentRules } from "./conversation.rules.js";
+import { momentRules, momentWords } from "./conversation.rules.js";
 import { wordMomentView } from "./word-moment.view.js";
 
 const el = (tag, cls, parent) => {
@@ -23,7 +23,7 @@ const el = (tag, cls, parent) => {
 };
 
 export function momentScene({ moment, stage, say, kit, sounds, send }) {
-  const words = moment.sides.map((s) => s.word);
+  const words = momentWords(moment);
   const artOf = Object.fromEntries(moment.sides.map((s) => [s.word, s.art]));
   const act = picturesMoment({ stage, kit, sounds, moment });
   return { id: moment.id, rules: momentRules({ id: moment.id, words }), view: wordMomentView({ stage, say, kit, sounds, send, words, wordCardArt: (word) => artOf[word], act }) };
