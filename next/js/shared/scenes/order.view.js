@@ -65,7 +65,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     const said = Promise.race([spoken.then(() => (wasHeard ? null : readTime)), wait(quiet + O.voiceCapMs)]);
     // the person talks for as long as their line is said, whatever its cards do meanwhile (held, a lesson, a flight): the
     // room's to end, and its talk ends with the scene's lifetime too, skipped or over
-    room.says(e.seat, said, life);
+    room.says(e.seat, said);
     // (a clip still loading is waited for as long as the player itself waits for it: the card never pops before the word)
     yield Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
     if (e.dishCard) {
@@ -126,7 +126,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       // new object after every scene, so the room is known by who stands in it)
       const lift = atLevel(kit.room.liftByPeople, round.people.length);
       const here = !!ui.room && ui.room.key === roomKey(round.people, lift) && stage.showing() === "room";
-      room = here ? ui.room : createRoom({ stage, kit, roomArt, people, standing: round.people, lift });
+      room = here ? ui.room : createRoom({ stage, kit, roomArt, people, standing: round.people, lift, life });
+      if (here) room.keptBy(life);
       ui.room = room;
       life.onResize(relayout);
       stage.uncover();
@@ -149,19 +150,19 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
           const p = round.order.for[seat];
           ui.cards.replay(seat, e.dishCard ? { line: say.line(p.dishCard, { row: true }), pic: picOf("dish", p) } : null);
         }
-        // (the voice cut short; the rest, every talk with it, ends with the scene's lifetime as it closes)
-        else if (e.type === "skipped") say.stop();
+        // (a skip ends the scene: its voice, every talk with it, ends with the scene's lifetime)
       }
     },
     probe: () => (room ? room.probe() : []),
-    async leave() {
+    // (its closing's own lifetime: the cards are let land before the next scene)
+    async leave(state, round, closing) {
       saying = null;
       if (big) big.remove();
       big = null;
       document.querySelectorAll("#over .pop, body > .pop").forEach((el) => el.remove());
       room.bubble(null);
       ui.cards.landAll();
-      await stage.wait(O.holdAlong);
+      await closing.wait(O.holdAlong);
     },
   };
 }

@@ -4,7 +4,7 @@
  * stays until the right move is made. A "hard" light swallows taps outside its box (the cog is above it); a soft one
  * only shows the way.
  *
- *   const light = createLight({ kit, stage })
+ *   const light = createLight({ kit, stage, life })     life: the lifetime of whoever makes it (the round's: js/shared/life.js)
  *   light.show(box, { hard?, margin?, avoid?, from?, ms? })  box: the thing's own box on the page (its ink: what is seen of it),
  *       or several boxes lit as one (a thing and its word pill), or a function giving either now (so the light follows its thing
  *       to a new place when the screen changes size); avoid: the boxes of the things near it that stay dark, or a function
@@ -42,14 +42,13 @@ export function litBox(u, { margin, least = 0, avoid = [], clear = 0, overlap })
   m = Math.max(Math.min(least, margin), m);
   return { x: u.x - m, y: u.y - m, w: u.w + 2 * m, h: u.h + 2 * m };
 }
-const followed = new WeakSet();
 let relight = null; // the light showing now, placed again at a new size
 let nudge = null; // the light showing now, told that something on the page moved
 // a list scrolled, a box sliding open or shut, a card moving: the light follows its thing for a moment (never every frame)
 if (typeof document !== "undefined")
   for (const ev of ["scroll", "transitionrun", "transitionend", "animationstart"]) document.addEventListener(ev, () => nudge && nudge(), { capture: true, passive: true });
 
-export function createLight({ kit, stage }) {
+export function createLight({ kit, stage, life }) {
   const K = kit.light;
   const el = document.createElement("div");
   el.className = "light";
@@ -60,11 +59,8 @@ export function createLight({ kit, stage }) {
   let lit = null;
   let again = null;
   let marked = "";
-  // one follower per page, for whichever light shows now (a frame later: the things it lights are placed again first)
-  if (stage && !followed.has(stage)) {
-    followed.add(stage);
-    stage.onResize(() => requestAnimationFrame(() => relight && relight()));
-  }
+  // its follower, for whichever light shows now, as long as it lasts (a frame later: the things it lights are placed again first)
+  life.onResize(() => requestAnimationFrame(() => relight && relight()));
 
   /** The dim with one rounded hole, and the gold edge round it. */
   function draw({ x, y, w: w0, h: h0 }) {

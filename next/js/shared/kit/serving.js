@@ -3,8 +3,10 @@
  * dishes and each person's face beside theirs, and fills a dish through the states the game names. A game supplies
  * only a dish's art id and its fill state; it never draws its own plates, glasses or labels.
  *
- *   const serving = createServing({ stage, kit, spot, people, art: { base, empty }, dim })
+ *   const serving = createServing({ stage, kit, spot, people, art: { base, empty }, dim, life })
  *       spot: the family's plan (where, how big, each dish's place); people: [{ id, face }]
+ *       life: the lifetime of the scene that makes it (js/shared/life.js): its settling, twinkles and fades end with it
+ *   serving.keptBy(life)   a later scene keeps the spot on screen (the well done's praise): its moves run on that scene's lifetime
  *   serving.set(i, ref)                 the dish resting in a state
  *   serving.frame(i, ref)               one frame of a fill (drawn just above the resting dish)
  *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise   serving.away(seats)
@@ -17,8 +19,9 @@ export const servingRefs = ({ kit, art, people }) => ({
   then: [kit.art.drop].concat(kit.art.twinkles, people.flatMap((p) => [p.faceHappy, p.faceSad].filter(Boolean))),
 });
 
-export function createServing({ stage, kit, spot, people, art, dim, s }) {
+export function createServing({ stage, kit, spot, people, art, dim, s, life: madeWith }) {
   const L = kit.look;
+  let life = madeWith; // the lifetime of the scene the spot is shown in now
   const shadows = stage.layer("worktop", "shadows");
   const base = stage.layer("worktop", "spot");
   const veilL = stage.layer("worktop", "veil");
@@ -52,6 +55,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
   const glassW = () => spot.gR * 2;
 
   return {
+    keptBy: (l) => (life = l),
     set(i, ref) {
       dishes[i].pic.swap(ref, { rim: spot.gR });
       dishes[i].over.set({ alpha: 0 });
@@ -62,9 +66,9 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
     async settle(i) {
       const o = dishes[i].pic.obj;
       const sc = o.scaleX;
-      for (const [k, ms] of V.settle) await stage.tween(o, { scale: sc * k }, ms);
+      for (const [k, ms] of V.settle) await life.tween(o, { scale: sc * k }, ms);
     },
-    undim: () => stage.tween(veil, { alpha: 0 }, V.undimMs),
+    undim: () => life.tween(veil, { alpha: 0 }, V.undimMs),
     /** These dishes and their faces are away from the spot (orders done right while another is remade); the rest are here. */
     away(list) {
       dishes.forEach((d, i) => {
@@ -95,7 +99,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       const spots = T.spots;
       await Promise.all(
         kit.art.twinkles.map(async (ref, n) => {
-          await stage.wait(n * T.gapMs);
+          await life.wait(n * T.gapMs);
           const t = stage.picture(fx, ref, { x: cx + spots[n][0] * span, y: cy + spots[n][1] * span, w: span * spots[n][2] });
           t.obj.setBlendMode("ADD");
           const full = t.obj.scaleX;
@@ -156,7 +160,7 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
       g.fillStyle(0xffffff, 1).fillRoundedRect(0, -P.lift, t.width1 + P.pad, P.h, P.radius);
       c.bringToTop(t);
       c.alpha = 0;
-      stage.tween(c, { alpha: 1 }, P.fadeMs);
+      life.tween(c, { alpha: 1 }, P.fadeMs);
       praiseCard = c;
     },
     async closeReview() {

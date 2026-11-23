@@ -6,7 +6,8 @@
  * is ./order-row.js (its rule: ./row.rules.js); the big card is ./big-card.js; the card lifted for the wrong-order pop-up
  * is ./order-card.lift.js, made by the same two builders as the panel's (shell, itemCard).
  *
- *   const cards = createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds })
+ *   const cards = createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds, life })
+ *       life: the round's lifetime (js/shared/life.js), whose cards they are: their rows' and big cards' timing ends with it
  *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.focus(seat)  cards.slot(seat, id) -> rectangle
  *   cards.land(seat, ids)  cards.landAll()  cards.ticks(seat, ids, placed?)  the rules' ticked rows, in the order ticked, and the
  *       rows that keep their place in the row (ticked, or gone past what was asked: unticked, the row not sliding back)
@@ -40,7 +41,7 @@ import { createLift } from "./order-card.lift.js";
 // (a card only shown: nothing on it is a button to press, but its speaker where it keeps one)
 const still = (el, keep = "") => el.querySelectorAll(`button${keep ? `:not(${keep})` : ""}`).forEach((b) => b.replaceWith(Object.assign(document.createElement("span"), { className: b.className, innerHTML: b.innerHTML })));
 
-export function createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds }) {
+export function createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds, life }) {
   const host = stage.el.cards;
   host.innerHTML = "";
   // the list's one scroll rule lives in the panel: these cards only say what changed
@@ -51,7 +52,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
 
   /** One word card's inside. The level hides the English; it hides the picture only of a word the child has earned. */
   const wordCard = (line, pic, word, o = {}) => wordCardHtml({ file: stage.art.file, line, pic, kit, english: showEnglish, blurred: pictureHidden(kit, round, word), ...o });
-  const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds });
+  const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds, life });
 
   const heads = round.order.for.map((p) => say.line(p.headline.meaning, { register: p.headline.register }));
   /** The one order card: the person's face, their order as one line, and its row, empty (the panel's and the lifted). */
@@ -95,7 +96,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     host.appendChild(el);
     spaceWords([...items.values()].map((it) => it.el), kit);
     panel.track(el);
-    return { el, items, head, person: p, row: createRow({ stage, kit, el: rowEl, items, panel }) };
+    return { el, items, head, person: p, row: createRow({ kit, el: rowEl, items, panel, life }) };
   });
   const firstCard = (s) => s.items.values().next().value.el;
 

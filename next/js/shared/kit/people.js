@@ -4,11 +4,13 @@
  * thing, called or thanked. The counter's front hides everything below its edge, so people lean on it.
  *
  *   roomRefs({ roomArt, people, standing, nani? }) -> the pictures a room needs: its scene names them, to be loaded first
- *   const room = createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech? })
+ *   const room = createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech?, life })
  *       speech: the kind of bubble its scene shows ("greet", the tallest, or "line"), for the strip kept above the heads
+ *       life: the lifetime of the scene that makes it (js/shared/life.js): its fitting to a new size, its hops and talk
+ *   room.keptBy(life)   a later scene keeps the room standing: from now on it fits, hops and talks on that scene's lifetime
  *   room.walkIn() -> Promise      room.walkOff() -> Promise      room.mood(seat, "happy" | "neutral")
- *   room.says(seat, said, life) -> said: the person talks from now until their line ends (said, a promise), and stops
- *       with it, or with the scene's lifetime (js/shared/life.js), skipped or left, whichever ends first
+ *   room.says(seat, said) -> said: the person talks from now until their line ends (said, a promise), and stops with it,
+ *       or with the scene's lifetime, skipped or left, whichever ends first
  *   room.bubble(seat, html | null)      room.head(seat) -> the head's box on the page      room.figureAt(seat) -> { x, top }
  *   room.bubbleBox() -> where the bubble sits, in the play area's px      room.placeBubble(avoid?) places it again
  *   room.headsTop: the top of the highest head's outline, in world px      room.strip() -> its px
@@ -23,8 +25,9 @@ export const roomKey = (standing, lift, nani = false) => JSON.stringify([standin
 export const roomRefs = ({ roomArt, people, standing, nani = false }) =>
   [roomArt].concat((nani ? [{ id: "nani" }].concat(standing) : standing).flatMap((p) => Object.values(people[p.id].figure).filter((v) => typeof v === "string")));
 
-export function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false, speech = "greet" }) {
+export function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false, speech = "greet", life }) {
   const R = kit.room;
+  let owner = null; // the lifetime of the scene the room stands in now
   stage.clear("room");
   stage.show("room", { lift });
   const back = stage.layer("room", "back");
@@ -128,7 +131,14 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
     el.style.top = `${bottom / z}px`;
     el.style.setProperty("--tail", `${Math.max(R.tailMin, Math.min(2 * half - R.tailMin, half + (cx - x))) / z}px`);
   }
-  stage.onResize(() => (fit(), bubbleEl && placeBubble(bubbleAt.seat, bubbleAt.avoid)), "room");
+  /** The room stands in this scene now: it fits the play area as it is, and again at each new size, while the scene lasts. */
+  function keptBy(l) {
+    owner = l;
+    const refit = () => (fit(), bubbleEl && placeBubble(bubbleAt.seat, bubbleAt.avoid));
+    refit();
+    owner.onResize(refit);
+  }
+  keptBy(life);
 
   // a figure's head box on the page: from the top of its outline (its cap) down to its head's foot
   function headAt(f, cx, top) {
@@ -144,24 +154,27 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
   /**
    * While a person speaks, their talking picture flaps against their resting (neutral) one, with a small bob, as the standard
    * does: never against their happy one, whose raised hand would flap up and down. After the line they keep their mood.
-   * (The room's own: a scene starts a talk only through says, and the line or the scene's lifetime ends it.)
+   * (The room's own: a scene starts a talk only through says. A talk is a lifetime of its own, a part of the scene's: its
+   * line's end, the person's next line, or the scene's end ends its flap and bob, and the person rests as they are.)
    */
-  function talk(seat, on) {
+  function talk(seat) {
     const s = seats[seat];
-    if (s.talking) s.talking.forEach((t) => t.remove());
-    s.talking = null;
-    s.pic.swap(s.f[s.mood]);
-    s.pic.set({ y: s.top, angle: 0 });
-    if (!on) return;
+    if (s.talking) s.talking.end();
     const T = R.talk;
-    const flap = { remove: () => (flap.timer && flap.timer.remove(), (flap.gone = true)) };
-    const step = (open) => {
-      if (flap.gone) return;
-      s.pic.swap(open ? s.f.talk : s.f.neutral);
-      flap.timer = stage.scene.time.delayedCall(open ? T.openMs : T.shutMs[0] + Math.random() * (T.shutMs[1] - T.shutMs[0]), () => step(!open));
-    };
-    step(true);
-    s.talking = [flap, stage.scene.tweens.add({ targets: s.pic.obj, y: s.top - T.bob, angle: T.turn, duration: T.bobMs, yoyo: true, repeat: -1, ease: "Sine.easeInOut" })];
+    const t = (s.talking = owner.child());
+    t.go(function* () {
+      for (let open = true; ; open = !open) {
+        s.pic.swap(open ? s.f.talk : s.f.neutral);
+        yield t.wait(open ? T.openMs : T.shutMs[0] + Math.random() * (T.shutMs[1] - T.shutMs[0]));
+      }
+    });
+    t.tween(s.pic.obj, { y: s.top - T.bob, angle: T.turn, yoyo: true, repeat: -1 }, T.bobMs, "inOut");
+    t.onEnd(() => {
+      if (s.talking === t) s.talking = null;
+      s.pic.swap(s.f[s.mood]);
+      s.pic.set({ y: s.top, angle: 0 });
+    });
+    return t;
   }
 
   return {
@@ -174,7 +187,7 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
     async walkIn() {
       await Promise.all(
         seats.map((s) => {
-          stage.scene.tweens.add({ targets: s.pic.obj, y: s.top - R.hop, duration: R.hopMs, yoyo: true, repeat: R.hops });
+          owner.tween(s.pic.obj, { y: s.top - R.hop, yoyo: true, repeat: R.hops }, R.hopMs, "linear");
           return s.pic.to({ x: s.x }, kit.order.walkIn, "cubicOut").then(() => ((s.walking = false), s.pic.set({ x: s.x })));
         })
       );
@@ -191,15 +204,12 @@ export function createRoom({ stage, kit, roomArt, people, standing, lift, walk =
      * scene left with the line cut short). The room owns the talk, so no scene pairs it on and off by hand: a line ended
      * first (the same person's next line, or the scene's end) ends nothing when it ends.
      */
-    says(seat, said, life) {
-      talk(seat, true);
-      const mine = seats[seat].talking;
-      let off = null;
-      const end = () => (off && off(), mine && seats[seat].talking === mine && talk(seat, false));
-      off = life.onEnd(end);
-      Promise.resolve(said).then(end, end);
+    says(seat, said) {
+      const t = talk(seat);
+      Promise.resolve(said).then(() => t.end(), () => t.end());
       return said;
     },
+    keptBy,
     nani: (mood) => naniPic && naniPic.swap(nf[mood]),
     /** The bubble's words are underlined in gold while they are being said. */
     reading: (on) => bubbleEl && bubbleEl.classList.toggle("reading", !!on),

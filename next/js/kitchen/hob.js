@@ -2,7 +2,8 @@
  * The hob: its picture, and for each burner the flames, the knob, the person's face on the front strip, and the ring
  * that shows the heat on the vessel itself (never a separate timer). It draws what the heat rule says; it decides nothing.
  *
- *   const hob = createHob({ stage, kitchen, plan, people, onKnob, onFace })
+ *   const hob = createHob({ stage, kitchen, plan, people, onKnob, onFace, life })
+ *       life: the cook scene's lifetime (js/shared/life.js): its taps, steam, puffs and moves end with the scene
  *   hob.fire(v, "off" | "high" | "low")      hob.ring(v, heat | null, k)      hob.ringOut(v, ms)      hob.wiggleKnob(v)
  *   hob.steam(v, on)      hob.puffs(v)      hob.overflow(v, u | null)      hob.chosen(v | null)      hob.stepBack()      hob.knobBox(v) / hob.vesselBox(v)
  *   hobRefs({ kitchen, steamArt, people }) -> { draw, then }: the pictures it draws with, and the steam it shows later
@@ -14,7 +15,7 @@ export const hobRefs = ({ kitchen, steamArt, people }) => {
   return { draw: [A.hob[people.length - 1], A.knobOff, A.knobOn, A.flameHigh, A.flameLow].concat(people.map((p) => p.face)), then: steamArt };
 };
 
-export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFace }) {
+export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFace, life }) {
   const k = kitchen.layout;
   const A = kitchen.art;
   const RING = kitchen.hob.ring;
@@ -41,8 +42,8 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
     const knobOff = stage.picture(things, A.knobOff, { x: v.knob.x, y: v.knob.y, w: k.knob });
     const knobOn = stage.picture(things, A.knobOn, { x: v.knob.x, y: v.knob.y, w: k.knob, alpha: 0, angle: -90 });
     const ring = stage.graphics(rings);
-    stage.onTap({ obj: knobOff.obj }, () => onKnob(i));
-    stage.onTap({ obj: face.obj }, () => onFace(i));
+    life.onTap({ obj: knobOff.obj }, () => onKnob(i));
+    life.onTap({ obj: face.obj }, () => onFace(i));
     return { v, high, low, mark, face, knobOff, knobOn, ring, wiggling: false, steam: null };
   });
 
@@ -60,13 +61,19 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
     steam(i, on) {
       const b = burners[i];
       if (!!b.steam === !!on) return;
-      if (b.steam) b.steam.remove();
+      if (b.steam) b.steam.end();
       b.steam = null;
       if (!on) return;
       let side = 1;
       const puff = () => ((side = -side), wisp(b.v.x + side * ST.side * plan.rimR * Math.random(), b.v.y - ST.startUp * plan.rimR, ST.w * plan.rimR, ST.riseAll, side * ST.drift));
-      puff();
-      b.steam = stage.scene.time.addEvent({ delay: ST.everyMs, loop: true, callback: puff });
+      // (a lifetime of its own, a part of the scene's: the boil's end, or the scene's, stops it)
+      const st = (b.steam = life.child());
+      st.go(function* () {
+        for (;;) {
+          puff();
+          yield st.wait(ST.everyMs);
+        }
+      });
     },
     /** A boil-over: two wisps from the vessel's upper left and top. */
     puffs(i) {
@@ -88,7 +95,7 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
         if (b.overU == null) return;
         const [dx, dy, w, rise] = ST.puffs[n++ % ST.puffs.length];
         wisp(b.v.x + dx * plan.rimR, b.v.y + dy * plan.rimR, w * lerp(ST.overGrow) * plan.rimR, rise, 0);
-        b.overT = stage.wait(lerp(ST.overEveryMs)).then(next);
+        b.overT = life.wait(lerp(ST.overEveryMs)).then(next);
       };
       next();
     },
@@ -129,7 +136,7 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
       const mine = (b.ringOut = {});
       // (the fade moves the ring only while it is still this fade's: heat coming back takes the ring at once)
       const fade = { get alpha() { return b.ring.alpha; }, set alpha(v) { if (b.ringOut === mine) b.ring.alpha = v; } };
-      stage.tween(fade, { alpha: 0 }, ms, "linear").then(() => b.ringOut === mine && ((b.ringOut = null), b.ring.clear(), (b.ring.alpha = 1)));
+      life.tween(fade, { alpha: 0 }, ms, "linear").then(() => b.ringOut === mine && ((b.ringOut = null), b.ring.clear(), (b.ring.alpha = 1)));
     },
     /** "Not yet": the knob shakes as one piece, both its pictures together (old kitchen-kit.js:390-393), so the shake shows lit or not. */
     async wiggleKnob(i) {
@@ -137,7 +144,7 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
       if (b.wiggling) return;
       b.wiggling = true;
       const both = [b.knobOff.obj, b.knobOn.obj].map((o) => [o, o.angle]);
-      const turn = (d) => Promise.all(both.map(([o, rest]) => stage.tween(o, { angle: rest + d }, H.wiggle.ms)));
+      const turn = (d) => Promise.all(both.map(([o, rest]) => life.tween(o, { angle: rest + d }, H.wiggle.ms)));
       for (let n = 0; n < H.wiggle.times; n++) {
         await turn(-H.wiggle.deg);
         await turn(H.wiggle.deg);

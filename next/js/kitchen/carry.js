@@ -3,10 +3,11 @@
  * place on the serving spot; the game's mechanic empties the vessel inside its box; the kit fills the dish through
  * the frames the game names; the box is carried back. Nothing tips and no stream is drawn.
  *
- *   carry({ stage, plan, i, box, pan, serving, hob, frames, set, t, shape, glassFrame, restRef, left }) -> Promise
+ *   life.go(carry({ stage, life, plan, i, box, pan, serving, hob, frames, set, t, shape, glassFrame, restRef, left }))
+ *       a task of the cook scene's lifetime (js/shared/life.js): the scene's end stops the carry where it is
  *       frames: [first, last] frame numbers of this pour; set: which of the game's sets of frames
  */
-export async function carry({ stage, plan, i, box, pan, serving, hob, frames, halves, set, t, shape, glassFrame, restRef, left, onPouring, onBack }) {
+export function* carry({ stage, life, plan, i, box, pan, serving, hob, frames, halves, set, t, shape, glassFrame, restRef, left, onPouring, onBack }) {
   const LIFT = shape.lift;
   const GAP = 1 + shape.gap;
   const top = stage.layer("worktop", "carried");
@@ -22,12 +23,10 @@ export async function carry({ stage, plan, i, box, pan, serving, hob, frames, ha
   const o = box.obj;
   const st = { p: 0 };
   // lift: from the burner to the hold point, rising a little on the way and growing as it comes nearer
-  await new Promise((resolve) =>
-    stage.scene.tweens.add({
-      targets: st,
+  yield life.tween(
+    st,
+    {
       p: 1,
-      duration: t.lift,
-      ease: "Cubic.easeInOut",
       onUpdate() {
         o.x = home.x + (hold.x - home.x) * st.p;
         o.y = home.y + (hold.y - home.y) * st.p - Math.sin(st.p * Math.PI) * shape.arc;
@@ -38,34 +37,32 @@ export async function carry({ stage, plan, i, box, pan, serving, hob, frames, ha
           serving.frame(i, glassFrame(frames[0]));
         }
       },
-      onComplete: resolve,
-    })
+    },
+    t.lift,
+    "cubic"
   );
   if (onPouring) onPouring(true);
   const pour = { f: 0 };
-  await new Promise((resolve) =>
-    stage.scene.tweens.add({
-      targets: pour,
+  yield life.tween(
+    pour,
+    {
       f: 1,
-      duration: t.pour * halves,
-      ease: "Sine.easeInOut",
       onUpdate() {
         const n = Math.round(frames[0] + (frames[1] - frames[0]) * pour.f);
         pan.emptying(set, n);
         serving.frame(i, glassFrame(n));
       },
-      onComplete: resolve,
-    })
+    },
+    t.pour * halves,
+    "inOut"
   );
   if (onPouring) onPouring(false);
   serving.set(i, restRef);
   st.p = 1;
-  await new Promise((resolve) =>
-    stage.scene.tweens.add({
-      targets: st,
+  yield life.tween(
+    st,
+    {
       p: 0,
-      duration: t.back,
-      ease: "Cubic.easeIn",
       onUpdate() {
         o.x = home.x + (hold.x - home.x) * st.p;
         o.y = home.y + (hold.y - home.y) * st.p;
@@ -76,11 +73,12 @@ export async function carry({ stage, plan, i, box, pan, serving, hob, frames, ha
           if (onBack) onBack();
         }
       },
-      onComplete: resolve,
-    })
+    },
+    t.back,
+    "cubicIn"
   );
   box.raise(stage.layer("worktop", "vessels"));
   if (left) hob.fire(i, "low");
   serving.settle(i);
-  await pan.dip();
+  yield pan.dip();
 }

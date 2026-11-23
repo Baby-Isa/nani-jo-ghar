@@ -27,6 +27,7 @@ export function wellDoneView({ stage, say, kit, ui, send }) {
     // (nothing new to draw: the kitchen stays as the cooking left it, and the praise comes as the scene opens)
     enter(state, round, lifetime) {
       life = lifetime;
+      if (ui.serving) ui.serving.keptBy(life);
     },
     on(events) {
       for (const e of events) if (e.type === "praise") life.go(praise(e.line));
@@ -75,7 +76,7 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
     room.reading(true);
     const quiet = Math.max(kit.order.silentMin, Math.min(kit.order.silentMax, kit.order.silentBase + kit.order.silentPerLetter * l.text.length));
     // they talk while the line is said, and stop as it ends (the room's), or as the scene's lifetime does
-    yield room.says(e.seat, Promise.all([Promise.race([say.speak(l), wait(quiet + R.voiceCapMs)]), wait(l.plan.some((c) => c.file) ? kit.order.minHoldMs : quiet)]), life);
+    yield room.says(e.seat, Promise.all([Promise.race([say.speak(l), wait(quiet + R.voiceCapMs)]), wait(l.plan.some((c) => c.file) ? kit.order.minHoldMs : quiet)]));
     room.reading(false);
     // their line said, the bubble goes and they rest a beat in their happy pose, a hand raised, before the next line
     room.mood(e.seat, "happy");
@@ -101,7 +102,7 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
     const n = round.people.length;
     const spread = (i) => R.naniX + R.serveSpread[0] + ((stage.sheet.w - R.serveSpread[1] - R.naniX - R.serveSpread[0]) * i) / (n - 1);
     const standing = n > 2 ? round.people.map((p, i) => ({ ...p, spot: spread(i) })) : round.people;
-    room = createRoom({ stage, kit, roomArt, people, standing, lift: 0, walk: false, nani: true, speech: "line" });
+    room = createRoom({ stage, kit, roomArt, people, standing, lift: 0, walk: false, nani: true, speech: "line", life });
     ui.room = room;
     // the heads with the speech strip above them, down to the foot of the widest tray's shadow, stay whole at any size, on a
     // resize too; where that cannot fit at the painting's full width the trays stay whole and the people stand lower (the room's)
@@ -160,7 +161,6 @@ export function endView({ stage, say, kit, ui, send, endArt }) {
   return {
     pictures: () => Object.values(endArt).flatMap((v) => (typeof v === "string" ? v : Object.values(v))),
     enter(state, round, life) {
-      say.stop();
       ui.nani.line(null);
       // one tile per thing and number the order used, in the form it was said: the dish first, then each row in turn
       const words = [];

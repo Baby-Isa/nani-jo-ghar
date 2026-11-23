@@ -211,8 +211,9 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       if (e.last) counts(null);
       D.hob.chosen(null); // the chosen look hides while the pan is in the air
       chain = chain.then(() =>
-        carry({
+        life.go(carry({
           stage,
+          life,
           plan: D.plan,
           i: v,
           box: D.vessels[v].box,
@@ -229,7 +230,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
           left: !e.last,
           onPouring: (on) => ui.sounds.loop(settings.sounds.pouring, on),
           onBack: () => (D.vessels[v].pan.show(lookOf(peek() || s, v)), D.hob.chosen((peek() || s).chosen)),
-        })
+        }))
       );
     },
     closed(e, s) {
@@ -303,9 +304,10 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       // the layers, back to front
       ["ground", "shadows", "halos", "hob", "spot", "flames", "marks", "vessels", "things", "veil", "pills", "steam", "rings", "fly", "fx", "labels", "carried"].forEach((name) => stage.layer("worktop", name));
       const who = state.vessels.map((x) => people[x.who]);
-      const hob = createHob({ stage, kitchen, plan, people: who, steamArt: kit.art.steam, onKnob: (v) => send({ type: "knob", vessel: v }), onFace: (v) => send({ type: "face", vessel: v }) });
-      const serving = createServing({ stage, kit, spot: plan.spot, people: who, art: settings.serving.art, dim: settings.serving.dim, s: view.s });
-      const shelf = createShelf({ stage, say, kit, k: K, row: rowPlan, wordArt: kit.wordArt, pillShows: (id) => !ui.round.earned[id], onItem: (id) => send({ type: "item", id }), onPill: (id) => say.speak(say.word(id)) });
+      // the kit's pieces and the hob, each made with the scene's lifetime: what they start ends with the scene
+      const hob = createHob({ stage, kitchen, plan, people: who, steamArt: kit.art.steam, onKnob: (v) => send({ type: "knob", vessel: v }), onFace: (v) => send({ type: "face", vessel: v }), life });
+      const serving = createServing({ stage, kit, spot: plan.spot, people: who, art: settings.serving.art, dim: settings.serving.dim, s: view.s, life });
+      const shelf = createShelf({ stage, say, kit, k: K, row: rowPlan, wordArt: kit.wordArt, pillShows: (id) => !ui.round.earned[id], onItem: (id) => send({ type: "item", id }), onPill: (id) => say.speak(say.word(id)), life });
       const vessels = plan.vessels.map((at, i) => {
         const sh = settings.vessel.shadow;
         stage.shadow(stage.layer("worktop", "shadows"), { x: at.x, y: at.y + sh.dy * plan.vesselR, w: sh.size * plan.vesselR, h: sh.size * plan.vesselR });

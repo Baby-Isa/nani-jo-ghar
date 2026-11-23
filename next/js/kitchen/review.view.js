@@ -6,7 +6,7 @@
  *
  *   reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) -> handlers by event type
  *       drawn() -> what the cook scene has drawn (hob, shelf, serving, vessels); later(task): a task of the cook scene's
- *       lifetime (js/shared/life.js), after the big moves before it
+ *       lifetime (js/shared/life.js), after the big moves before it, handed that lifetime
  *       cardRoom() -> where on the page the wrong-order card may stand
  */
 export function reviewView({ stage, kit, settings, game, people, ui, send, drawn, later, lookOf, counts, cardRoom }) {
@@ -25,14 +25,14 @@ export function reviewView({ stage, kit, settings, game, people, ui, send, drawn
       });
     },
     "wrong-order"(e, s) {
-      later(function* () {
+      later(function* (life) {
         const D = drawn();
         yield D.serving.closeReview();
         // (nothing of the cooking shows over the card: the count pills come back with the remake)
         counts(null);
         // (once the card covers the hob, every pan is drawn as the rules now hold it, emptied, so a right order's half pour
         // left in its pan does not stand on the hob while another is made again: Zafar, 21 Nov)
-        yield ui.wrongOrder(e, cardRoom, () => D.vessels.forEach((x, v) => x.pan.show(lookOf(s, v))));
+        yield ui.wrongOrder(e, life, cardRoom, () => D.vessels.forEach((x, v) => x.pan.show(lookOf(s, v))));
         send({ type: "understood" });
       });
     },

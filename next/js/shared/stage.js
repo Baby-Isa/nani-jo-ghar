@@ -15,13 +15,14 @@
  *                                       a picture's own outline (js/shared/outline.js)
  *   stage.box(layer, { x, y, w, h }) -> box        what a game's mechanic is handed: its own clipped corner of a layer
  *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture      stage.visibleX(view) -> { left, right }
- *   stage.onTap(handle | { view, x, y, w, h }, fn)  stage.onTick(fn(ms))   stage.wait(ms)   stage.clear()
- *   stage.life() -> a scene's lifetime on the stage's clock (js/shared/life.js): the runner gives one to each scene
+ *   stage.life() -> a lifetime on the stage's one clock (js/shared/life.js): the one door to its time and taps. Its waits,
+ *       tweens, delayed calls, frames, taps (a handle, or { view, x, y, w, h }) and its listeners for a new size of the play
+ *       area (called once the canvas has been laid out again) all go through one; the page makes one that never ends, and
+ *       the round, its scenes and the kit theirs from it
+ *   stage.clear(view)   every layer of a view emptied
  *   stage.hold(on)   stage.onHold(fn(on)) -> off     the whole round stands still (the turn card) and goes on
  *   stage.keepInView(view, y, px?, bottom?)   world y stays in view, with px screen px above it, whatever the play area's
  *                                       shape; in the room, down to world y `bottom` too (shown smaller where it must be)
- *   stage.onResize(fn, view?) -> off   fn() once the canvas has been laid out again for a new size of the play area;
- *                                       a view's own are let go of when that view is cleared
  *
  * A handle: set(props), to(props, ms, ease) -> Promise, swap(ref), remove(), and `obj` (for the stage and the kit only).
  * The things themselves (pictures and their handles, the box, images, strips, lines, words) are made in stage.things.js.
@@ -71,8 +72,10 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
   const ticks = new Set();
   const taps = [];
   let showing = null;
-  const wait = (ms) => new Promise((resolve) => scene.time.delayedCall(ms, resolve));
-  const things = createThings({ scene, art, kit, views, dpr, load, tween, wait, ticks });
+  // (a picture's own move, its handle's `to`, and the stage's own curtain and glide: on the one clock, below)
+  const tween = (obj, props, ms, ease) => new Promise((done) => clock.tween(obj, props, ms, ease, done));
+  const wait = (ms) => new Promise((done) => clock.later(ms, done));
+  const things = createThings({ scene, art, kit, views, dpr, load, tween, ticks });
   const made = createMadePictures({ scene, art, kit, outlines, wrap: things.wrap });
 
   function makeView(name) {
@@ -122,7 +125,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     was = now;
     game.scale.resize(size().w * dpr, size().h * dpr);
     place();
-    resized.forEach((r) => r.fn());
+    resized.forEach((fn) => fn());
   });
 
   scene.events.on("update", (time, delta) => ticks.forEach((fn) => fn(Math.min(100, delta))));
@@ -158,22 +161,21 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
   }
 
   const EASE = { in: "Sine.easeIn", out: "Sine.easeOut", inOut: "Sine.easeInOut", back: "Back.easeOut", cubicOut: "Cubic.easeOut", cubicIn: "Cubic.easeIn", cubic: "Cubic.easeInOut", quadIn: "Quad.easeIn", linear: "Linear" };
-  function tween(obj, props, ms, ease = "inOut") {
-    if (!ms) {
-      Object.assign(obj, props);
-      return Promise.resolve();
-    }
-    return new Promise((resolve) => scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: resolve }));
-  }
 
-  /** The stage's clock for a scene's lifetime: each thing it starts handed back with the way to stop it. */
+  /** The stage's one clock, under every lifetime: each thing it starts handed back with the way to stop it. */
   const clock = {
     later(ms, fn) {
       const t = scene.time.delayedCall(ms, fn);
       return () => t.remove(false);
     },
     tween(obj, props, ms, ease = "inOut", done = () => {}) {
-      if (!ms) return (Object.assign(obj, props), done(), () => {});
+      // (a tween of no time is at its end at once: its values set, its own settings left out, its update told once)
+      if (!ms) {
+        const { onUpdate, yoyo, repeat, repeatDelay, ...to } = props;
+        Object.assign(obj, yoyo ? {} : to);
+        if (onUpdate) onUpdate();
+        return (done(), () => {});
+      }
       const t = scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: done });
       return () => t.stop();
     },
@@ -182,11 +184,15 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       return () => ticks.delete(fn);
     },
     resize(fn) {
-      const r = { fn, view: null };
-      resized.add(r);
-      return () => resized.delete(r);
+      resized.add(fn);
+      return () => resized.delete(fn);
     },
-    tap: (target, fn) => onTap(target, fn),
+    /** A tap anywhere in the play area is given to the topmost thing registered under it, at least `kit.look.minTap` px wide. */
+    tap(target, fn) {
+      const t = { target, fn };
+      taps.push(t);
+      return () => taps.includes(t) && taps.splice(taps.indexOf(t), 1);
+    },
   };
 
   function layer(view, name) {
@@ -205,13 +211,6 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     return [(w - DESIGN_W * v.s) / 2 + x * v.s, (y - v.top) * v.s];
   }
 
-  /** A tap anywhere in the play area is given to the topmost thing registered under it, at least `kit.look.minTap` px wide. */
-  function onTap(target, fn) {
-    const t = { target, fn };
-    taps.push(t);
-    // (one already let go of, with its view cleared, is not there to take out)
-    return () => taps.includes(t) && taps.splice(taps.indexOf(t), 1);
-  }
   function rectOf(t) {
     const g = t.target;
     if (g.obj) {
@@ -257,11 +256,8 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     graphics: things.graphics,
     text: things.text,
     container: things.container,
-    tween,
-    wait,
     life: () => createLife(clock),
     toPage,
-    onTap,
     size,
     /** A design-px box of a view as a rectangle on the page. */
     pageRect(view, b) {
@@ -277,18 +273,9 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       return { left: DESIGN_W / 2 - half, right: DESIGN_W / 2 + half };
     },
     topOf: (view) => views[view].top,
-    onTick(fn) {
-      ticks.add(fn);
-      return () => ticks.delete(fn);
-    },
-    onResize(fn, view = null) {
-      const r = { fn, view };
-      resized.add(r);
-      return () => resized.delete(r);
-    },
     /**
      * The round held where it is (behind the turn card) and let go again: the pictures, their moves and every
-     * stage.wait stand still, the page's own moves pause, and each listener (the voice, the sounds) holds too.
+     * lifetime's wait stand still, the page's own moves pause, and each listener (the voice, the sounds) holds too.
      */
     hold(on) {
       if (on === held) return;
@@ -338,18 +325,14 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     glide(lift, ms) {
       const v = views.room;
       const state = { lift: v.lift };
-      return new Promise((resolve) =>
-        scene.tweens.add({ targets: state, lift, duration: ms, ease: "Sine.easeInOut", onUpdate: () => ((v.lift = state.lift), place()), onComplete: resolve })
-      );
+      return tween(state, { lift, onUpdate: () => ((v.lift = state.lift), place()) }, ms, "inOut");
     },
-    /** Empty a view: every layer, every tap on it. */
+    /** Empty a view: every layer. (Its taps and listeners are their lifetimes', let go of as each ends.) */
     clear(view) {
       const v = views[view];
       Object.values(v.layers).forEach((l) => l.destroy());
       v.layers = {};
       Object.assign(v, { keep: null, keepPx: 0, keepBottom: null });
-      for (let i = taps.length - 1; i >= 0; i--) if ((taps[i].target.view || taps[i].target.viewName) === view) taps.splice(i, 1);
-      resized.forEach((r) => r.view === view && resized.delete(r));
     },
     /** How wide a word is in the word font at a size, in design px. */
     measure(str, px) {

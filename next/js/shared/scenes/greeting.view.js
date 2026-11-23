@@ -1,7 +1,8 @@
 /*
  * The greeting's drawing. The person's line shows in a bubble over their head with their face, a button to hear it
  * again and a button to pass; the child's two answers rise along the bottom, each with its own button to hear it.
- * A right answer flies up to the bubble and the person is pleased; a wrong one only shakes.
+ * A right answer flies up to the bubble and the person is pleased; a wrong one only shakes. Answered or not, the person's
+ * reply is said and they are pleased, then the answers go: the scene's own steps, so its closing only tidies.
  */
 import { createRoom, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
@@ -12,6 +13,9 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
   // (the stage's own clock, through the scene's lifetime: it stands still while the round is held behind the turn card)
   let life = null;
   const wait = (ms) => life.wait(ms);
+  // the asking (the ask said and the answers rising, a wrong answer's wobble), a part of the scene's lifetime: the reply
+  // ends it where it was, its voice with it
+  let asking = null;
   // the greeting's lines are few and known from the round's start: their clips are decoded long before they are said
   Object.values(kit.greetings).forEach((g) => g && g.meaning && say.warm(g.meaning));
   let room = null;
@@ -20,10 +24,10 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
   const lines = {};
 
   const quietMs = (line) => K.silentBase + K.silentPerLetter * line.text.length;
-  /** A line is said if it has a recording; if not, its bubble is simply held a reading's length (the reply, as the scene closes). */
-  const sayOr = (line) => (line.plan.some((c) => c.file) ? say.speak(line) : stage.wait(quietMs(line)));
+  /** A line is said if it has a recording; if not, its bubble is simply held a reading's length (the reply). */
+  const sayOr = (line) => (line.plan.some((c) => c.file) ? say.speak(line) : wait(quietMs(line)));
 
-  /** The person asks, and the answers rise: a task of the scene's lifetime, so an answer that ends the scene stops it. */
+  /** The person asks, and the answers rise: a task of the asking, so an answer stops it where it is. */
   function* ask(state) {
     bubble.classList.add("speaking");
     yield say.speak(lines.ask);
@@ -32,12 +36,28 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
     row.classList.add("up");
   }
 
+  /** The person's reply, said whether or not the child answered, and their pleased beat; then the answers go. */
+  function* reply(state) {
+    asking.end();
+    bubble.classList.remove("speaking", "wobble");
+    const line = lines[state.right];
+    if (!state.answered) bubble.querySelector(".text").innerHTML = lineHtml(line);
+    yield sayOr(line);
+    room.mood(0, "happy");
+    yield wait(K.afterReplyMs);
+    row.classList.remove("up");
+    yield wait(K.fadeMs);
+    send({ type: "said" });
+  }
+
   return {
     pictures: (round) => roomRefs({ roomArt, people, standing: round.people }),
     enter(state, round, lifetime) {
       life = lifetime;
+      asking = life.child();
+      asking.onEnd(() => say.stop());
       return life.go(function* () {
-        room = createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length) });
+        room = createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length), life });
         ui.room = room;
         ui.cards.seats.forEach((s) => (s.el.hidden = true));
         stage.uncover();
@@ -69,30 +89,22 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
     on(events, state) {
       for (const e of events) {
         const b = row && row.querySelector(`[data-choice="${e.choice}"]`);
-        if (e.type === "ask") life.go(ask(state));
+        if (e.type === "ask") asking.go(ask(state));
         else if (e.type === "wrong-answer" && b) {
           b.classList.remove("shake");
           void b.offsetWidth;
           b.classList.add("shake");
           bubble.classList.add("wobble");
-          wait(K.wrongPauseMs).then(() => (bubble.classList.remove("wobble"), life.go(ask(state))));
+          asking.wait(K.wrongPauseMs).then(() => (bubble.classList.remove("wobble"), asking.go(ask(state))));
           if (e.light) row.querySelector(`[data-choice="${state.right}"]`).classList.add("lit");
         } else if (e.type === "answered" && b) b.classList.add("chosen");
         else if (e.type === "modelled" && b) b.classList.add("lit");
+        else if (e.type === "reply") life.go(reply(state));
       }
     },
-    async leave(state) {
-      // (an ask or a wobble cut short by the answer stops where it was: its voice and its look go with it)
-      say.stop();
-      if (bubble) bubble.classList.remove("speaking", "wobble");
-      const reply = lines[state.right];
-      if (!state.answered && bubble) bubble.querySelector(".text").innerHTML = lineHtml(reply);
-      await sayOr(reply);
-      room.mood(0, "happy");
-      await stage.wait(K.afterReplyMs);
-      row.classList.remove("up");
-      await stage.wait(K.fadeMs);
-      row.remove();
+    leave() {
+      if (row) row.remove();
+      if (!room) return;
       room.bubble(null);
       room.mood(0, "neutral");
     },

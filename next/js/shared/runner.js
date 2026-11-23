@@ -11,10 +11,11 @@
  *   view.pictures(round) -> ids | { draw, then }  what the scene shows, from the round as it starts: `draw` before it can
  *                                                 be drawn, `then` straight after
  *   view.enter(state, round, life)                draws the scene; a promise settles once it is drawn, never once it is played
- *   view.on(events, state, round), view.leave(state, round)      (each optional; leave may return a promise)
+ *   view.on(events, state, round), view.leave(state, round, life)      (each optional; leave may return a promise)
  *   life: the scene's lifetime (js/shared/life.js), made as its view starts drawing and ended as the scene is left, just
  *   before its view is told to close: every wait, tween, listener and task the view starts through it ends there, so
- *   nothing of a scene runs on after it, skipped or over (a view's closing runs after it, on the stage's own clock)
+ *   nothing of a scene runs on after it, skipped or over. Its closing (leave) is handed a lifetime of its own, ended once
+ *   it has closed
  *
  * A scene is in one phase at a time:
  *   loading   its pictures are coming      drawing   its view is drawing it      open   drawn: its clock runs, its view hears
@@ -31,7 +32,7 @@
  * without saying why.
  *
  *   const run = createRunner({ scenes, round, views: true|false, load(ids) -> Promise, life() -> a lifetime, onEnd, onError })
- *       life: where each scene's lifetime comes from (the stage's), needed once a scene has a view
+ *       life: where each scene's lifetime (and its closing's) comes from (the round's), needed once a scene has a view
  *   run.start() -> events, run.send(move) -> events: what the move made, and what a scene opened by it (inside that call,
  *       as with no pictures to wait for, the robot's way) opens with; a scene that opens later is told only to its view
  *   run.tree() -> { round, at, scene, state, phase }   run.settled()
@@ -150,11 +151,26 @@ export function createRunner({ scenes, round, views = true, load = null, life = 
     lifeNow = null;
     tree.phase = "leaving";
     handOn();
-    // (everything the scene started ends before its view closes; one still drawing is let finish its drawing first)
-    const close = () => (ending && ending.end(), tell("leave", state, before));
+    // (everything the scene started ends before its view closes; one still drawing is let finish its drawing first, or
+    // fail it; its closing runs on a lifetime of its own, ended once it has closed)
+    const close = () => {
+      if (ending) ending.end();
+      const after = ending && life();
+      const closed = () => after && after.end();
+      let out;
+      try {
+        out = tell("leave", state, before, after);
+      } catch (e) {
+        closed();
+        throw e;
+      }
+      if (out && typeof out.then === "function") return out.finally(closed);
+      closed();
+      return out;
+    };
     let closing = null;
     try {
-      closing = was === "loading" ? null : was === "drawing" ? Promise.resolve(drawing).then(close) : close();
+      closing = was === "loading" ? null : was === "drawing" ? Promise.resolve(drawing).then(close, close) : close();
     } catch (e) {
       fail(e);
     }

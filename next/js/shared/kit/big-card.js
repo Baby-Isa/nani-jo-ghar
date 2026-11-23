@@ -4,14 +4,15 @@
  * play area lets it be but never taller than its share of the play area's height (Zafar's red box), and smaller still
  * until it touches no head. Everything inside it is sized from its width (--pw), so it scales as one picture.
  *
- *   const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds })
+ *   const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds, life })
+ *       life: its cards' (the round's lifetime: js/shared/life.js)
  *   big.place(slotEl, heads?, bubble?, { again? }) -> { x, y, w, h }   in the play area's px (again: afresh, at a new size)
  *   big.pop(src, slotEl) -> { el, fly(), out(), lesson(), remove() }   src: { el?, line, pic, word }
  */
 import { revealLesson, wireSpeaker, spaceWords } from "./word-card.js";
 import { createMove } from "./move.js";
 
-export function createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds }) {
+export function createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds, life }) {
   const O = kit.order;
   let kept = null;
   // the big cards showing now (one, or the dish's own card beside it), placed again at a new size unless already flying
@@ -95,7 +96,7 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
         // lands there at once
         let flight = null;
         el.dataset.flying = "1";
-        const off = stage.onResize(() => flight && flight.finish());
+        const off = life.onResize(() => flight && flight.finish());
         await createMove(kit, { track: (a) => (flight = a) }).fly(el, to);
         off();
         src.el.classList.remove("waiting");
@@ -105,7 +106,7 @@ export function createBigCard({ stage, say, kit, round, panel, wordCard, light, 
       async out() {
         el.classList.remove("in");
         el.classList.add("out");
-        await stage.wait(O.dishCardOut);
+        await life.wait(O.dishCardOut);
         gone();
       },
       /** The first-time lesson: the order waits while the child taps each hidden part open. */

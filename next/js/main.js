@@ -31,13 +31,21 @@ async function start() {
   const frame = createFrame({ kit });
   const art = createArt(registry, { build: globalThis.NJG_BUILD === "store" ? "store" : "test" });
   const stage = await createStage({ art, kit, frame, renderer: ask.get("draw") || "auto" });
-  const say = await createSay({ voice: kit.voice, wait: stage.wait });
+  // the page's own lifetime on the stage's clock, never ended: the voice's pause between words, and each round's a part of it
+  const page = stage.life();
+  const say = await createSay({ voice: kit.voice, wait: page.wait });
+  // a scene's lifetime is a part of its owner's, and the voice stops with it: whatever a scene said ends as it is left
+  const sceneLife = (owner) => () => {
+    const life = owner.child();
+    life.onEnd(() => say.stop());
+    return life;
+  };
   // upright, the whole round waits where it is behind the turn card (pictures, moves, voice, sounds) and goes on when turned
   stage.onHold((on) => say.hold(on));
   frame.onResize(() => stage.hold(frame.upright()));
   // nothing is drawn or said before the fonts are in, the phone is on its side, and (on a phone) the first tap is made
   await frame.ready();
-  if (moment) return (await import("./shared/moment-page.js")).playMoment({ id: moment, kit, stage, say, onError: stopped });
+  if (moment) return (await import("./shared/moment-page.js")).playMoment({ id: moment, kit, stage, say, life: sceneLife(page), onError: stopped });
 
   const [settings, people] = await Promise.all([json(`data/games/${id}.json`), json("data/people.json")]);
   const family = settings.family;
@@ -54,8 +62,11 @@ async function start() {
     },
   };
 
-  let offTick = null;
+  let last = null; // the round before's lifetime, ended as the next starts
   async function play() {
+    if (last) last.end();
+    // the round's lifetime: its clock, its kit, and its scenes' lifetimes, each a part of it
+    const roundLife = (last = page.child());
     const seed = Number(ask.get("seed")) || Math.floor(Math.random() * 2 ** 31);
     const round = newRound({ game: id, settings, people: people.people, level, seed, player: progress.player, ladder: progress.ladder, met: progress.met, today: new Date().toDateString(), best: progress.best, earned: progress.earned, tried: triedOf(progress), card: game.rules.card });
     // a grown-up's lab from the labs page (?lab=wrong-order: the round opens on its dishes made, one wrong): never in a store
@@ -63,14 +74,14 @@ async function start() {
     const lab = ask.get("lab");
     if (lab && globalThis.NJG_BUILD === "store") throw new Error("labs are for testing only");
     if (lab) round.lab = lab;
-    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, player, meet: (key) => !round.lab && meetNow(progress, key) };
+    const parts = { game, settings, [family]: familySettings, kit, people: people.people, stage, say, art, round, roundLife, player, meet: (key) => !round.lab && meetNow(progress, key) };
     let run = null;
     const scenes = await familyCode.scenesWithViews({ ...parts, send: (move) => run.send(move), tree: () => run.tree() });
     run = createRunner({
       scenes,
       round,
       load: (ids) => stage.load(ids),
-      life: () => stage.life(),
+      life: sceneLife(roundLife),
       onError: stopped,
       onEnd(ended) {
         if (!round.lab) saveRound(progress, ended, kit.ladder);
@@ -78,9 +89,8 @@ async function start() {
       },
     });
     globalThis.njg = { run, stage, say, scenes, frame }; // for the checks, which play the page as a child would and read where it is
-    if (offTick) offTick();
     // (behind the turn card the stage is held, so no time passes and nothing boils over)
-    offTick = stage.onTick((ms) => !stage.held() && run.send({ type: "time", ms }));
+    roundLife.onTick((ms) => !stage.held() && run.send({ type: "time", ms }));
     run.start();
   }
   await play();

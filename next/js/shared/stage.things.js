@@ -3,7 +3,7 @@
  * a repeated strip, lines and shapes, words, and a plain group. Only the stage calls this (its fitting, views and taps
  * stay in stage.js); a game reaches these through the stage.
  *
- *   const things = createThings({ scene, art, kit, views, dpr, load, tween, wait, ticks })
+ *   const things = createThings({ scene, art, kit, views, dpr, load, tween, ticks })      tween: the stage's one clock's
  *   things.wrap(obj, ref, mirror, size?) -> handle    things.picture(layer, ref, opts) -> handle
  *   things.box(parent, rect, makes)   makes: the stage's made pictures (a box's picture lying in a liquid is made there)
  *   things.image(layer, key, o)   things.tiled(layer, ref, rect)   things.graphics(layer)   things.text(layer, str, style)
@@ -18,7 +18,7 @@ function originOf(art, ref, mirror) {
   return [mirror ? (w - cx) / w : cx / w, cy / h];
 }
 
-export function createThings({ scene, art, kit, views, dpr, load, tween, wait, ticks }) {
+export function createThings({ scene, art, kit, views, dpr, load, tween, ticks }) {
   // the canvas's words drawn at the screen's own pixels (a little over), so they are never shrunk several times and grainy
   const texts = new Set();
   function sharpen(t) {
@@ -180,7 +180,6 @@ export function createThings({ scene, art, kit, views, dpr, load, tween, wait, t
         };
         return out;
       },
-      wait: (ms) => wait(ms),
       clear() {
         made.splice(0).forEach((hd) => hd.obj.destroy());
       },

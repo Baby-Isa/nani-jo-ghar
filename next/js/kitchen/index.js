@@ -3,7 +3,8 @@
  * The runner has no list of its own; a caller such as story mode may pass a different one.
  *
  *   kitchenScenes({ game, settings, kitchen, kit, views? }) -> [{ id, rules, view? }]      the rules alone
- *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, player?, meet? }) -> the same list with its drawing
+ *   scenesWithViews({ ...the same, stage, say, people, send, tree, round, roundLife, player?, meet? }) -> the same list with its drawing
+ *       roundLife: the round's lifetime (js/shared/life.js), for the kit made once for the round
  *       player: { name, renew() } who is playing, for the cog; meet(key): a first-time thing kept as it is shown
  *       round.lab "wrong-order" (the labs page): the list from the cooking on, its dishes made (./lab.rules.js)
  */
@@ -30,7 +31,7 @@ export function kitchenScenes({ game, settings, kitchen, kit, views = () => null
 
 /** The same list with a screen: the kit's cards and sounds are made once for the round and shared by its scenes. */
 export async function scenesWithViews(parts) {
-  const { game, settings, kitchen, kit, stage, say, people, round } = parts;
+  const { game, settings, kitchen, kit, stage, say, people, round, roundLife } = parts;
   const [{ createNaniBox }, { createCards }, { createSounds }, { showWrongOrder }, { orderView }, conv, { cookView }, { createLight }, { createCog }, { greetingView }, { wordMomentView }, { pourMoment }] = await Promise.all([
     import("../shared/kit/nani-box.js"),
     import("../shared/kit/order-card.js"),
@@ -50,13 +51,13 @@ export async function scenesWithViews(parts) {
   const picOf = (item, person) => G.cardArt(item, person.asks, A) || kit.wordArt[item.word].art;
   const sounds = createSounds({ kit, say, stage });
   document.querySelectorAll(".light").forEach((el) => el.remove());
-  const ui = { round, sounds, room: null, serving: null, light: createLight({ kit, stage }) };
+  const ui = { round, sounds, room: null, serving: null, light: createLight({ kit, stage, life: roundLife }) };
   ui.cog = createCog({ stage, kit, sounds, player: parts.player });
   stage.el.side.style.backgroundImage = `url(${stage.art.file(kit.art.panel)})`;
   ui.nani = createNaniBox({ stage, say, kit, face: people.nani.face });
-  ui.cards = createCards({ stage, say, kit, round, people, picOf, light: ui.light, sounds, onPeek: (word, what) => parts.send({ type: "peek", word, what }), onFace: (seat) => parts.send({ type: stage.showing() === "room" ? "repeat" : "face", who: round.order.for[seat].who, vessel: seat }) });
+  ui.cards = createCards({ stage, say, kit, round, people, picOf, light: ui.light, sounds, life: roundLife, onPeek: (word, what) => parts.send({ type: "peek", word, what }), onFace: (seat) => parts.send({ type: stage.showing() === "room" ? "repeat" : "face", who: round.order.for[seat].who, vessel: seat }) });
   ui.itemWords = new Set(round.order.for.flatMap((p) => p.items.map((i) => say.entry(i.word).id)));
-  ui.wrongOrder = (e, room, covered) => showWrongOrder({ stage, say, kit, sounds, cards: ui.cards, cog: ui.cog, right: e.right, wrong: e.wrong, room, covered });
+  ui.wrongOrder = (e, life, room, covered) => showWrongOrder({ say, kit, sounds, cards: ui.cards, cog: ui.cog, right: e.right, wrong: e.wrong, room, covered, life });
   // a view may look at the state only while its own scene is the one being played
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
   const make = {

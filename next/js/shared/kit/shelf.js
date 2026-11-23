@@ -3,8 +3,9 @@
  * shadow, and the word pill under each, evenly spaced. A picked thing keeps its size and glides: a bottle flies to
  * the vessel, tips, and comes back; a jar sends a spoon. The row keeps its things all game.
  *
- *   const shelf = createShelf({ stage, say, kit, k, row, wordArt, onItem, onPill })
+ *   const shelf = createShelf({ stage, say, kit, k, row, wordArt, onItem, onPill, life })
  *       row: what layout.rowOf gave; k: the family's layout numbers (band, sizes, pill)
+ *       life: the lifetime of the scene that makes it (js/shared/life.js): its taps, flights, glows and pops end with it
  *   shelf.pour(id, to, times, onFill) -> Promise      shelf.spoon(id, to, spoonRef, times, onLand) -> Promise
  *   shelf.back(id, from, spoonRef) -> Promise         shelf.wiggle(id)   shelf.glow(id, on, { once? })   shelf.dimOthers(id | null)
  *   shelf.pop(id, at)       the thing's word pops over the vessel as it goes in
@@ -13,7 +14,7 @@
  */
 export const shelfRefs = ({ kit, ids }) => [kit.art.band, kit.art.shelf].concat(ids.map((id) => kit.wordArt[id].art));
 
-export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onItem, onPill }) {
+export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onItem, onPill, life }) {
   const L = kit.look;
   const ground = stage.layer("worktop", "ground");
   const shadows = stage.layer("worktop", "shadows");
@@ -60,15 +61,15 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     // where the two meet the thing wins (Zafar, 11 Nov: "they still sometimes tap the word pills rather than tapping the
     // item when they wanted to tap the item"; old js/shared/shelf.js's one rule): the speakers' areas first, the things' after
     const spk = pill.speaker;
-    stage.onTap({ view: "worktop", x: slot.x + spk.x, y: row.pillY - pill.h / 2, w: spk.w, h: pill.h }, () => {
-      stage.tween(pill.c, { scale: row.pillScale * Z.pillPop[0] }, Z.pillPop[1]).then(() => stage.tween(pill.c, { scale: row.pillScale }, Z.pillPop[1]));
+    life.onTap({ view: "worktop", x: slot.x + spk.x, y: row.pillY - pill.h / 2, w: spk.w, h: pill.h }, () => {
+      life.tween(pill.c, { scale: row.pillScale * Z.pillPop[0] }, Z.pillPop[1]).then(() => life.tween(pill.c, { scale: row.pillScale }, Z.pillPop[1]));
       onPill(slot.id);
     });
     thingTaps.push(() => {
       const tapTop = Math.min(drawnTop, top);
       const half = Math.max(w, row.slotW - Z.fit) / 2;
-      stage.onTap({ view: "worktop", x: slot.x - half, y: tapTop, w: 2 * half, h: row.pillY - pill.h / 2 - tapTop }, () => onItem(slot.id));
-      if (spk.x + spk.w < pill.w / 2) stage.onTap({ view: "worktop", x: slot.x + spk.x + spk.w, y: row.pillY - pill.h / 2, w: pill.w / 2 - spk.x - spk.w, h: pill.h }, () => onItem(slot.id));
+      life.onTap({ view: "worktop", x: slot.x - half, y: tapTop, w: 2 * half, h: row.pillY - pill.h / 2 - tapTop }, () => onItem(slot.id));
+      if (spk.x + spk.w < pill.w / 2) life.onTap({ view: "worktop", x: slot.x + spk.x + spk.w, y: row.pillY - pill.h / 2, w: pill.w / 2 - spk.x - spk.w, h: pill.h }, () => onItem(slot.id));
     });
   }
   // (every speaker's area before any thing's, so no speaker's least tap reaches over a neighbour's thing)
@@ -105,25 +106,17 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     return { c, w: w * sk, h: h * sk, speaker };
   }
 
-  const wait = (ms) => stage.wait(ms);
+  const wait = (ms) => life.wait(ms);
 
   /** Fly in an arc: the place follows a sine ease while y is lifted by the arc. */
   function arcTo(h, to, ms, arc) {
     const from = { x: h.obj.x, y: h.obj.y };
     const st = { p: 0 };
-    return new Promise((resolve) =>
-      stage.scene.tweens.add({
-        targets: st,
-        p: 1,
-        duration: ms,
-        ease: "Sine.easeInOut",
-        onUpdate() {
-          h.obj.x = from.x + (to.x - from.x) * st.p;
-          h.obj.y = from.y + (to.y - from.y) * st.p - Math.sin(st.p * Math.PI) * arc;
-        },
-        onComplete: resolve,
-      })
-    );
+    const onUpdate = () => {
+      h.obj.x = from.x + (to.x - from.x) * st.p;
+      h.obj.y = from.y + (to.y - from.y) * st.p - Math.sin(st.p * Math.PI) * arc;
+    };
+    return life.tween(st, { p: 1, onUpdate }, ms, "inOut");
   }
 
   return {
@@ -146,8 +139,8 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       it.shade.set({ visible: true });
       if (onBack) onBack();
       const base = it.pic.obj.scaleX;
-      await stage.tween(it.pic.obj, { scaleX: base * Z.squash.wide, scaleY: base * Z.squash.flat }, Z.squash.inMs);
-      await stage.tween(it.pic.obj, { scaleX: base, scaleY: base }, Z.squash.outMs);
+      await life.tween(it.pic.obj, { scaleX: base * Z.squash.wide, scaleY: base * Z.squash.flat }, Z.squash.inMs);
+      await life.tween(it.pic.obj, { scaleX: base, scaleY: base }, Z.squash.outMs);
     },
     /** A spoonful from a jar: a teaspoon flies to the vessel and stirs; the thing lands as the stir ends. */
     async spoon(id, to, spoonRef, t, { onLand, len } = {}) {
@@ -157,21 +150,14 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       // the stir: the bowl goes round the middle, then lifts away
       const st = { a: 0 };
       sp.set({ angle: Z.spoon.over });
-      await new Promise((resolve) =>
-        stage.scene.tweens.add({
-          targets: st,
-          a: 1,
-          duration: t.stir,
-          onUpdate() {
-            const ang = -Math.PI / 2 + st.a * t.turns * 2 * Math.PI;
-            sp.obj.x = to.x + Math.cos(ang) * to.r;
-            const last = st.a > Z.spoon.lastPart ? (st.a - Z.spoon.lastPart) / (1 - Z.spoon.lastPart) : 0; // the end of the stir: it lifts and fades
-      sp.obj.y = to.y + Math.sin(ang) * to.r - last * to.r * Z.spoon.liftTo;
-            sp.obj.alpha = 1 - last * Z.spoon.liftTo;
-          },
-          onComplete: resolve,
-        })
-      );
+      const onUpdate = () => {
+        const ang = -Math.PI / 2 + st.a * t.turns * 2 * Math.PI;
+        sp.obj.x = to.x + Math.cos(ang) * to.r;
+        const last = st.a > Z.spoon.lastPart ? (st.a - Z.spoon.lastPart) / (1 - Z.spoon.lastPart) : 0; // the end of the stir: it lifts and fades
+        sp.obj.y = to.y + Math.sin(ang) * to.r - last * to.r * Z.spoon.liftTo;
+        sp.obj.alpha = 1 - last * Z.spoon.liftTo;
+      };
+      await life.tween(st, { a: 1, onUpdate }, t.stir, "linear");
       sp.remove();
       if (onLand) onLand();
     },
@@ -206,8 +192,8 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const half = (w * kPop) / 2;
       c.x = Math.max(half + P.edge, Math.min(stage.sheet.w - half - P.edge, at.x));
       c.alpha = 0;
-      stage.tween(c, { alpha: 1, y }, P.inMs, "back");
-      stage.wait(P.stayMs).then(() => stage.tween(c, { alpha: 0, y: y - P.rise }, P.outMs)).then(() => c.destroy());
+      life.tween(c, { alpha: 1, y }, P.inMs, "back");
+      life.wait(P.stayMs).then(() => life.tween(c, { alpha: 0, y: y - P.rise }, P.outMs)).then(() => c.destroy());
     },
     /** A refused tap: the thing rocks and ends straight. No sound, no cross. */
     async wiggle(id) {
@@ -216,10 +202,10 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       it.busy = true;
       const o = it.pic.obj;
       for (let i = 0; i < L.wiggle.times; i++) {
-        await stage.tween(o, { angle: -L.wiggle.deg }, L.wiggle.ms);
-        await stage.tween(o, { angle: L.wiggle.deg }, L.wiggle.ms);
+        await life.tween(o, { angle: -L.wiggle.deg }, L.wiggle.ms);
+        await life.tween(o, { angle: L.wiggle.deg }, L.wiggle.ms);
       }
-      await stage.tween(o, { angle: 0 }, L.wiggle.ms);
+      await life.tween(o, { angle: 0 }, L.wiggle.ms);
       it.busy = false;
     },
     /**
@@ -230,9 +216,9 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     glow(id, on, { once = false } = {}) {
       const it = items.get(id);
       if (!it) return;
-      if (it.hop) {
-        it.hop.stop();
-        it.hop = null;
+      if (it.glowing) {
+        it.glowing.end();
+        it.glowing = null;
         it.pic.obj.y = b.base;
       }
       if (it.halo) {
@@ -245,9 +231,11 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const kk = it.w / pw / H.k; // the halo's small copy, drawn at the thing's size
       it.halo = stage.image(halos, H.key, { x: it.slot.x, y: it.mid });
       it.halo.obj.setScale(kk);
-      stage.scene.tweens.add({ targets: it.halo.obj, alpha: L.halo.breatheTo, duration: L.halo.breatheMs, yoyo: true, repeat: -1 });
+      // (the glow's breath and hop: a lifetime of their own, a part of the scene's, ended as the glow is)
+      const g = (it.glowing = life.child());
+      g.tween(it.halo.obj, { alpha: L.halo.breatheTo, yoyo: true, repeat: -1 }, L.halo.breatheMs, "linear");
       const up = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));
-      it.hop = stage.scene.tweens.add({ targets: it.pic.obj, y: b.base - up, duration: L.hop.upMs, ease: "Quad.easeOut", yoyo: true, repeat: once ? 0 : -1, repeatDelay: L.hop.restMs });
+      g.tween(it.pic.obj, { y: b.base - up, yoyo: true, repeat: once ? 0 : -1, repeatDelay: L.hop.restMs }, L.hop.upMs, "Quad.easeOut");
     },
     dimOthers(id) {
       for (const [key, it] of items) it.pic.obj.alpha = id && key !== id ? L.dimOthers : 1;

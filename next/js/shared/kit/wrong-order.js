@@ -36,7 +36,8 @@
  * What it plays is the kit's rule (./wrong-order.rules.js playOf); the cards are the order card's own; this file only
  * times it.
  *
- *   showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room, covered? }) -> Promise (when it has been shown)
+ *   showWrongOrder({ say, kit, sounds, cards, cog, right, wrong, room, covered?, life }) -> Promise (when it has been shown)
+ *       life: the lifetime of the scene that shows it (js/shared/life.js): its waits and its following a new size end with it
  *       covered(): called once the first wrong card stands open over the room, so what is under it can change unseen
  *       right: the seats whose orders are right; wrong: [{ vessel, play }] (./wrong-order.rules.js playOf)
  *       room() -> { left, top, right, bottom }: where on the page the cards may stand (the family's)
@@ -49,7 +50,7 @@ const make = (cls) => Object.assign(document.createElement("div"), { className: 
 const finishAll = (el) => el.getAnimations({ subtree: true }).forEach((a) => a.effect.getComputedTiming().iterations !== Infinity && a.finish());
 const box = (el) => el.getBoundingClientRect();
 
-export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, right, wrong, room, covered = () => {} }) {
+export async function showWrongOrder({ say, kit, sounds, cards, cog, right, wrong, room, covered = () => {}, life }) {
   const W = kit.wrongOrder;
   // a first tap on the veil hurries the card showing to its last frame (every wait and move at once, no word waited
   // for); a second ends its hold
@@ -62,8 +63,8 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     hurrying = new Promise((r) => (hurry = r)).then(() => ((hurried = true), moves.forEach((a) => a.finish()), finishAll(veil)));
   };
   calm();
-  const wait = (ms) => (hurried ? Promise.resolve() : Promise.race([stage.wait(ms), hurrying])); // (stands still while the round is held)
-  const speak = (line) => (hurried ? Promise.resolve() : Promise.race([say.speak(line), stage.wait(W.sayCap), hurrying]));
+  const wait = (ms) => (hurried ? Promise.resolve() : Promise.race([life.wait(ms), hurrying])); // (stands still while the round is held)
+  const speak = (line) => (hurried ? Promise.resolve() : Promise.race([say.speak(line), life.wait(W.sayCap), hurrying]));
   const mv = createMove(kit, { now: () => hurried, track: (a) => (moves.add(a), a.finished.catch(() => {}).then(() => moves.delete(a))) });
   const move = (el, frames, ms) => {
     const a = el.animate(frames, { duration: hurried ? 0 : ms, easing: kit.move.ease, fill: "both" });
@@ -94,7 +95,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
   });
   cog.hide(true);
   let fit = () => {};
-  const offResize = stage.onResize(() => fit());
+  const offResize = life.onResize(() => fit());
 
   // a. the veil, and every served order's line from the panel into the stack in the middle, nothing said
   const seats = [...right, ...wrong.map((w) => w.vessel)].sort((a, b) => a - b);
@@ -189,7 +190,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
       let turn = 0;
       holdAgain = () => {
         const mine = ++turn;
-        stage.wait(W.hold).then(() => mine === turn && res());
+        life.wait(W.hold).then(() => mine === turn && res());
       };
       holdAgain();
       // (the panel's card opens behind the veil meanwhile, the list keeping it in view and its row showing the cards this one
@@ -213,7 +214,7 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, cog, righ
     // (its row spaced again as it now stands, the fallen cards gone, so its words sit as the panel's do)
     spaceWords(card.slots.map((sl) => sl.own).filter((el) => el && el.isConnected), kit, { again: true });
     // (a new size of the screen on the way: it lands at once, and the panel's card takes its place)
-    const offHome = stage.onResize(() => moves.forEach((a) => a.finish()));
+    const offHome = life.onResize(() => moves.forEach((a) => a.finish()));
     // (narrowing to its panel card's width as it flies: one move)
     const narrow = () => ((card.el.style.width = `${cards.widthOf(seat)}px`), place(card));
     await Promise.all([last ? move(shade, [{ opacity: 1 }, { opacity: 0 }], mv.ms) : null, mv.fly(card.el, cards.boxOf(seat), { change: narrow })]);

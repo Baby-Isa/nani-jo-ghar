@@ -4,14 +4,15 @@
  * this file only applies them: the cards slide to their new places (nothing jumps), the row glides to its rest, and its
  * edges fade while there is more to swipe that way. The child may still swipe the row; a new width puts it back at its rest.
  *
- *   const row = createRow({ stage, kit, el, items, panel })   items: Map id -> { el, id, no, atServe } in the order asked
+ *   const row = createRow({ kit, el, items, panel, life })   items: Map id -> { el, id, no, atServe } in the order asked
+ *       life: its card's (the round's lifetime: js/shared/life.js)
  *   row.land(ids)  row.landAll()  row.lead(ids)  row.ticks(ids, placed?)  row.served()  row.reopen()
  *       placed: the cards that keep their place (the ticked, and one gone past what was asked), by which the row is ordered
  *       and rests; ids alone are ticked; without it, the ticked cards are the ones that keep their place
  */
 import { rowOrder, rowRest, rowLandRest } from "./row.rules.js";
 
-export function createRow({ stage, kit, el, items, panel }) {
+export function createRow({ kit, el, items, panel, life }) {
   const O = kit.order;
   let ticked = [];
   let placed = []; // (where the cards stand and the row rests: the ticked, and one gone past what was asked, in place)
@@ -45,7 +46,7 @@ export function createRow({ stage, kit, el, items, panel }) {
         });
     }
     // (a card's place is where it rests, not where its slide has it now: the glide waits for the slides)
-    stage.wait(O.rowGlideAfterMs).then(() => el.isConnected && rest());
+    life.wait(O.rowGlideAfterMs).then(() => el.isConnected && rest());
   }
 
   /**
