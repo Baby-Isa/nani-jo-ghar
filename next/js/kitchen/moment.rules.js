@@ -4,18 +4,23 @@
  * and a breath has gone. The cook rules time every movement they start (a pour, a spoonful, a serve), so they know when
  * the kitchen is still, and the moment is worked out again on every move (a movement started meanwhile pushes it back).
  * At the moment a first-time light is shown, and so spent (a step left before its moment keeps its light for the next
- * time). The stuck help's wait runs from the step's opening (Zafar, 19 Nov), its clock standing still until the moment, so
- * help never lands on a first light; the end of each movement restarts it, as a tap does.
+ * time). One first-time light at a time, the step's first: a light of its own waits while the step's is still to come,
+ * and one the step puts up keeps it waiting until the next step opens, then for the next stillness and a breath, so
+ * neither is spent unseen. A light of its own is shown only if what it is for still holds then and its place can be seen:
+ * its asker's one test, checked here once, at its moment; if not, it goes unshown, to be asked again. The stuck help's wait runs from the step's opening (Zafar, 19 Nov), its clock standing still
+ * until the moment, so help never lands on a first light; the end of each movement restarts it, as a tap does.
  *
- *   stepMoment({ settings, kit, kitchen }) -> { opening(s, step, events) -> s, opened(s, events) -> s, keyOf(step), asking, drop }
+ *   stepMoment({ settings, kit, kitchen, holds }) -> { opening(s, step, events) -> s, opened(s, events) -> s, keyOf(step), asking, drop }
+ *       holds: { [key]: (s, data) -> whether a light of its own still has its place now }, the asker's test, one per key
  *       keyOf: a step's identity (a step whose key changes has opened anew)
- *       asking(s, key, data) -> s: a first-time light of its own (not a step's), shown at the next stillness; drop(s, key) -> s
+ *       asking(s, key, data) -> s: a first-time light of its own (not a step's), shown at the next stillness with no
+ *       light of the step's up or to come, if its test holds then; drop(s, key) -> s
  *   events: step {step} as a step opens | open {step, first?} at its moment: its first-time light and its call (step.spoken)
  *   | light {first, ...data}: a first-time light of its own, at its moment
  */
 import { stepped } from "../shared/kit/help.rules.js";
 
-export function stepMoment({ settings, kit, kitchen }) {
+export function stepMoment({ settings, kit, kitchen, holds = {} }) {
   const L = kitchen.lights;
   /** What a step would be lit as, the first time: each control once, each thing every dish needs once, and once the card of the first thing asked for. */
   function firstKey(step) {
@@ -57,32 +62,47 @@ export function stepMoment({ settings, kit, kitchen }) {
     const first = key && !s.lit.includes(key) && !s.metLit.includes(key) ? key : null;
     const st = dressed(step, first);
     if (st) events.push({ type: "step", step: st });
-    return { ...s, step: st, help: stepped(s.help), moment: st && st.kind !== "wait" ? { wait: st.wait, from: s.clock, first } : null };
+    // a light of its own kept behind the last step's light: that light goes as this step opens, so it waits from now
+    const aside = s.aside && s.aside.behind ? { ...s.aside, behind: false, from: s.clock } : s.aside;
+    return { ...s, aside, step: st, help: stepped(s.help), moment: st && st.kind !== "wait" ? { wait: st.wait, from: s.clock, first } : null };
   }
   /**
    * A first-time light of its own, not a step's (a count pill, the first time a spoonful thing goes past what was asked):
    * asked for now, once ever per child; shown, and only then spent, at the kitchen's next stillness after a breath, as a
-   * thing's first light is. Asked again while it waits, it waits on; `drop` lets it go unshown (what it was for is undone).
+   * thing's first light is. Asked again while it waits, it waits on, with what it was asked for now (the newest asking
+   * wins: a child who moves to the other pan and goes past again is shown that pan's pill). At its moment its asker's test (holds) says whether
+   * what it is for still holds and its place can be seen; if not, it goes unshown and unspent. `drop` lets it go unshown at
+   * once, for a reason the test does not cover (what it was to show the child has been found alone).
    */
   function asking(s, key, data) {
-    if (s.lit.includes(key) || s.metLit.includes(key) || (s.aside && s.aside.key === key)) return s;
+    if (s.lit.includes(key) || s.metLit.includes(key)) return s;
+    if (s.aside && s.aside.key === key) return { ...s, aside: { ...s.aside, data } };
     return { ...s, aside: { key, data, from: s.clock } };
   }
   const drop = (s, key) => (s.aside && s.aside.key === key ? { ...s, aside: null } : s);
   const asideDue = (s) => Math.min(Math.max(s.aside.from, s.stillAt, ...s.moves.map((m) => m.until)) + L.breathMs, s.aside.from + L.breathMaxMs);
 
-  /** The moment has come: the light is shown (and so spent) and the call said; the stuck help's wait runs on. */
+  /**
+   * The moment has come: the light is shown (and so spent) and the call said; the stuck help's wait runs on. The step's
+   * first, then a light of its own, if no light of the step's is up now or still to come (there is one light: the second
+   * would replace the first in the same frame), and only if its asker's test still holds: a light never spent unseen.
+   */
   function opened(s, events) {
     let next = s;
-    if (next.aside && next.clock >= asideDue(next)) {
-      const { key, data } = next.aside;
-      events.push({ type: "light", first: key, ...data });
-      next = { ...next, aside: null, lit: next.lit.concat(key) };
+    if (next.moment && next.clock >= dueAt(next)) {
+      const { first } = next.moment;
+      events.push({ type: "open", step: next.step, first });
+      next = { ...next, moment: null, lit: first && !next.lit.includes(first) ? next.lit.concat(first) : next.lit };
+      if (first && next.aside) next = { ...next, aside: { ...next.aside, behind: true } };
     }
-    if (!next.moment || next.clock < dueAt(next)) return next;
-    const { first } = next.moment;
-    events.push({ type: "open", step: next.step, first });
-    return { ...next, moment: null, lit: first && !next.lit.includes(first) ? next.lit.concat(first) : next.lit };
+    const waiting = next.aside && (next.aside.behind || (next.moment && next.moment.first));
+    if (next.aside && !waiting && next.clock >= asideDue(next)) {
+      const { key, data } = next.aside;
+      const still = !holds[key] || holds[key](next, data);
+      if (still) events.push({ type: "light", first: key, ...data });
+      next = { ...next, aside: null, lit: still ? next.lit.concat(key) : next.lit };
+    }
+    return next;
   }
 
   return { opening, opened, keyOf, asking, drop };

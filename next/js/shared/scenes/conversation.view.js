@@ -67,12 +67,11 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
     const l = say.line(e.line);
     // (in its .text, so the gold underline shows while it is said)
     room.bubble(e.seat, `<span class="text">${lineHtml(l)}</span>`, "warm");
-    room.talk(e.seat, true);
     room.reading(true);
     const quiet = Math.max(kit.order.silentMin, Math.min(kit.order.silentMax, kit.order.silentBase + kit.order.silentPerLetter * l.text.length));
-    await Promise.all([Promise.race([say.speak(l), wait(quiet + R.voiceCapMs)]), wait(l.plan.some((c) => c.file) ? kit.order.minHoldMs : quiet)]);
+    // they talk while the line is said, and stop as it ends (the room's)
+    await room.says(e.seat, Promise.all([Promise.race([say.speak(l), wait(quiet + R.voiceCapMs)]), wait(l.plan.some((c) => c.file) ? kit.order.minHoldMs : quiet)]));
     room.reading(false);
-    room.talk(e.seat, false);
     // their line said, the bubble goes and they rest a beat in their happy pose, a hand raised, before the next line
     room.mood(e.seat, "happy");
     room.bubble(null);
@@ -139,6 +138,8 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
     },
     async leave() {
       if (offResize) offResize();
+      // (no one talks on as they walk off)
+      room.hush();
       room.bubble(null);
       await room.walkOff();
     },

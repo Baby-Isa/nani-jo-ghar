@@ -44,7 +44,6 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     const card = ui.cards.bigPlace(room.probe().filter((p) => p.kind === "head"), room.bubbleBox());
     room.bubble(e.seat, html, "", { ...card, gap: O.bubbleGap });
     saying = { seat: e.seat };
-    room.talk(e.seat, true);
     room.reading(true);
     let wasHeard = false;
     let heardIt = null;
@@ -65,6 +64,9 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     const quiet = Math.max(O.silentMin, Math.min(O.silentMax, O.silentBase + O.silentPerLetter * line.text.length)) * O.quietShare;
     const readTime = wait(quiet);
     const said = Promise.race([spoken.then(() => (wasHeard ? null : readTime)), wait(quiet + O.voiceCapMs)]);
+    // the person talks for as long as their line is said, whatever its cards do meanwhile (held, a lesson, a flight): the
+    // room's to end, as a skip or the scene's end hushes everyone
+    room.says(e.seat, said);
     // (a clip still loading is waited for as long as the player itself waits for it: the card never pops before the word)
     await Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
     if (!live) return;
@@ -91,7 +93,6 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     }
     // (a part with no card of its own waits only for its line)
     await Promise.all([landing ? holdOf(round, person.items.find((i) => i.id === landing).word) : null, named ? null : said]);
-    if (!named) room.talk(e.seat, false);
     if (!live) return;
     if (big) {
       // the first card that hides a part: the order waits while the child taps each hidden part open; it is met for good
@@ -106,10 +107,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       big = null;
     }
     // (the rest of the sentence after the named thing's card has gone)
-    if (named) {
-      await said;
-      room.talk(e.seat, false);
-    }
+    if (named) await said;
     if (!live) return;
     if (head && !landing) {
       await wait(O.partGap);
@@ -118,6 +116,9 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
     } else await wait(O.partGap);
     if (live) send({ type: "said" });
   }
+
+  /** No one talks on once the order stops (skipped, or the scene over): a line cut short ends its talk with it. */
+  const hush = () => room && room.hush();
 
   /** A new size of the play area: the big card's place is worked out again, and the bubble placed beside it. */
   function relayout() {
@@ -160,6 +161,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
         else if (e.type === "skipped") {
           live = false;
           say.stop();
+          hush();
         }
       }
     },
@@ -169,6 +171,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf, m
       if (offTap) offTap();
       if (offResize) offResize();
       saying = null;
+      hush();
       if (big) big.remove();
       big = null;
       document.querySelectorAll("#over .pop, body > .pop").forEach((el) => el.remove());

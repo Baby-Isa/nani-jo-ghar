@@ -17,7 +17,7 @@
  *       ticked or not now, so the row never slides back to one; a dish started again starts its row again
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment (./moment.rules.js)
  *   | light {first: "takeBack", vessel, item} (./moment.rules.js): the first time ever a spoonful thing goes past what was
- *   asked, its count pill is lit once, at the kitchen's next stillness
+ *   asked, its count pill is lit once, at the kitchen's next stillness, if its pill is shown then (pillHolds)
  */
 import { machine } from "../shared/machine.js";
 import { atLevel } from "../shared/round.js";
@@ -47,6 +47,8 @@ export function cookRules({ game, settings, kitchen, kit }) {
   const ctxOf = (s, v) => G.context(settings, { ask: s.vessels[v].ask, level: s.level });
   /** Is this dish what was asked, row by row: the kit's one answer, from the game's count of it against its card. */
   const checkOf = (s, v) => dishCheck(s.vessels[v].items, G.tally(s.vessels[v].dish, ctxOf(s, v)));
+  /** Does this dish hold more of a spoonful thing than was asked, or one nobody asked for (what the count pill's light is for)? */
+  const overIn = (s, v, item) => s.vessels[v].dish.spoons.includes(item) && checkOf(s, v).faults.some((f) => f.word === item && (f.kind === "many" || f.kind === "extra"));
   // every movement the rules start, with when it ends; one that blocks holds the next step back while it is in the air
   const busyNow = (s) => s.moves.some((m) => m.blocks);
   const moving = (s, ms, blocks) => ({ ...s, moves: s.moves.concat({ until: s.clock + ms, blocks }) });
@@ -121,7 +123,15 @@ export function cookRules({ game, settings, kitchen, kit }) {
     if (st.kind === "use") return !pastSupport(s, st.vessel, st.item);
     return true;
   }
-  const moment = stepMoment({ settings, kit, kitchen });
+  /**
+   * The count pill's light still has its place (the one test, asked by the step's moment just before the light is shown and
+   * so spent): its pan chosen, as the pills shown are the chosen pan's; not boiling over, while the pills hide; and the extra
+   * still in its dish, a tap on its pill able to take one out (never once the pan has poured, nor in a dish spoilt or made
+   * again). If not, the light goes unshown and waits for the next time a child puts in too many.
+   */
+  const pillHolds = (s, { vessel: v, item }) =>
+    v === s.chosen && s.vessels[v].fire.fire !== "over" && overIn(s, v, item) && !G.takeBack(s.vessels[v].dish, item, ctxOf(s, v)).events.some((e) => e.type === "refused");
+  const moment = stepMoment({ settings, kit, kitchen, holds: { [TAKE_BACK]: pillHolds } });
   const { opened, keyOf } = moment;
   // every step opens with Nani's hint shut
   const opening = (s, step, events) => ({ ...moment.opening(s, step, events), hint: false });
@@ -228,8 +238,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           // the first time ever a child puts in more of a spoonful thing than was asked, or one nobody asked for, its count
           // pill is lit once: a tap there takes one out (Zafar, 21 Nov: "nothing shows the pills can be tapped ... a short
           // first-time light on a pill the first time a child puts in too many")
-          const over = went && out.dish.spoons.includes(mv.id) && checkOf(next, v).faults.some((f) => f.word === mv.id && (f.kind === "many" || f.kind === "extra"));
-          if (over) next = moment.asking(next, TAKE_BACK, { vessel: v, item: mv.id });
+          if (went && overIn(next, v, mv.id)) next = moment.asking(next, TAKE_BACK, { vessel: v, item: mv.id });
           return settle(next, events, { rightMove: !!went });
         },
         knob(s, mv) {
@@ -304,7 +313,8 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const v = s.chosen;
           const out = G.takeBack(s.vessels[v].dish, mv.item, ctxOf(s, v));
           if (out.events.some((e) => e.type === "refused")) return { state: s, events: [] };
-          // (a spoonful taken out before its pill was lit: the light it waited for is not needed)
+          // (a spoonful taken out before its pill was lit: the child has found the pill alone, so the light it waited for is
+          // not needed, even with too many still in)
           const next = moving(moment.drop(setVessel(s, v, { dish: out.dish }), TAKE_BACK), settings.motion.takeBackMs, true);
           return settle(next, out.events.map((e) => ({ ...e, vessel: v })), { rightMove: true });
         },
