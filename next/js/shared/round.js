@@ -44,11 +44,10 @@ function shuffle(list, chance) {
   return a;
 }
 
-/** One ask for one person: their usual, as often as the settings say; otherwise drawn from what the level allows. */
-function drawAsk(ask, level, usual, chance) {
+/** One ask for one person, drawn from what the level allows: no person has a usual order (Zafar, 24 Nov). */
+function drawAsk(ask, level, chance) {
   const rule = atLevel(ask.byLevel, level);
   if (rule == null) return ask.kind === "yesno" ? false : ask.kind === "count" ? 0 : null;
-  if (rule.usualChance && usual !== undefined && chance() < rule.usualChance) return usual;
   if (ask.kind === "yesno") return chance() < rule.chance;
   if (ask.kind === "count") {
     const [lo, hi] = rule.range;
@@ -90,11 +89,10 @@ export function newRound({ game, settings, people, level, seed, player = {}, lad
     speaker: o.speaker,
     dish: o.dish,
     for: round.people.map((p, seat) => {
-      const usual = (o.usual && o.usual[p.id]) || {};
       const asks = {};
       for (const ask of o.asks) {
         const t = taught(ask, level, seat, round.ladder);
-        asks[ask.id] = t !== undefined ? t : drawAsk(ask, level, usual[ask.id], chance);
+        asks[ask.id] = t !== undefined ? t : drawAsk(ask, level, chance);
       }
       const c = card(asks, { level, words: settings.words });
       return { who: p.id, spokenBy: o.speaker === "each" ? p.id : "nani", asks, headline: c.headline, items: c.items, dishCard: c.dishCard || null, dishWord: c.dishWord || null };

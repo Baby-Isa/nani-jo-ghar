@@ -1230,11 +1230,9 @@
   }
  },
  "ladder": {
-  "_about": "The word ladder: a word's stage climbs one for every so many rounds it was right first time on its weakest side (each filler it was met with: milk asked and not asked; grammar-in-play 8(a) 6), up to the top stage; from daysFrom up, only once every side was right first on this many different days (days; the table had no days, so the two-days condition is on the top stages only: 23 Nov). pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
+  "_about": "The word ladder, one for both sides of a word (Zafar, 24 Nov; grammar-in-play 9(a) 32): from stage 1, a word climbs one stage for every rightsPerStage right first tries in a row, whichever side (milk asked or not), up to the top stage; a wrong first try breaks the run, and the stage falls back with it. pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
   "top": 4,
   "rightsPerStage": 2,
-  "daysFrom": 3,
-  "days": 2,
   "pillRun": 3
  },
  "light": {

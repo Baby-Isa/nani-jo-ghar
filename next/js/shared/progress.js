@@ -6,10 +6,11 @@
  *   OWN_PLAYER: the child's own player, when the game's link names none        progressKey(player): where it is kept
  *   loadProgress(player) -> { id, player: { gender }, ladder: { wordId: stage }, grammar: { row: rung }, met: {…}, words: {…}, best: {…}, earned: { wordId: true } }
  *       words: { [key]: { seen, right, miss, run, won, fillers: { [filler]: { met, right, days, lastRight } }, last } }
- *       per word or pattern: its touches, right first ones, misses, the run of right ones, its shelf pill won; per filler it
- *       was met with, how often, how often right first and on how many days, and the last such day (grammar-in-play 8(a)
- *       5-6); the last day it was met, for forgetting (8(a) 7, not built); a record kept before fillers (23 Nov) loads with
- *       none yet, one kept before a filler's days with none yet
+ *       per word or pattern: its touches, right first ones, misses, the run of right first ones (its stage and its shelf
+ *       pill read it), its shelf pill won; per filler it was met with, how often, how often right first and on how many
+ *       days, and the last such day (grammar-in-play 8(a) 5-6: kept, not read by the stage since 24 Nov); the last day it
+ *       was met, for forgetting (8(a) 7, not built); a record kept before fillers (23 Nov) loads with none yet, one kept
+ *       before a filler's days with none yet
  *   saveRound(progress, round)        folds a finished round in and stores it
  *   afterRound(progress, round, ladderK) -> progress     the same without storing (pure); ladderK: the kit's ladder numbers;
  *       it reads the round's ledger of touches (./kit/touches.rules.js), so a pick graded in any scene counts alike
@@ -22,7 +23,7 @@
  *   isNewPlayer(id) -> boolean         a player made by newPlayer, not the child's own
  *   playerName(id, words) -> who is playing, in the grown-ups' words (kit.cog.player: own, fresh)
  */
-import { progressOf, NOT_ASKED } from "./kit/touches.rules.js";
+import { progressOf } from "./kit/touches.rules.js";
 
 export const OWN_PLAYER = "child";
 export const progressKey = (id) => `njg:${id}`;
@@ -47,27 +48,8 @@ export function loadProgress(id) {
     stored = null;
   }
   const p = { id, player: { gender: null }, ladder: {}, grammar: {}, met: {}, words: {}, best: {}, earned: {}, ...(stored || {}) };
-  return { ...p, words: winnableSides(Object.fromEntries(Object.entries(p.words).map(([key, w]) => [key, wordRecord(w)]))) };
-}
-
-/**
- * Each word's sides that today's filing can still win, the rest dropped (a record's own rights and misses kept, and the
- * stored ladder never lowered). Until 23 Nov a thing nobody asked for was filed under the row it was counted against, or
- * under its own word where there was none (the lookalike spi-16 as "sugar" or "no-sugar"): such a side is only ever wrong,
- * so it would hold the word at stage 1 for good, in this game or a later one that asks it. It is now its word's NOT_ASKED
- * side, which the stage does not read. A side so filed is known by its shape: never won, and named after the word itself
- * or under a row another word has won (sugar's; the asked spice's). (A spice or an amount shares its row with the others of
- * its kind: if it was asked there and never won, that side goes too; it is the word's only side, so its stage, read off its
- * own rights instead, is still 1 until it is won.)
- */
-function winnableSides(words) {
-  const wonBy = new Map(); // a filler: the words right first under it
-  for (const [key, w] of Object.entries(words))
-    for (const [filler, f] of Object.entries(w.fillers)) if (f.right > 0) wonBy.set(filler, [...(wonBy.get(filler) || []), key]);
-  // (a side named after its own word goes only while never won, the old stray's shape: a game whose row is named as its
-  // word keeps every side the child has won there)
-  const lost = (key, filler, f) => f.right === 0 && (filler === key || (wonBy.get(filler) || []).some((other) => other !== key));
-  return Object.fromEntries(Object.entries(words).map(([key, w]) => [key, { ...w, fillers: Object.fromEntries(Object.entries(w.fillers).filter(([filler, f]) => !lost(key, filler, f))) }]));
+  // (a stored stage stands until its word is next met, then it is read off the run: stageOf)
+  return { ...p, words: Object.fromEntries(Object.entries(p.words).map(([key, w]) => [key, wordRecord(w)])) };
 }
 
 /** A word's record in its whole shape, an older one's missing parts empty. */
@@ -78,22 +60,16 @@ function wordRecord({ days, ...w } = {}) {
 }
 
 /**
- * The stage a word's record earns, read off its weakest side (8(a) 6: a two-way pick is a coin toss): over every filler it
- * was met with (milk asked and not asked, "milk" and "no-milk"), the fewest right first touches set it, so always doing one
- * thing never climbs a word the other side of which was met, and one right on that side releases one right's worth, not
- * every right banked on the other. A stage from ladderK.daysFrom up needs every side right first on ladderK.days different
- * days (the ladder's table has no days for its lower stages). A thing put in that nobody asked for is its word's "not
- * asked" side (NOT_ASKED): it costs the word, but leaving a thing out is never a touch, so that side has no right to win
- * and the stage does not read it. (Every side suits a two-sided word. A pattern place with many fillers, a grammar
- * rung's, is to count the distinct fillers right first instead (8(a) 5-6): none is played yet, so none is counted so.)
+ * The stage a word's record earns: one ladder for both sides of a word (Zafar, 24 Nov; grammar-in-play 9(a) 32). It is
+ * read off the word's run of right first tries, one stage for every ladderK.rightsPerStage of them, up to the top: a right
+ * first try counts the same whichever side it was on (milk asked or not, "milk" or "no-milk"), and a wrong first try (a
+ * thing put in that nobody asked for, its word's "not asked" side, included) breaks the run, so the stage falls back
+ * with it. A child who always does one thing is wrong each time the other side is asked and never builds a run; a lucky
+ * streak is not kept. (A pattern place with many fillers, a grammar rung's, is to count the distinct fillers right first
+ * instead (8(a) 5-6): none is played yet, so none is counted so.)
  */
 function stageOf(w, ladderK) {
-  const sides = Object.entries(w.fillers).filter(([filler]) => filler !== NOT_ASKED).map(([, f]) => f);
-  // (a record with no sides kept, a made-up player's or one kept before fillers: its rights alone)
-  const weakest = sides.length ? Math.min(...sides.map((f) => f.right)) : w.right;
-  const stage = Math.min(ladderK.top, 1 + Math.floor(weakest / ladderK.rightsPerStage));
-  const days = sides.length ? Math.min(...sides.map((f) => f.days)) : ladderK.days;
-  return stage >= ladderK.daysFrom && days < ladderK.days ? ladderK.daysFrom - 1 : stage;
+  return Math.min(ladderK.top, 1 + Math.floor(w.run / ladderK.rightsPerStage));
 }
 
 /** The words the child has picked right at least once. */
@@ -108,10 +84,10 @@ export function wordStage({ earned = {}, tried = {} }, id) {
 }
 
 /**
- * A word's stage climbs with right first touches on its weakest side (stageOf), and never moves on a round in which it was
- * helped: each place the round's ledger holds touched, in the order it was asked. A round's result never lowers a stored
- * stage (the builder's, 23 Nov; Zafar to decide: hold, or drop to the weakest side when a new side is met); forgetting,
- * 8(a) 7, is not built.
+ * A word's stage follows its run of right first touches (stageOf), and never moves on a round in which it was helped: each
+ * place the round's ledger holds touched, in the order it was asked. A round's result may lower a stored stage: a wrong
+ * first try breaks the run the stage is read off (the builder's 23 Nov hold, "never lowered", is gone with 24 Nov's one
+ * ladder: held, any lucky run would stand for good). Forgetting, 8(a) 7, is not built.
  */
 export function afterRound(progress, round, ladderK) {
   const words = { ...progress.words };
@@ -136,10 +112,8 @@ export function afterRound(progress, round, ladderK) {
     earned[key] = w.won && w.run >= 1;
     words[key] = w;
   }
-  // (once the whole round is in, so a side met later in the round holds a stage a touch before it would have moved)
-  for (const key of new Set(progressOf(round.touches).map((t) => t.key))) {
-    ladder[key] = Math.max(ladder[key] || 1, stageOf(words[key], ladderK));
-  }
+  // (once the whole round is in: the run as the round leaves it; a word peeked at keeps its stage, run untouched)
+  for (const key of new Set(progressOf(round.touches).map((t) => t.key))) if (!peeked.has(key)) ladder[key] = stageOf(words[key], ladderK);
   const key = `${round.game}:${round.level}`;
   const best = { ...progress.best };
   if (round.cookMs && (!best[key] || round.cookMs < best[key])) best[key] = round.cookMs;

@@ -18,7 +18,7 @@
   ]
  },
  "order": {
-  "_about": "Who orders and what each can ask for, by level. usual: each person's usual chai; usualChance: from level 2, how often an ask is their usual rather than drawn from what the level allows (lowered, Zafar 17 Nov: \"vary the orders more from level 2\", so making each person's usual wins about a fifth of cups, not a third).",
+  "_about": "Who orders and what each can ask for, by level: every ask drawn at random for each person from what the level allows. No person has a usual order (Zafar, 24 Nov: the orders stay as they are, each level's rules for making them kept).",
   "speaker": "each",
   "dish": "cook-chai",
   "noLast": true,
@@ -51,22 +51,6 @@
     ]
    }
   },
-  "usual": {
-   "nana": {
-    "milk": true,
-    "sugar": 3,
-    "spice": "spi-10"
-   },
-   "ma": {
-    "milk": false,
-    "sugar": 1,
-    "spice": "veg-14"
-   },
-   "cousin": {
-    "milk": true,
-    "sugar": 2
-   }
-  },
   "asks": [
    {
     "id": "milk",
@@ -76,8 +60,7 @@
       "chance": 1
      },
      {
-      "chance": 0.65,
-      "usualChance": 0.2
+      "chance": 0.65
      }
     ]
    },
@@ -97,8 +80,7 @@
        1,
        3
       ],
-      "none": 0.2,
-      "usualChance": 0.2
+      "none": 0.2
      }
     ]
    },
@@ -116,8 +98,7 @@
        null,
        "spi-10",
        "veg-14"
-      ],
-      "usualChance": 0.15
+      ]
      }
     ]
    },
