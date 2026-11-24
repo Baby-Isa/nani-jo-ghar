@@ -187,7 +187,8 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       resized.add(fn);
       return () => resized.delete(fn);
     },
-    /** A tap anywhere in the play area is given to the topmost thing registered under it, at least `kit.look.minTap` px wide. */
+    /** A tap anywhere in the play area is given to the topmost thing registered under it; one under none goes to the thing
+     *  nearest it whose area, grown to at least `kit.look.minTap` px, reaches it (the topmost on a tie). */
     tap(target, fn) {
       const t = { target, fn };
       taps.push(t);
@@ -226,13 +227,25 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     const r = el.play.getBoundingClientRect();
     const px = ev.clientX - r.left;
     const py = ev.clientY - r.top;
+    // a tap inside a thing's own area goes to the topmost such thing, so where two truly overlap the one laid over wins
+    // (the shelf lays a thing's area over its speaker's, so there the thing wins: Zafar, 11 Nov); a tap inside none goes,
+    // of the areas that reach it once grown to `minTap`, to the one whose own area is nearest it (the topmost on a tie).
+    // Nearest, not topmost: a sliver narrower than the least tap (the shelf's bit of pill beside a speaker) grows sideways
+    // over its neighbour, and the topmost would take the taps that land just off the neighbour's own edge.
     const min = kit.look.minTap;
-    for (let i = taps.length - 1; i >= 0; i--) {
-      const b = rectOf(taps[i]);
+    const boxes = taps.map(rectOf);
+    const off = (b) => Math.hypot(Math.max(b.x - px, 0, px - b.x - b.w), Math.max(b.y - py, 0, py - b.y - b.h));
+    const reaches = (b) => {
       const gx = Math.max(0, (min - b.w) / 2);
       const gy = Math.max(0, (min - b.h) / 2);
-      if (px >= b.x - gx && px <= b.x + b.w + gx && py >= b.y - gy && py <= b.y + b.h + gy) return void taps[i].fn({ x: px, y: py });
+      return px >= b.x - gx && px <= b.x + b.w + gx && py >= b.y - gy && py <= b.y + b.h + gy;
+    };
+    let best = -1;
+    for (let i = taps.length - 1; i >= 0; i--) {
+      if (off(boxes[i]) === 0) return void taps[i].fn({ x: px, y: py });
+      if (reaches(boxes[i]) && (best < 0 || off(boxes[i]) < off(boxes[best]))) best = i;
     }
+    if (best >= 0) taps[best].fn({ x: px, y: py });
   });
 
   return {

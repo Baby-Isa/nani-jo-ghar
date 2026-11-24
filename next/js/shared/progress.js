@@ -6,8 +6,8 @@
  *   OWN_PLAYER: the child's own player, when the game's link names none        progressKey(player): where it is kept
  *   loadProgress(player) -> { id, player: { gender }, ladder: { wordId: stage }, grammar: { row: rung }, met: {…}, words: {…}, best: {…}, earned: { wordId: true } }
  *       words: { [key]: { seen, right, miss, run, won, fillers: { [filler]: { met, right, days, lastRight } }, last } }
- *       per word or pattern: its touches, right first ones, misses, the run of right first ones (its stage and its shelf
- *       pill read it), its shelf pill won; per filler it was met with, how often, how often right first and on how many
+ *       per word or pattern: its touches, right first ones, misses, the run of right first ones, a slip stepping it back
+ *       one stage's worth (its stage and its shelf pill read it), its shelf pill won; per filler it was met with, how often, how often right first and on how many
  *       days, and the last such day (grammar-in-play 8(a) 5-6: kept, not read by the stage since 24 Nov); the last day it
  *       was met, for forgetting (8(a) 7, not built); a record kept before fillers (23 Nov) loads with none yet, one kept
  *       before a filler's days with none yet
@@ -63,13 +63,23 @@ function wordRecord({ days, ...w } = {}) {
  * The stage a word's record earns: one ladder for both sides of a word (Zafar, 24 Nov; grammar-in-play 9(a) 32). It is
  * read off the word's run of right first tries, one stage for every ladderK.rightsPerStage of them, up to the top: a right
  * first try counts the same whichever side it was on (milk asked or not, "milk" or "no-milk"), and a wrong first try (a
- * thing put in that nobody asked for, its word's "not asked" side, included) breaks the run, so the stage falls back
- * with it. A child who always does one thing is wrong each time the other side is asked and never builds a run; a lucky
- * streak is not kept. (A pattern place with many fillers, a grammar rung's, is to count the distinct fillers right first
- * instead (8(a) 5-6): none is played yet, so none is counted so.)
+ * thing put in that nobody asked for, its word's "not asked" side, included) costs one stage (stepDown). A child who
+ * always does one thing is wrong each time the other side is asked, a stage lost for every right one gained, and never
+ * climbs; a lucky streak is not kept. (A pattern place with many fillers, a grammar rung's, is to count the distinct
+ * fillers right first instead (8(a) 5-6): none is played yet, so none is counted so.)
  */
 function stageOf(w, ladderK) {
   return Math.min(ladderK.top, 1 + Math.floor(w.run / ladderK.rightsPerStage));
+}
+
+/**
+ * A slip drops a word one stage, not back to the start (Zafar, 24 Nov): the run steps back one stage's worth from where
+ * the ladder stands (a run past the top counts as the top's), never below stage 1. Forgetting (grammar-in-play 8(a) 7,
+ * not built) is to take the same one step down for a word not met for a while.
+ */
+function stepDown(run, ladderK) {
+  const topRun = (ladderK.top - 1) * ladderK.rightsPerStage;
+  return Math.max(0, Math.min(run, topRun) - ladderK.rightsPerStage);
 }
 
 /** The words the child has picked right at least once. */
@@ -85,9 +95,9 @@ export function wordStage({ earned = {}, tried = {} }, id) {
 
 /**
  * A word's stage follows its run of right first touches (stageOf), and never moves on a round in which it was helped: each
- * place the round's ledger holds touched, in the order it was asked. A round's result may lower a stored stage: a wrong
- * first try breaks the run the stage is read off (the builder's 23 Nov hold, "never lowered", is gone with 24 Nov's one
- * ladder: held, any lucky run would stand for good). Forgetting, 8(a) 7, is not built.
+ * place the round's ledger holds touched, in the order the child played it. A round's result may lower a stored stage:
+ * a wrong first try steps the run back one stage (stepDown; the builder's 23 Nov hold, "never lowered", is gone with
+ * 24 Nov's one ladder: held, any lucky run would stand for good). Forgetting, 8(a) 7, is not built.
  */
 export function afterRound(progress, round, ladderK) {
   const words = { ...progress.words };
@@ -103,13 +113,15 @@ export function afterRound(progress, round, ladderK) {
     // a peek is exposure: it neither counts nor breaks the run
     if (!peeked.has(key)) {
       if (rightFirst) [w.right, w.run, f.right] = [w.right + 1, w.run + 1, f.right + 1];
-      else [w.miss, w.run] = [w.miss + 1, 0];
+      else [w.miss, w.run] = [w.miss + 1, stepDown(w.run, ladderK)];
       if (rightFirst && day && f.lastRight !== day) [f.days, f.lastRight] = [f.days + 1, day];
     }
     w.fillers = { ...w.fillers, [filler]: f };
-    // the shelf pill loses its written word after a run of right picks; a miss brings it back until the next right pick
+    // the shelf pill loses its written word once the run reaches pillRun (the same run as the stage, so a slip on the way
+    // there steps it back too); a miss brings the word back until the next right pick, as the last first try says (a slip
+    // steps the run back only one stage, so the run alone cannot say it)
     w.won = w.won || w.run >= ladderK.pillRun;
-    earned[key] = w.won && w.run >= 1;
+    if (!peeked.has(key)) earned[key] = w.won && !!rightFirst;
     words[key] = w;
   }
   // (once the whole round is in: the run as the round leaves it; a word peeked at keeps its stage, run untouched)

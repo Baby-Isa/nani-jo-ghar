@@ -6,17 +6,25 @@
  * for the round, and nothing later (a dish made again, a spoilt pan started anew) makes it right again. Progress, the
  * end's badges and words, and the robot read it; nothing else keeps a first try. It rides on the round. Pure.
  *
- *   entry: { who, key, filler, day, rightFirst }   key: the word or pattern; filler: what it filled (a card's row: "milk"
- *       or "no-milk" for the word milk); who: whose it was; day: the round's (several right picks, on different fillers, on
- *       more than one day: grammar-in-play 8(a) 6); rightFirst: null while asked and not yet touched
- *   asked(ledger, places) -> ledger       places a scene will grade, untouched, in the order it asks them: the ledger keeps
- *       that order, which progress reads them in (so a place touched wrong early still counts in its turn)
+ *   entry: { who, key, filler, day, rightFirst, at }   key: the word or pattern; filler: what it filled (a card's row:
+ *       "milk" or "no-milk" for the word milk); who: whose it was; day: the round's (several right picks, on different
+ *       fillers, on more than one day: grammar-in-play 8(a) 6); rightFirst: null while asked and not yet touched; at: the
+ *       moment the child's play first reached it, its place in the play order (none while not yet reached)
+ *   asked(ledger, places) -> ledger       places a scene will grade, untouched (in the order it asks them, the card's)
+ *   played(ledger, places) -> ledger      the child's play has reached these places, not yet graded (a thing let in, by
+ *       the kit's one answer to which places it reaches, ./mistakes.rules.js placesReached; every row of a dish as it is
+ *       first poured, the moment nothing more can go in): each keeps the moment it was first reached, `at`, its place in
+ *       the play order
  *   touched(ledger, touches) -> ledger      a graded touch of each place given, { who, key, filler, day, right }, asked or
- *       not; a place is known by who, key and filler together, so a word and a pattern sharing a filler never meet
+ *       not, reaching it too where nothing had; a place is known by who, key and filler together, so a word and a pattern
+ *       sharing a filler never meet
  *   rowPlaces(who, items, day) -> places  a person's card, its rows as places
- *   rightFirst(ledger, place) -> true | false | null      progressOf(ledger) -> the places touched, in order
- *   NOT_ASKED: the filler of a thing nobody asked for, its own word's place (./wrong-order.rules.js strayPlace): leaving a
- *       thing out is never a touch, so this side is only ever wrong; it costs the word, and no stage waits on it
+ *   rightFirst(ledger, place) -> true | false | null
+ *   progressOf(ledger) -> the places touched, in the order the child played them (Zafar, 24 Nov: not the seats' order),
+ *       each by the moment the play first reached it; a word's run reads them so
+ *   NOT_ASKED: the filler of a thing nobody asked for, its own word's place (made only by ./wrong-order.rules.js
+ *       strayPlace): leaving a thing out is never a touch, so this side is only ever wrong; it costs the word, and no
+ *       stage waits on it
  */
 
 export const NOT_ASKED = "not-asked";
@@ -30,15 +38,24 @@ export function asked(ledger, places) {
   return fresh.length ? ledger.concat(fresh.map((p) => ({ ...p, rightFirst: null }))) : ledger;
 }
 
+// the next moment in the play order
+const nextAt = (ledger) => ledger.reduce((m, e) => Math.max(m, e.at || 0), 0) + 1;
+
+/** One place reached by play or a graded touch: its entry, made where there is none, stamped `at` the first time. */
+function reach(ledger, p, grade = (e) => e) {
+  const i = ledger.findIndex((e) => same(e, p));
+  const e = i < 0 ? { ...p, rightFirst: null } : ledger[i];
+  const next = grade(e.at ? e : { ...e, at: nextAt(ledger) });
+  if (i >= 0 && next === e) return ledger;
+  return i < 0 ? ledger.concat(next) : ledger.map((x, j) => (j === i ? next : x));
+}
+
+export const played = (ledger, places) => places.reduce((out, p) => reach(out, p), ledger);
+
 export function touched(ledger, touches) {
   let out = ledger;
-  for (const { right: r, ...p } of touches) {
-    const right = !!r;
-    const at = out.findIndex((e) => same(e, p));
-    // (a wrong touch is kept; a right one counts only while none was wrong)
-    if (at < 0) out = out.concat({ ...p, rightFirst: right });
-    else if (out[at].rightFirst !== false && out[at].rightFirst !== right) out = out.map((e, i) => (i === at ? { ...e, rightFirst: right } : e));
-  }
+  // (a wrong touch is kept; a right one counts only while none was wrong)
+  for (const { right: r, ...p } of touches) out = reach(out, p, (e) => (e.rightFirst === false || e.rightFirst === !!r ? e : { ...e, rightFirst: !!r }));
   return out;
 }
 
@@ -47,4 +64,9 @@ export const rightFirst = (ledger, place) => {
   return e ? e.rightFirst : null;
 };
 
-export const progressOf = (ledger) => (ledger || []).filter((e) => e.rightFirst !== null);
+export const progressOf = (ledger) =>
+  (ledger || [])
+    .filter((e) => e.rightFirst !== null)
+    .map((e, i) => [e, i])
+    .sort(([a, i], [b, j]) => (a.at || Infinity) - (b.at || Infinity) || i - j)
+    .map(([e]) => e);

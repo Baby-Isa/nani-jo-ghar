@@ -30,7 +30,7 @@ import { newHelp, acted, rush, pass as helpPass } from "../shared/kit/help.rules
 import { stepMoment } from "./moment.rules.js";
 import { dishCheck, playOf } from "../shared/kit/wrong-order.rules.js";
 import { ruling, dishTouches } from "../shared/kit/mistakes.rules.js";
-import { asked, touched, rowPlaces } from "../shared/kit/touches.rules.js";
+import { asked, touched, played, rowPlaces } from "../shared/kit/touches.rules.js";
 import { labDishes, LAB_WRONG_ORDER } from "./lab.rules.js";
 
 const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0);
@@ -173,6 +173,13 @@ export function cookRules({ game, settings, kitchen, kit }) {
    * in the kit's ledger (only a right first touch counts).
    */
   const touch = (s, v, places) => ({ ...s, touches: touched(s.touches, places.map((p) => ({ who: s.vessels[v].who, day: s.day, ...p }))) });
+  /**
+   * The play order in the kit's ledger (Zafar, 24 Nov: a round reads picks in the order the child played them, not the
+   * seats'): this person's places [{ key, filler }] reached now, each keeping the first moment it was reached. Stamped
+   * where the move is ruled: a thing let in reaches the places the kit's ruling names, and a glass first poured reaches
+   * every row of its card the play has not reached (a thing asked and left out), since nothing more can go in after it.
+   */
+  const reach = (s, v, places) => ({ ...s, touches: played(s.touches, places.map((p) => ({ who: s.vessels[v].who, day: s.day, ...p }))) });
 
   /**
    * Another vessel is chosen. The one left may close (a glass holding what was asked is final once left): it closes as
@@ -232,7 +239,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           // the level's rule for mistakes, every game's (the kit's): a wrong thing or amount refused with the wiggle and
           // Nani's "no" where the level refuses it; a thing that has all it can take refused with the wiggle alone
           const ctx = ctxOf(s, v);
-          const { said, cost } = ruling({ kit, level: s.level, wrong: G.wrongNow(x.dish, mv.id, ctx), n: G.howMany(x.dish, mv.id, ctx), once: settings.row.once.includes(mv.id), items: x.items, tallyIn: G.tally(out.dish, ctx), tallyNow: G.tally(x.dish, ctx) });
+          const { said, cost, reach: reached } = ruling({ kit, level: s.level, wrong: G.wrongNow(x.dish, mv.id, ctx), n: G.howMany(x.dish, mv.id, ctx), once: settings.row.once.includes(mv.id), items: x.items, tallyIn: G.tally(out.dish, ctx), tallyNow: G.tally(x.dish, ctx) });
           if (said === "full") return settle(s, [{ type: "wiggle", item: mv.id }]);
           if (said === "no") {
             // only a right first touch counts: a refused pick costs the rows it is about their first try, as it would let in
@@ -242,7 +249,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
             return settle(again ? { ...next, noAt: s.clock } : next, [{ type: "wiggle", item: mv.id }].concat(again ? { type: "no" } : []));
           }
           const went = out.events.find((e) => e.type === "in");
-          let next = setVessel(s, v, { dish: out.dish });
+          let next = reach(setVessel(s, v, { dish: out.dish }), v, reached);
           if (went) next = moving(next, how === "pour" ? pourMs : spoonMs, how === "pour");
           events.push(...out.events.map((e) => ({ ...e, vessel: v, how })));
           // the first time ever a child puts in more of a spoonful thing than was asked, or one nobody asked for, its count
@@ -297,6 +304,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
           const out = G.take(x.dish, ctxOf(next, v));
           if (out.events.some((e) => e.type === "refused")) return settle(next, events.concat({ type: "wiggle", vessel: v }));
           next = setVessel(next, v, { dish: out.dish, fire: out.left ? x.fire : spend(x.fire) });
+          next = reach(next, v, x.items.map((it) => ({ key: it.word, filler: it.id })));
           const poured = out.events.find((e) => e.type === "pour");
           next = moving(next, takeMs(poured.parts), true);
           events.push(...out.events.map((e) => ({ ...e, vessel: v, who: x.who })));

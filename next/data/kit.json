@@ -1230,7 +1230,7 @@
   }
  },
  "ladder": {
-  "_about": "The word ladder, one for both sides of a word (Zafar, 24 Nov; grammar-in-play 9(a) 32): from stage 1, a word climbs one stage for every rightsPerStage right first tries in a row, whichever side (milk asked or not), up to the top stage; a wrong first try breaks the run, and the stage falls back with it. pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
+  "_about": "The word ladder, one for both sides of a word (Zafar, 24 Nov; grammar-in-play 9(a) 32): from stage 1, a word climbs one stage for every rightsPerStage right first tries in a row, whichever side (milk asked or not), up to the top stage; a wrong first try costs one stage, the run stepping back one stage's worth, never below stage 1 (Zafar, 24 Nov). pillRun: a word whose run reaches this loses its written word on the shelf pill (a miss brings it back until the next right pick).",
   "top": 4,
   "rightsPerStage": 2,
   "pillRun": 3

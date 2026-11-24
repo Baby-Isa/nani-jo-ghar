@@ -58,13 +58,18 @@ function drawAsk(ask, level, chance) {
   throw new Error(`round: unknown kind of ask "${ask.kind}"`);
 }
 
-/** While the words of an ask are still new to the child, the first people ask for them in a set order, so both are heard. */
-function taught(ask, level, seat, ladder) {
+/**
+ * While the words of an ask are still new to the child, each of them is asked for by one person, so all are heard; who
+ * asks for which is drawn at random each round (Zafar, 24 Nov: not always the first seat). -> { [seat]: word }, empty
+ * when nothing is taught; the others draw their ask as usual. Drawn only where a word is taught, so a round that teaches
+ * nothing spends none of its chance on it.
+ */
+function taught(ask, level, seats, ladder, chance) {
   const rule = atLevel(ask.byLevel, level);
   const t = rule && rule.teach;
-  if (!t || seat >= t.seats.length) return undefined;
-  const isNew = t.words.some((w) => (ladder[w] || 0) <= t.newUntilStage);
-  return isNew ? t.seats[seat] : undefined;
+  if (!t || !t.words.some((w) => (ladder[w] || 0) <= t.newUntilStage)) return {};
+  const who = shuffle([...Array(seats).keys()], chance);
+  return Object.fromEntries(t.words.slice(0, seats).map((word, i) => [who[i], word]));
 }
 
 export function newRound({ game, settings, people, level, seed, player = {}, ladder = {}, met = {}, today = null, best = {}, earned = {}, tried = {}, card }) {
@@ -85,13 +90,14 @@ export function newRound({ game, settings, people, level, seed, player = {}, lad
     if (!p) throw new Error(`round: nobody called "${id}" in the family`);
     return { id, name: p.name, gender: p.gender, elder: !!p.elder, spot: spots[i] };
   });
+  const teach = Object.fromEntries(o.asks.map((ask) => [ask.id, taught(ask, level, round.people.length, round.ladder, chance)]));
   round.order = {
     speaker: o.speaker,
     dish: o.dish,
     for: round.people.map((p, seat) => {
       const asks = {};
       for (const ask of o.asks) {
-        const t = taught(ask, level, seat, round.ladder);
+        const t = teach[ask.id][seat];
         asks[ask.id] = t !== undefined ? t : drawAsk(ask, level, chance);
       }
       const c = card(asks, { level, words: settings.words });
